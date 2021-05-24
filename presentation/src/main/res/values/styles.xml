@@ -1,0 +1,78 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
+    <style name="AppTheme.Translucent" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
+    <style name="AppThemeCustom" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="NoToolbarStyle" parent="Theme.AppCompat.DayNight.NoActionBar"></style>
+
+    <style name="BaseToolbarStyle">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:theme">@style/BaseToolbarTheme</item>
+        <item name="titleTextAppearance">@style/CustomTitleTextAppearance</item>
+    </style>
+
+    <style name="BaseToolbarTheme">
+        <item name="android:textColorPrimary">@color/colorTextSecondary</item>
+        <item name="android:textColorSecondary">@color/colorTextPrimary</item>
+    </style>
+
+    <style name="CustomTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.App" parent="ThemeOverlay.MaterialComponents.Light">
+        <item name="colorPrimary">@color/shrine_pink_100</item>
+        <item name="colorSurface">@color/shrine_pink_light</item>
+        <item name="colorOnSurface">@color/shrine_pink_900</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
+    </style>
+
+    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">0dp</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.CardView" parent="CardView">
+        <item name="enforceMaterialTheme">true</item>
+
+        <item name="android:stateListAnimator" tools:ignore="NewApi">
+            @animator/mtrl_card_state_list_anim
+        </item>
+        <item name="cardBackgroundColor">?attr/colorSurface</item>
+        <item name="cardCornerRadius">@null</item>
+        <item name="cardElevation">@dimen/mtrl_card_elevation</item>
+        <item name="cardForegroundColor">@color/mtrl_card_view_foreground</item>
+        <item name="checkedIcon">@drawable/ic_mtrl_checked_circle</item>
+        <item name="checkedIconTint">?attr/colorPrimary</item>
+        <item name="checkedIconSize">@dimen/mtrl_card_checked_icon_size</item>
+        <item name="checkedIconMargin">@dimen/mtrl_card_checked_icon_margin</item>
+        <item name="rippleColor">@color/mtrl_card_view_ripple</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    </style>
+
+</resources>

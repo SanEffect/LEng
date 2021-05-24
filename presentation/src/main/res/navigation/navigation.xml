@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.san.leng.ui.dashboard.DashboardFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/recordsFragment"
+        android:name="com.san.leng.ui.records.RecordsFragment"
+        android:label="RecordsFragment"
+        tools:layout="@layout/fragment_records" >
+        <action
+            android:id="@+id/action_recordsFragment_to_addRecordFragment"
+            app:destination="@id/addRecordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addRecordFragment"
+        android:name="com.san.leng.ui.records.add_record.AddRecordFragment"
+        android:label="AddRecordFragment"
+        tools:layout="@layout/fragment_add_record" >
+        <action
+            android:id="@+id/action_addRecordFragment_to_recordsFragment"
+            app:destination="@id/recordsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/usefulInfoFragment"
+        android:name="com.san.leng.ui.useful_info.UsefulInfoFragment"
+        android:label="UsefulInfoFragment"
+        tools:layout="@layout/fragment_useful_info"/>
+
+    <fragment
+        android:id="@+id/dictionaryFragment"
+        android:name="com.san.leng.ui.dictionary.DictionaryFragment"
+        android:label="DictionaryFragment"
+        tools:layout="@layout/fragment_dictionary" />
+
+</navigation>

@@ -1,0 +1,84 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    kapt {
+        correctErrorTypes true
+        generateStubs = true
+    }
+}
+
+dependencies {
+
+    implementation project(':domain')
+
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation 'androidx.room:room-runtime:2.2.5'
+//    implementation 'androidx.room:room-ktx:2.2.5'
+//    kapt 'androidx.room:room-compiler:2.2.5'
+
+    implementation rootProject.ext.room
+    implementation rootProject.ext.room_ktx
+    kapt "androidx.room:room-compiler:$room_version"
+
+    implementation rootProject.ext.dagger
+    kapt rootProject.ext.daggerCompiler
+    implementation rootProject.ext.daggerAndroid
+    implementation rootProject.ext.daggerAndroidSupport
+
+    implementation rootProject.ext.retrofit
+    implementation rootProject.ext.retrofitGsonConverter
+    implementation rootProject.ext.retrofitRxJava2Adapter
+    implementation rootProject.ext.retrofitMoshiConverter
+    implementation rootProject.ext.okHttp
+    implementation rootProject.ext.okHttp_log_interceptor
+
+    implementation rootProject.ext.moshi
+    implementation rootProject.ext.moshi_kotlin
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
+
+//    testImplementation rootProject.ext.junit
+//    testImplementation rootProject.ext.mockito
+//    androidTestImplementation rootProject.ext.androidTestRunner
+//
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//    implementation 'androidx.core:core-ktx:1.3.2'
+//    implementation 'androidx.appcompat:appcompat:1.2.0'
+//    implementation 'com.google.android.material:material:1.3.0'
+//    testImplementation 'junit:junit:4.13.2'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
