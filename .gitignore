@@ -13,3 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
+presentation/src/main/java/com/san/leng/core/Constants.kt
