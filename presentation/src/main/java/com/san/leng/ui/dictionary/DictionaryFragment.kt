@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.san.leng.R
 import com.san.leng.core.extensions.hideKeyboard
 import com.san.leng.core.platform.BaseFragment
@@ -58,12 +59,20 @@ class DictionaryFragment : BaseFragment() {
                 false
             }
         }
+
+        dictionaryViewModel.wordResultIsLoaded.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let {
+                binding.resultContainer.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
+            }
+        })
     }
 
     private fun updateWordFromInput() {
         binding.searchWord.text.trim().let {
             hideKeyboard()
-            dictionaryViewModel.getWordDefinition(it.toString())
+            binding.progressBar.visibility = View.VISIBLE
+            dictionaryViewModel.loadWordDefinition(it.toString())
         }
     }
 
