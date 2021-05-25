@@ -25,6 +25,7 @@ class DashboardViewModel @Inject constructor(
             is Success -> _recordsCount.value = it.data
             is Error -> {
             }
+            else -> {}
         }
     }
 
@@ -33,6 +34,7 @@ class DashboardViewModel @Inject constructor(
             is Success -> _wordsCount.value = it.data
             is Error -> {
             }
+            else -> {}
         }
     }
 

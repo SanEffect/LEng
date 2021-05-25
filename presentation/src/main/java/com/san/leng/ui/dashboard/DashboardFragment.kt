@@ -30,11 +30,6 @@ class DashboardFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
 
-//        val activity = requireNotNull(this.activity)
-//        val recordsRepository = RecordsRepository()
-//        ViewModelProviders.of(this, DashboardViewModel(activity.application))
-//                .get(DashboardViewModel::class.java)
-
         binding.viewModel = dashboardViewModel
 
         binding.lifecycleOwner = this

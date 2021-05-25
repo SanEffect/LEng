@@ -29,33 +29,14 @@ class DictionaryViewModel @Inject constructor(
         }
     }
 
-//    fun getWordDefinition(word: String) = viewModelScope.launch {
-//
-////        _status.value = WordApiStatus.LOADING
-//
-//        when(val result = getWordDefinitions(word)) {
-//            is Success -> wordDisplay(result.data)
-//            is Error -> showError(result.exception)
-//            else -> showLoading()
-//        }
-//    }
-
     private fun showLoading() {
-
     }
 
     private fun wordDisplay(result: WordResult) {
-//        _status.value = WordApiStatus.DONE
-
         _wordResult.value = result
-
-        Timber.i("Result: $result")
-        Timber.i("Word: ${result.word}")
-        Timber.i("Defs: ${result.definitions}")
     }
 
     private fun showError(exception: Exception) {
-//        _status.value = WordApiStatus.ERROR
         Timber.i( "Error: ${exception.message}")
     }
 

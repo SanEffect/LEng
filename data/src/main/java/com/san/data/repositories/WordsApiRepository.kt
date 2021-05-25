@@ -12,7 +12,6 @@ import com.san.domain.Result.Error
 import com.san.domain.entities.WordResult
 
 class WordsApiRepository @Inject constructor(
-//        private val remoteDataSource: IWordsRemoteDataSource,
     private val wordsService: WordApiService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : IWordsApiRemoteRepository {

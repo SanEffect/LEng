@@ -6,10 +6,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-//interface UseCase<out Type, in Params> where Type : Any {
-//    suspend operator fun invoke(params: Params) : Result<Type>
-//}
-
 abstract class UseCase<out Type, in Params> where Type : Any {
 
     abstract suspend fun run(params: Params): Result<Type>

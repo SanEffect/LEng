@@ -30,36 +30,6 @@ class RecordsViewModel @Inject constructor(
         }
     }
 
-//    fun loadRecords() = viewModelScope.launch {
-//
-//
-//
-//        when(val records = getRecords()) {
-//            is Success -> {
-//                _records.value = records.data
-//            }
-//            is Error -> {
-//
-//            }
-//            else -> {}
-//        }
-//    }
-
-//    val records = liveData {
-//
-////        val records = listOf<RecordEntity>(
-////                RecordEntity("Rec 1", "Desc"),
-////                RecordEntity("Rec 2", "Desc"),
-////                RecordEntity("Rec 3", "Desc")
-////        )
-////        emit(records)
-//
-//        when (val records = recordsRepository.getRecords()) {
-//            is Success -> emit(records.data)
-//            is Error -> Timber.i("Error when try getting records")
-//        }
-//    }
-
     fun clearRecords() = viewModelScope.launch {
 //        removeRecords()
     }

@@ -24,18 +24,8 @@ interface RecordsDao {
     @Query("DELETE FROM records")
     suspend fun clear()
 
-//    @Query("SELECT * FROM diary_records ORDER BY id DESC")
-//    fun getObserveRecords(): LiveData<List<DiaryRecord>>
-
     @Query("SELECT * FROM records ORDER BY id DESC")
     suspend fun getRecords(): List<RecordEntity>
-
-//    @Query("SELECT * FROM diary_records ORDER BY id DESC")
-//    fun observeRecords(): LiveData<List<DiaryRecord>>
-
-    // Selects and returns the night with given nightId.
-//    @Query("SELECT * from diary_records WHERE id = :key")
-//    fun getRecordWithId(key: Long): LiveData<DiaryRecord>
 
     @Query("SELECT * FROM records ORDER BY id DESC LIMIT 1")
     suspend fun getLastRecord() : RecordEntity

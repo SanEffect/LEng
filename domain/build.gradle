@@ -15,7 +15,6 @@ dependencies {
     implementation rootProject.ext.dagger
     kapt rootProject.ext.daggerCompiler
     implementation rootProject.ext.daggerAndroid
-//    implementation rootProject.ext.daggerAndroidSupport
 
     implementation rootProject.ext.retrofit
     implementation rootProject.ext.retrofitGsonConverter

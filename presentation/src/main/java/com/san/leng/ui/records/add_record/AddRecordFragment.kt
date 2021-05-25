@@ -27,22 +27,13 @@ import com.san.leng.core.platform.BaseFragment
 
 class AddRecordFragment : BaseFragment() {
 
-//    @Inject
-//    lateinit var viewModelFactory: ViewModelFactory
-
     private val addRecordsViewModel: AddRecordViewModel by viewModels { viewModelFactory }
 
     private lateinit var binding: FragmentAddRecordBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        (context.applicationContext as AndroidApplication).appComponent.inject(this)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val text = Intent().getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)
-        Log.i("AddRecordFragment", "$text")
+        appComponent.inject(this)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -54,7 +45,6 @@ class AddRecordFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_record, container, false)
 
-        //addRecordsViewModel = ViewModelProviders.of(this, viewModelFactory).get(AddRecordViewModel::class.java)
         binding.viewModel = addRecordsViewModel
 
         addRecordsViewModel.saveRecordComplete.observe(viewLifecycleOwner, Observer {
@@ -76,33 +66,10 @@ class AddRecordFragment : BaseFragment() {
             }
         })
 
-        addRecordsViewModel.res.observe(viewLifecycleOwner, Observer {
-            Timber.i(it)
-        })
-
-        addRecordsViewModel.records.observe(viewLifecycleOwner, Observer {
-            it.forEach {
-                Timber.i("${it.title}")
-            }
-
-        })
-
         binding.recordText.setOnClickListener {
             val word = getWord()
             setHighLightedText(binding.recordText, word)
         }
-
-        val checkedListener =
-            CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked) {
-                    actionMode = view?.startActionMode(actionModeCallback, ActionMode.TYPE_FLOATING)
-                    actionMode!!.title = "Action Mode"
-                } else {
-                    if (actionMode != null) {
-                        actionMode!!.finish()
-                    }
-                }
-            }
 
         registerForContextMenu(binding.recordText)
 
@@ -110,8 +77,6 @@ class AddRecordFragment : BaseFragment() {
         setHasOptionsMenu(true)
         return binding.root
     }
-
-    var actionMode: ActionMode? = null
 
     private fun getWord() : String {
         val startSelection = binding.recordText.selectionStart
@@ -143,16 +108,6 @@ class AddRecordFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onStop() {
-        super.onStop()
-        Timber.i("AddRecordsFragment has stopped")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Timber.i("AddRecordsFragment has destroyed")
-    }
-
     private fun getWordIndexBySelectionStart(match: MatchResult?, selectionStart: Int) : Int? {
         return if(match?.range?.contains(selectionStart) == false) getWordIndexBySelectionStart(
             match.next(),
@@ -160,7 +115,6 @@ class AddRecordFragment : BaseFragment() {
         ) else match?.range?.first
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun setHighLightedText(textView: TextView, textToHighlight: String) {
         if (textToHighlight.isEmpty()) return
 
@@ -169,37 +123,6 @@ class AddRecordFragment : BaseFragment() {
         val index: Int = getWordIndexBySelectionStart(match, binding.recordText.selectionStart) ?: return
 
         binding.recordText.setSelection(index, index + textToHighlight.length)
-
-//        val wordToSpan: Spannable = SpannableString(textView.text)
-//        wordToSpan.setSpan(
-//            BackgroundColorSpan(Color.argb(100, 255, 255, 0)),
-//            ind,
-//            ind + textToHighlight.length,
-//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//        )
-//        textView.setText(wordToSpan, TextView.BufferType.SPANNABLE)
-
-//        view?.startActionMode(actionModeCallback, ActionMode.TYPE_FLOATING)
-
-//        binding.recordText.showContextMenu()
-
-//        activity?.openContextMenu(view)
-
-//        var ofs = 0
-//        while(ofs < tvt.length && ofe != -1) {
-//            ofe = tvt.indexOf(textToHighlight, ofs)
-//            if(ofe == -1) break
-//            else {
-//                wordToSpan.setSpan(
-//                    BackgroundColorSpan(Color.YELLOW),
-//                    ofe,
-//                    ofe + textToHighlight.length,
-//                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//                )
-//                tv.setText(wordToSpan, TextView.BufferType.SPANNABLE)
-//            }
-//            ofs++
-//        }
     }
 
     override fun onCreateContextMenu(
@@ -217,39 +140,6 @@ class AddRecordFragment : BaseFragment() {
         return when (item.itemId) {
 
             else -> super.onContextItemSelected(item)
-        }
-    }
-
-    private val actionModeCallback = object : ActionMode.Callback {
-        // Called when the action mode is created; startActionMode() was called
-        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-            // Inflate a menu resource providing context menu items
-            val inflater: MenuInflater = mode.menuInflater
-            inflater.inflate(R.menu.action_mode_menu, menu)
-            return true
-        }
-
-        // Called each time the action mode is shown. Always called after onCreateActionMode, but
-        // may be called multiple times if the mode is invalidated.
-        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            return false // Return false if nothing is done
-        }
-
-        // Called when the user selects a contextual menu item
-        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            return when (item.itemId) {
-                R.id.action_test -> {
-
-                    mode.finish() // Action picked, so close the CAB
-                    true
-                }
-                else -> false
-            }
-        }
-
-        // Called when the user exits the action mode
-        override fun onDestroyActionMode(mode: ActionMode) {
-            actionMode = null
         }
     }
 }

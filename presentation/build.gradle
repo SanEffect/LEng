@@ -60,8 +60,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
-//    implementation 'androidx.mediarouter:mediarouter:1.2.0'
-
     implementation rootProject.ext.room
     implementation rootProject.ext.dagger
     implementation rootProject.ext.daggerCompiler

@@ -35,8 +35,6 @@ class DictionaryFragment : BaseFragment() {
 
         binding.viewModel = dictionaryViewModel
 
-//        dictionaryViewModel.getWordDefinition("task")
-
         binding.lifecycleOwner = this
 
         setupViews()
@@ -44,12 +42,6 @@ class DictionaryFragment : BaseFragment() {
     }
 
     private fun setupViews() {
-
-//        binding.foundedWordDesc.adapter = ArrayAdapter(
-//            requireActivity(),
-//            android.R.layout.simple_list_item_1,
-//            listOf("")
-//        )
 
         binding.foundedWordDesc.adapter = DictionaryAdapter()
 

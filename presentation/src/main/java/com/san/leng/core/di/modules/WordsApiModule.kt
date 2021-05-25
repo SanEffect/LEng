@@ -3,7 +3,6 @@ package com.san.leng.core.di.modules
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.san.data.repositories.WordsApiRepository
 import com.san.domain.repositories.IWordsApiRemoteRepository
-import com.san.data.sources.remote.IWordsRemoteDataSource
 import com.san.data.sources.remote.WordApiService
 import com.san.leng.core.Constants
 import com.squareup.moshi.Moshi
@@ -26,10 +25,6 @@ class WordsApiModule {
     @Provides
     @Singleton
     fun provideWordsService(retrofit: Retrofit) : WordApiService = retrofit.create(WordApiService::class.java)
-
-//    @Provides
-//    @Singleton
-//    fun provideRemoteDataSource(wordsService: WordApiService) : IWordsRemoteDataSource = WordsRemoteDataSource(wordsService)
 
     @Provides
     @Singleton

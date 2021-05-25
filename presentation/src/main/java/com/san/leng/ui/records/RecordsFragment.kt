@@ -23,10 +23,6 @@ class RecordsFragment : BaseFragment() {
         appComponent.inject(this)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -52,16 +48,12 @@ class RecordsFragment : BaseFragment() {
     private fun initializeView() {
         binding.recordList.adapter = RecordsAdapter(RecordListener {
             Timber.i("Go to RecordViewFragment")
-            // navigation to RecordViewFragment
         })
     }
 
     private fun loadRecordsList() {
 //        showProgress()
         recordsViewModel.loadRecords()
-//        when(recordsViewModel.records.value?.isNotEmpty()) {
-//            true -> hideProgress()
-//        }
     }
 
     private fun setupViews() {
@@ -75,7 +67,6 @@ class RecordsFragment : BaseFragment() {
         when(item.itemId) {
             R.id.remove_records -> recordsViewModel.clearRecords()
             R.id.action_translate -> Toast.makeText(activity, "Text was translated", Toast.LENGTH_LONG).show()
-            //else -> Toast.makeText(activity, "Text was translated", Toast.LENGTH_LONG).show()
         }
 
         return true

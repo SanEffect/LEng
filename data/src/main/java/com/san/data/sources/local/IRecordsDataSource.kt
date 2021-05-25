@@ -10,8 +10,6 @@ interface IRecordsDataSource {
 
     suspend fun getRecords(): Result<List<RecordEntity>>
 
-//    fun observeRecords(): LiveData<Result<List<RecordEntity>>>
-
     suspend fun getLastRecord() : Result<RecordEntity>
 
     suspend fun insert(record: RecordEntity)
