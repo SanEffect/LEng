@@ -1,28 +1,20 @@
 package com.san.leng.ui.records.add_record
 
 import android.content.Context
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
-import android.widget.CompoundButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.san.leng.AndroidApplication
 import com.san.leng.R
 import com.san.leng.databinding.FragmentAddRecordBinding
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import timber.log.Timber
-import androidx.lifecycle.Observer
 import com.san.leng.core.extensions.hideKeyboard
+import com.san.leng.core.extensions.showToast
 import com.san.leng.core.platform.BaseFragment
-
+import timber.log.Timber
 
 
 class AddRecordFragment : BaseFragment() {
@@ -31,13 +23,13 @@ class AddRecordFragment : BaseFragment() {
 
     private lateinit var binding: FragmentAddRecordBinding
 
+    private var searchWord: String = ""
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         appComponent.inject(this)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,28 +39,30 @@ class AddRecordFragment : BaseFragment() {
 
         binding.viewModel = addRecordsViewModel
 
-        addRecordsViewModel.saveRecordComplete.observe(viewLifecycleOwner, Observer {
-            if (it == true) {
-
+        addRecordsViewModel.saveRecordComplete.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let {
                 hideKeyboard()
-                Timber.i("Back to RecordFragment. Title: ${addRecordsViewModel.title.value.toString()}")
-
                 this.findNavController().navigate(
                     AddRecordFragmentDirections.actionAddRecordFragmentToRecordsFragment()
                 )
-                addRecordsViewModel.doneNavigation()
             }
         })
 
-        addRecordsViewModel.message.observe(viewLifecycleOwner, Observer {
+        addRecordsViewModel.message.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
                 Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
             }
         })
 
+        addRecordsViewModel.wordDefinition.observe(viewLifecycleOwner, {
+            it.getContentIfNotHandled()?.let { wordDefinition ->
+                Toast.makeText(requireActivity(), wordDefinition, Toast.LENGTH_SHORT).show()
+            }
+        })
+
         binding.recordText.setOnClickListener {
-            val word = getWord()
-            setHighLightedText(binding.recordText, word)
+            searchWord  = getWord()
+            setHighLightedText(binding.recordText, searchWord)
         }
 
         registerForContextMenu(binding.recordText)
@@ -92,7 +86,6 @@ class AddRecordFragment : BaseFragment() {
                 break
             }
         }
-
         return selectedWord
     }
 
@@ -136,9 +129,22 @@ class AddRecordFragment : BaseFragment() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
+//        val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
         return when (item.itemId) {
+            R.id.translate -> {
 
+                true
+            }
+            R.id.definition -> {
+                if(searchWord.isNotEmpty()) {
+                    addRecordsViewModel.getWordDefinition(searchWord)
+                }
+                true
+            }
+            R.id.more -> {
+
+                true
+            }
             else -> super.onContextItemSelected(item)
         }
     }

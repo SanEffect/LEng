@@ -60,10 +60,10 @@ class DictionaryFragment : BaseFragment() {
             }
         }
 
-        dictionaryViewModel.wordResultIsLoaded.observe(viewLifecycleOwner, Observer {
+        dictionaryViewModel.wordResultIsLoaded.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
-                binding.resultContainer.visibility = View.VISIBLE
                 binding.progressBar.visibility = View.GONE
+                binding.resultContainer.visibility = View.VISIBLE
             }
         })
     }

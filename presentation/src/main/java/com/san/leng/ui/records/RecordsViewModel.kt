@@ -21,12 +21,13 @@ class RecordsViewModel @Inject constructor(
     private val _records: MutableLiveData<List<RecordEntity>> = MutableLiveData()
     val records: LiveData<List<RecordEntity>> = _records
 
-    fun loadRecords() = getRecords(None()) {
-
-        when(it) {
-            is Success -> _records.value = it.data
-            is Error -> {}
-            else -> {}
+    fun loadRecords() = viewModelScope.launch {
+        getRecords(None()) {
+            when(it) {
+                is Success -> _records.value = it.data
+                is Error -> {}
+                else -> {}
+            }
         }
     }
 
