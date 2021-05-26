@@ -14,4 +14,7 @@
     <string name="search_word_hint">Type a word</string>
     <string name="word_value">Word: %s</string>
     <string name="word_definitions">Definitions:</string>
+    <string name="word_definition">Definition</string>
+    <string name="word_translate">Translate</string>
+    <string name="word_more_actions">More</string>
 </resources>

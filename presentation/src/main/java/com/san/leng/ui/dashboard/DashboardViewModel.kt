@@ -6,6 +6,7 @@ import com.san.domain.interactor.UseCase.None
 import com.san.domain.usecases.dashboard.GetRecordsCount
 import com.san.domain.usecases.records.GetWordsCount
 import com.san.leng.core.platform.BaseViewModel
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,21 +21,26 @@ class DashboardViewModel @Inject constructor(
     private val _wordsCount: MutableLiveData<Long> = MutableLiveData()
     val wordsCount: LiveData<Long> = _wordsCount
 
-    fun loadRecordsCount() = getRecordsCount(None()) {
-        when (it) {
-            is Success -> _recordsCount.value = it.data
-            is Error -> {
+    fun loadRecordsCount() = viewModelScope.launch {
+        getRecordsCount(None()) {
+            when (it) {
+                is Success -> _recordsCount.value = it.data
+                is Error -> {
+                }
+                else -> {
+                }
             }
-            else -> {}
         }
     }
 
-    fun loadWordsCount() = getWordsCount(None()) {
-        when (it) {
-            is Success -> _wordsCount.value = it.data
-            is Error -> {
+    fun loadWordsCount() = viewModelScope.launch {
+        getWordsCount(None()) {
+            when (it) {
+                is Success -> _wordsCount.value = it.data
+                is Error -> {
+                }
+                else -> {}
             }
-            else -> {}
         }
     }
 

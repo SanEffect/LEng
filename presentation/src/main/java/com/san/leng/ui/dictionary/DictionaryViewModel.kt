@@ -13,6 +13,7 @@ import com.san.domain.Result.Success
 import com.san.domain.Result.Error
 import com.san.domain.entities.WordResult
 import com.san.leng.core.Event
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DictionaryViewModel @Inject constructor(
@@ -30,14 +31,17 @@ class DictionaryViewModel @Inject constructor(
     private val _wordResultIsLoaded: MutableLiveData<Event<Boolean>> = MutableLiveData()
     val wordResultIsLoaded: LiveData<Event<Boolean>> = _wordResultIsLoaded
 
-    fun loadWordDefinition(word: String) = getWordDefinitions(Params(word)) {
+    fun loadWordDefinition(word: String) = viewModelScope.launch {
 
-        _wordResultIsLoaded.value = Event(true)
+        getWordDefinitions(Params((word))) {
 
-        when(it) {
-            is Success -> wordDisplay(it.data)
-            is Error -> showError(it.exception)
-            else -> showLoading()
+            _wordResultIsLoaded.value = Event(true)
+
+            when(it) {
+                is Success -> wordDisplay(it.data)
+                is Error -> showError(it.exception)
+                else -> showLoading()
+            }
         }
     }
 
