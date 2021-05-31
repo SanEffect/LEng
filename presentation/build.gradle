@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
     defaultConfig {
@@ -41,12 +41,18 @@ android {
         exclude 'META-INF/metadata.kotlin_module'
         exclude 'META-INF/metadata.jvm.kotlin_module'
     }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
 
     implementation project(':data')
     implementation project(':domain')
+
+
 
     implementation "androidx.core:core-ktx:$version_core"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

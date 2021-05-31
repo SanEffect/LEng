@@ -7,12 +7,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.san.domain.models.RecordDto
 import com.san.leng.R
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentRecordsBinding
-import timber.log.Timber
 
-class RecordsFragment : BaseFragment() {
+class RecordsFragment : BaseFragment(), RecordsAdapter.ContextMenuCallback {
 
     private val recordsViewModel: RecordsViewModel by viewModels { viewModelFactory }
 
@@ -33,8 +33,6 @@ class RecordsFragment : BaseFragment() {
         binding.viewModel = recordsViewModel
 
         binding.lifecycleOwner = this
-
-        setupViews()
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -46,9 +44,33 @@ class RecordsFragment : BaseFragment() {
     }
 
     private fun initializeView() {
-        binding.recordList.adapter = RecordsAdapter(RecordListener {
-            Timber.i("Go to RecordViewFragment")
+
+        binding.recordList.adapter = RecordsAdapter(
+            RecordContextMenuListener(
+                editClickListener = {
+
+                },
+                removeClickListener = {
+                    recordsViewModel.removeRecord()
+                }),
+            RecordListener { recordEntity ->
+                val record = RecordDto(
+                    recordEntity.title,
+                    recordEntity.description,
+                    recordEntity.id,
+                    recordEntity.isDeleted,
+                    recordEntity.creationDate
+                )
+                this.findNavController().navigate(
+                    RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(record)
+                )
         })
+
+        binding.addRecord.setOnClickListener {
+            this.findNavController().navigate(
+                RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(RecordDto())
+            )
+        }
     }
 
     private fun loadRecordsList() {
@@ -56,24 +78,37 @@ class RecordsFragment : BaseFragment() {
         recordsViewModel.loadRecords()
     }
 
-    private fun setupViews() {
-
-        binding.addRecord.setOnClickListener {
-            this.findNavController().navigate(RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment())
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.remove_records -> recordsViewModel.clearRecords()
             R.id.action_translate -> Toast.makeText(activity, "Text was translated", Toast.LENGTH_LONG).show()
         }
-
         return true
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.records_menu, menu)
+        inflater.inflate(R.menu.records_editor_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+/*    override fun onCreateContextMenu(menu: ContextMenu?, v: View?,
+                                     menuInfo: ContextMenu.ContextMenuInfo?) {
+        activity?.menuInflater?.inflate(R.menu.menu_yours, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem?): Boolean {
+        super.onContextItemSelected(item)
+        when (item?.itemId) {
+            R.id.action_your -> yourAction(selectedItemId, selectedItemTitle)
+                ...
+        }
+        return true
+    }*/
+
+    override fun onContextMenuClick(view: View, id: Long, title: String) {
+        // Here we accept item id, title from adapter and show context menu.
+//        selectedItemId = id
+//        selectedItemTitle = title
+        view.showContextMenu()
     }
 }

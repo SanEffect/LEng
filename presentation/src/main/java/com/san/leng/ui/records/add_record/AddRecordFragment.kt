@@ -3,17 +3,20 @@ package com.san.leng.ui.records.add_record
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.widget.AdapterView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.san.domain.entities.RecordEntity
+import com.san.domain.mappers.RecordMapper
 import com.san.leng.R
 import com.san.leng.databinding.FragmentAddRecordBinding
 import com.san.leng.core.extensions.hideKeyboard
-import com.san.leng.core.extensions.showToast
 import com.san.leng.core.platform.BaseFragment
+import kotlinx.android.synthetic.main.fragment_add_record.view.*
+import org.mapstruct.factory.Mappers
 import timber.log.Timber
 
 
@@ -22,6 +25,8 @@ class AddRecordFragment : BaseFragment() {
     private val addRecordsViewModel: AddRecordViewModel by viewModels { viewModelFactory }
 
     private lateinit var binding: FragmentAddRecordBinding
+
+    private val args: AddRecordFragmentArgs by navArgs()
 
     private var searchWord: String = ""
 
@@ -38,6 +43,16 @@ class AddRecordFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_record, container, false)
 
         binding.viewModel = addRecordsViewModel
+
+        args.record?.let { recordDto ->
+            addRecordsViewModel.isEditMode = true
+            addRecordsViewModel.title.value = recordDto.title
+            addRecordsViewModel.description.value = recordDto.description
+
+            addRecordsViewModel.currentRecord = recordDto.toEntity()
+        }
+
+        Timber.i("addRecordsViewModel.isEditMode: ${addRecordsViewModel.isEditMode}")
 
         addRecordsViewModel.saveRecordComplete.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
@@ -90,6 +105,14 @@ class AddRecordFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+//        addRecordsViewModel.currentRecord?.let {
+//            when(item.itemId) {
+//                R.id.action_save_record -> addRecordsViewModel.updateRecord()
+//            }
+//            return true
+//        }
+
         when(item.itemId) {
             R.id.action_save_record -> addRecordsViewModel.saveRecord()
         }

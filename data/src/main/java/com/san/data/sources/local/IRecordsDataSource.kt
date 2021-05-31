@@ -12,7 +12,9 @@ interface IRecordsDataSource {
 
     suspend fun getLastRecord() : Result<RecordEntity>
 
-    suspend fun insert(record: RecordEntity)
+    suspend fun insert(record: RecordEntity) : Result<Unit>
+
+    suspend fun update(record: RecordEntity) : Result<Unit>
 
     suspend fun getById(id: Long) : Result<RecordEntity?>
 

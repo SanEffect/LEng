@@ -74,4 +74,7 @@ class WordsApiModule {
             level = HttpLoggingInterceptor.Level.BODY
         }
     }
+
+//    @Provides
+//    fun provideMapperInstance() :
 }

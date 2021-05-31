@@ -7,7 +7,6 @@ import com.san.domain.usecases.dashboard.GetRecordsCount
 import com.san.domain.usecases.records.GetWordsCount
 import com.san.leng.core.platform.BaseViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(

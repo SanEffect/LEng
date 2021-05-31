@@ -1,15 +1,12 @@
 package com.san.leng.ui.dictionary
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.san.domain.usecases.dictionary.GetWordDefinitions
 import com.san.domain.usecases.dictionary.GetWordDefinitions.Params
 import com.san.leng.core.platform.BaseViewModel
 import javax.inject.Inject
-import com.san.domain.Result
 import com.san.domain.Result.Success
 import com.san.domain.Result.Error
 import com.san.domain.entities.WordResult

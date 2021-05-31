@@ -32,6 +32,10 @@ class RecordsViewModel @Inject constructor(
     }
 
     fun clearRecords() = viewModelScope.launch {
-//        removeRecords()
+        // removeRecords()
+    }
+
+    fun removeRecord() = viewModelScope.launch {
+        // TODO: removeRecord()
     }
 }

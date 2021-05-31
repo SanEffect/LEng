@@ -41,8 +41,20 @@ class IRecordsLocalDataSource @Inject constructor(
         }
     }
 
-    override suspend fun insert(record: RecordEntity) = withContext(ioDispatcher) {
-        recordsDao.insert(record)
+    override suspend fun insert(record: RecordEntity) : Result<Unit> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(recordsDao.insert(record))
+        } catch (e: Exception) {
+            Error(e)
+        }
+    }
+
+    override suspend fun update(record: RecordEntity) : Result<Unit> = withContext(ioDispatcher) {
+        return@withContext try {
+            Success(recordsDao.update(record))
+        } catch (e: Exception) {
+            Error(e)
+        }
     }
 
     override suspend fun getById(id: Long) : Result<RecordEntity?> = withContext(ioDispatcher) {
