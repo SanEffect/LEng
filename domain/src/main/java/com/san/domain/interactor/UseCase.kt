@@ -1,6 +1,7 @@
 package com.san.domain.interactor
 
 import com.san.domain.Result
+import com.san.domain.usecases.dictionary.GetWordDefinitions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async

@@ -13,9 +13,9 @@ class GetWordDefinitions @Inject constructor(
     private val wordsApiRemoteRepository: IWordsApiRemoteRepository
 ) : UseCase<WordResult, Params>() {
 
+    data class Params(val word: String)
+
     override suspend fun run(params: Params): Result<WordResult> = withContext(Dispatchers.IO) {
         wordsApiRemoteRepository.getWordDefinitions(params.word)
     }
-
-    data class Params(val word: String)
 }

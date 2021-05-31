@@ -27,6 +27,9 @@ ext {
     moshi = "com.squareup.moshi:moshi:$moshi_version"
     moshi_kotlin = "com.squareup.moshi:moshi-kotlin:$moshi_version"
 
+    // Paging library
+    paging_library = "androidx.paging:paging-runtime:$paging_version"
+
     // Testing
     junit = "junit:junit:4.12"
     mockito = "org.mockito:mockito-core:2.8.47"

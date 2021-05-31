@@ -1,12 +1,39 @@
-apply plugin: 'kotlin'
-apply plugin: 'kotlin-kapt'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'androidx.navigation.safeargs.kotlin'
+}
 
 targetCompatibility = 1.8
 sourceCompatibility = 1.8
 
+android {
+    compileSdkVersion 29
+
+    dataBinding {
+        enabled = true
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    api("com.github.pozo:mapstruct-kotlin:1.3.1.2")
+    kapt("com.github.pozo:mapstruct-kotlin-processor:1.3.1.2")
+
+    api("org.mapstruct:mapstruct:1.4.0.Beta3")
+    kapt("org.mapstruct:mapstruct-processor:1.4.0.Beta3")
+
+    // MapStruct
+//    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+//    annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"

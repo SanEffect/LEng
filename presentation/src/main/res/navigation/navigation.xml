@@ -28,6 +28,10 @@
         <action
             android:id="@+id/action_addRecordFragment_to_recordsFragment"
             app:destination="@id/recordsFragment" />
+        <argument
+            android:name="record"
+            app:argType="com.san.domain.models.RecordDto"
+            app:nullable="true" />
     </fragment>
 
     <fragment

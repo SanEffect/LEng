@@ -12,16 +12,16 @@ import com.san.domain.Result
 import com.san.data.sources.local.IRecordsDataSource
 
 class RecordsRepository @Inject constructor(
-        private val localDataSourceI: IRecordsDataSource,
+        private val localDataSource: IRecordsDataSource,
         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : IRecordsRepository {
 
     override val records: Flow<List<RecordEntity>> =
-        localDataSourceI.records
+        localDataSource.records
             .map { records -> records.filter { !it.isDeleted } }
 
     override suspend fun getRecords(): Result<List<RecordEntity>> {
-        return localDataSourceI.getRecords()
+        return localDataSource.getRecords()
     }
 
     override suspend fun refreshRecords() {
@@ -30,29 +30,33 @@ class RecordsRepository @Inject constructor(
 
     override suspend fun getLastRecord(): Result<RecordEntity> {
         return withContext(ioDispatcher) {
-            localDataSourceI.getLastRecord()
+            localDataSource.getLastRecord()
         }
     }
 
-    override suspend fun insert(record: RecordEntity) = withContext(ioDispatcher) {
-        localDataSourceI.insert(record)
+    override suspend fun insert(record: RecordEntity): Result<Unit> = withContext(ioDispatcher) {
+        localDataSource.insert(record)
+    }
+
+    override suspend fun update(record: RecordEntity): Result<Unit> = withContext(ioDispatcher) {
+        localDataSource.update(record)
     }
 
     override suspend fun getById(id: Long) : Result<RecordEntity?> {
         return withContext(ioDispatcher) {
-            localDataSourceI.getById(id)
+            localDataSource.getById(id)
         }
     }
 
     override suspend fun getRecordsCount() = withContext(ioDispatcher) {
-        localDataSourceI.getRecordsCount()
+        localDataSource.getRecordsCount()
     }
 
     override suspend fun removeRecords(): Result<Unit> = withContext(ioDispatcher) {
-        localDataSourceI.removeRecords()
+        localDataSource.removeRecords()
     }
 
     override suspend fun getWordsCount(): Result<Long> = withContext(ioDispatcher) {
-        localDataSourceI.getWordsCount()
+        localDataSource.getWordsCount()
     }
 }
