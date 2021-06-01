@@ -68,7 +68,7 @@ class RecordsFragment : BaseFragment(), RecordsAdapter.ContextMenuCallback {
 
         binding.addRecord.setOnClickListener {
             this.findNavController().navigate(
-                RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(RecordDto())
+                RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(null)
             )
         }
     }

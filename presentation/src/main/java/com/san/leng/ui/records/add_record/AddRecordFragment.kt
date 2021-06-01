@@ -52,7 +52,7 @@ class AddRecordFragment : BaseFragment() {
             addRecordsViewModel.currentRecord = recordDto.toEntity()
         }
 
-        Timber.i("addRecordsViewModel.isEditMode: ${addRecordsViewModel.isEditMode}")
+//        Timber.i("addRecordsViewModel.isEditMode: ${addRecordsViewModel.isEditMode}")
 
         addRecordsViewModel.saveRecordComplete.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
