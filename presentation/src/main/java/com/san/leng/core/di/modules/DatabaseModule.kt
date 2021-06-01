@@ -23,4 +23,7 @@ class DatabaseModule {
 
     @Provides
     fun provideDao(database: RecordsDatabase) = database.recordsDao
+
+//    @Provides
+//    fun provideWordsDao(database: RecordsDatabase) = database.wordsDao
 }
