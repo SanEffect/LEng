@@ -9,6 +9,9 @@
             name="clickListener"
             type="com.san.leng.ui.records.RecordListener" />
         <variable
+            name="recordContextMenuListener"
+            type="com.san.leng.ui.records.RecordContextMenuListener" />
+        <variable
             name="record"
             type="com.san.domain.entities.RecordEntity" />
     </data>

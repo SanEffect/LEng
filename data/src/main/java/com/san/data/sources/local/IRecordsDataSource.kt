@@ -20,6 +20,8 @@ interface IRecordsDataSource {
 
     suspend fun getRecordsCount() : Result<Long>
 
+    suspend fun removeRecord(recordId: Long) : Result<Unit>
+
     suspend fun removeRecords() : Result<Unit>
 
     suspend fun getWordsCount() : Result<Long>

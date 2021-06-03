@@ -19,7 +19,7 @@ interface RecordsDao {
     suspend fun get(key: Long) : RecordEntity
 
     @Query("DELETE FROM records WHERE id = :key")
-    suspend fun remove(key: Long)
+    suspend fun removeRecord(key: Long)
 
     @Query("DELETE FROM records")
     suspend fun clear()
