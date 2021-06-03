@@ -52,6 +52,10 @@ class RecordsRepository @Inject constructor(
         localDataSource.getRecordsCount()
     }
 
+    override suspend fun removeRecord(recordId: Long): Result<Unit> = withContext(ioDispatcher) {
+        localDataSource.removeRecord(recordId)
+    }
+
     override suspend fun removeRecords(): Result<Unit> = withContext(ioDispatcher) {
         localDataSource.removeRecords()
     }

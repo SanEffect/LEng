@@ -15,6 +15,12 @@ class RecordsAdapter(
     private val clickListener: RecordListener
     ) : ListAdapter<RecordEntity, RecordsAdapter.RecordViewHolder>(DiffCallback) {
 
+    private var recordsList: MutableList<RecordEntity> = mutableListOf()
+
+    override fun getItemCount(): Int {
+        return recordsList.size
+    }
+
     class RecordViewHolder(val binding: RecordItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(clickListener: RecordListener, record: RecordEntity) {
@@ -40,12 +46,9 @@ class RecordsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
-        val record = getItem(position)
+//        val record = getItem(position)
+        val record = recordsList[position]
         holder.bind(clickListener, record)
-
-//        holder.binding.recordItemMoreActions.setOnClickListener {
-//            contextMenuCallback.onContextMenuClick(holder.binding.recordItemMoreActions, record.id, record.description)
-//        }
 
         holder.binding.recordCard.setOnCreateContextMenuListener { contextMenu, _, _ ->
             contextMenu.add("Edit").setOnMenuItemClickListener {
@@ -54,11 +57,22 @@ class RecordsAdapter(
                 true
             }
             contextMenu.add("Remove").setOnMenuItemClickListener {
-                contextMenuListener.onRemoveClick()
-                Timber.i("Remove record")
+                removeRecord(record, position)
                 true
             }
         }
+    }
+
+    fun submitRecordList(records: List<RecordEntity>?) {
+        recordsList.clear()
+        recordsList.addAll(records as Collection<RecordEntity>)
+        notifyDataSetChanged()
+    }
+
+    private fun removeRecord(record: RecordEntity, position: Int) {
+        recordsList.removeAt(position)
+        contextMenuListener.onRemoveClick(record)
+        notifyDataSetChanged()
     }
 
     interface ContextMenuCallback {
@@ -67,14 +81,14 @@ class RecordsAdapter(
 
 }
 
-class RecordListener(val clickListener: (recordId: RecordEntity) -> Unit) {
+class RecordListener(val clickListener: (record: RecordEntity) -> Unit) {
     fun onClick(record: RecordEntity) = clickListener(record)
 }
 
 class RecordContextMenuListener(
     val editClickListener: () -> Unit,
-    val removeClickListener: () -> Unit
+    val removeClickListener: (record: RecordEntity) -> Unit
 ) {
     fun onEditClick() = editClickListener()
-    fun onRemoveClick() = removeClickListener()
+    fun onRemoveClick(record: RecordEntity) = removeClickListener(record)
 }

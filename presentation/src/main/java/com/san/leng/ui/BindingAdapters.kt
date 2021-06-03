@@ -23,7 +23,7 @@ fun goneIfNotNull(view: View, it: Any?) {
 @BindingAdapter("app:items")
 fun bindItems(listView: RecyclerView, items: List<RecordEntity>?) {
     items?.let {
-        (listView.adapter as RecordsAdapter).submitList(items)
+        (listView.adapter as RecordsAdapter).submitRecordList(items)
     }
 }
 

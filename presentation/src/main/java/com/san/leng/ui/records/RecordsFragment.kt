@@ -7,10 +7,12 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.san.domain.entities.RecordEntity
 import com.san.domain.models.RecordDto
 import com.san.leng.R
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentRecordsBinding
+import timber.log.Timber
 
 class RecordsFragment : BaseFragment(), RecordsAdapter.ContextMenuCallback {
 
@@ -39,32 +41,22 @@ class RecordsFragment : BaseFragment(), RecordsAdapter.ContextMenuCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initializeView()
         loadRecordsList()
+        initializeView()
     }
 
     private fun initializeView() {
 
         binding.recordList.adapter = RecordsAdapter(
             RecordContextMenuListener(
-                editClickListener = {
-
-                },
-                removeClickListener = {
-                    recordsViewModel.removeRecord()
-                }),
+                editClickListener = { },
+                removeClickListener = { recordEntity -> recordsViewModel.removeRecord(recordEntity)}
+            ),
             RecordListener { recordEntity ->
-                val record = RecordDto(
-                    recordEntity.title,
-                    recordEntity.description,
-                    recordEntity.id,
-                    recordEntity.isDeleted,
-                    recordEntity.creationDate
-                )
                 this.findNavController().navigate(
-                    RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(record)
+                    RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(recordEntity.toDto())
                 )
-        })
+            })
 
         binding.addRecord.setOnClickListener {
             this.findNavController().navigate(
@@ -88,7 +80,10 @@ class RecordsFragment : BaseFragment(), RecordsAdapter.ContextMenuCallback {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.records_editor_menu, menu)
+//        inflater.inflate(R.menu.record_item_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
+
+
     }
 
 /*    override fun onCreateContextMenu(menu: ContextMenu?, v: View?,

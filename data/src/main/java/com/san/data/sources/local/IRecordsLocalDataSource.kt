@@ -73,6 +73,16 @@ class IRecordsLocalDataSource @Inject constructor(
         }
     }
 
+    override suspend fun removeRecord(recordId: Long) : Result<Unit> = withContext(ioDispatcher) {
+        return@withContext try {
+            recordsDao.removeRecord(recordId)
+            Success(Unit)
+        }
+        catch (e: Exception) {
+            Error(e)
+        }
+    }
+
     override suspend fun removeRecords() : Result<Unit> = withContext(ioDispatcher) {
         return@withContext try {
             recordsDao.clear()

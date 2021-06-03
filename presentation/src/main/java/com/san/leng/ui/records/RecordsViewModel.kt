@@ -8,23 +8,26 @@ import com.san.domain.Result.Error
 import com.san.domain.entities.RecordEntity
 import com.san.domain.interactor.UseCase.None
 import com.san.domain.usecases.records.GetRecords
+import com.san.domain.usecases.records.RemoveRecord
 import com.san.domain.usecases.records.RemoveRecords
 import com.san.leng.core.platform.BaseViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class RecordsViewModel @Inject constructor(
-    private val getRecords: GetRecords,
-    private val removeRecords: RemoveRecords
+        private val getRecords: GetRecords,
+        private val removeRecord: RemoveRecord,
+        private val removeRecords: RemoveRecords
 ) : BaseViewModel() {
 
     private val _records: MutableLiveData<List<RecordEntity>> = MutableLiveData()
     val records: LiveData<List<RecordEntity>> = _records
 
     fun loadRecords() = viewModelScope.launch {
-        getRecords(None()) {
-            when(it) {
-                is Success -> _records.value = it.data
+        getRecords(None()) { result ->
+            when(result) {
+                is Success -> _records.value = result.data
                 is Error -> {}
                 else -> {}
             }
@@ -32,10 +35,18 @@ class RecordsViewModel @Inject constructor(
     }
 
     fun clearRecords() = viewModelScope.launch {
-        // removeRecords()
+         removeRecords(None()) {
+
+         }
     }
 
-    fun removeRecord() = viewModelScope.launch {
-        // TODO: removeRecord()
+    fun removeRecord(record: RecordEntity) = viewModelScope.launch {
+        removeRecord(RemoveRecord.Params(recordId = record.id)) { result ->
+            when(result) {
+                is Success -> { Timber.i("RemoveRecord result: $result") }
+                is Error -> { Timber.i("RemoveRecord result: ${result.exception}") }
+                else -> {}
+            }
+        }
     }
 }
