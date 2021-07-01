@@ -5,24 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.san.domain.entities.WordDefinition
+import com.san.domain.models.WordResult
 import com.san.leng.databinding.DefinitionItemBinding
 
-class DictionaryAdapter: ListAdapter<WordDefinition, DictionaryAdapter.DefinitionViewHolder>(DiffCallback) {
+class DictionaryAdapter: ListAdapter<WordResult, DictionaryAdapter.DefinitionViewHolder>(DiffCallback) {
 
     class DefinitionViewHolder(private val binding: DefinitionItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(wordDefinition: WordDefinition) {
-            binding.wordDefinition = wordDefinition
+        fun bind(wordResult: WordResult) {
+            binding.wordResult = wordResult
             binding.executePendingBindings()
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<WordDefinition>() {
-        override fun areItemsTheSame(oldItem: WordDefinition, newItem: WordDefinition): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<WordResult>() {
+        override fun areItemsTheSame(oldItem: WordResult, newItem: WordResult): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: WordDefinition, newItem: WordDefinition): Boolean {
+        override fun areContentsTheSame(oldItem: WordResult, newItem: WordResult): Boolean {
             return oldItem.definition == newItem.definition
         }
     }

@@ -10,10 +10,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GetRecords @Inject constructor(
-        private val recordsRepository: IRecordsRepository
+    private val recordsRepository: IRecordsRepository
 ) : UseCase<List<RecordEntity>, None>() {
 
-    override suspend fun run(params: None): Result<List<RecordEntity>> = withContext(Dispatchers.IO) {
-        recordsRepository.getRecords()
-    }
+    override suspend fun run(params: None): Result<List<RecordEntity>> =
+        withContext(Dispatchers.IO) {
+            recordsRepository.getRecords()
+        }
 }

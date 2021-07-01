@@ -1,4 +1,4 @@
-package com.san.data.DAOs
+package com.san.data.dataAccessObjects
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -20,5 +20,5 @@ interface WordsDao {
     suspend fun update(record: RecordEntity)
 
     @Query("SELECT * FROM words")
-    suspend fun getAllWords() : List<WordEntity>
+    suspend fun getAllWords(): List<WordEntity>
 }

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.san.leng.ui.records.add_record.AddRecordViewModel" />
@@ -26,7 +27,7 @@
             android:id="@+id/record_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="Title"
+            android:hint="@string/add_record_title_hint"
             android:text="@={viewModel.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -47,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="top"
-                android:hint="Description"
+                android:hint="@string/add_record_desc_hint"
                 android:inputType="text|textMultiLine"
                 android:text="@={viewModel.description}"
                 app:layout_constraintBottom_toBottomOf="parent"

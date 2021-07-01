@@ -9,15 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.san.domain.entities.RecordEntity
-import com.san.domain.mappers.RecordMapper
 import com.san.leng.R
-import com.san.leng.databinding.FragmentAddRecordBinding
 import com.san.leng.core.extensions.hideKeyboard
 import com.san.leng.core.platform.BaseFragment
+import com.san.leng.databinding.FragmentAddRecordBinding
 import kotlinx.android.synthetic.main.fragment_add_record.view.*
-import org.mapstruct.factory.Mappers
-import timber.log.Timber
 
 
 class AddRecordFragment : BaseFragment() {
@@ -52,7 +48,22 @@ class AddRecordFragment : BaseFragment() {
             addRecordsViewModel.currentRecord = recordDto.toEntity()
         }
 
-//        Timber.i("addRecordsViewModel.isEditMode: ${addRecordsViewModel.isEditMode}")
+        setupObservers()
+
+        // TODO: fix it (data binding)
+        binding.recordText.setOnClickListener {
+            searchWord = getWord()
+            setHighLightedText(binding.recordText, searchWord)
+        }
+
+        registerForContextMenu(binding.recordText)
+
+        binding.lifecycleOwner = this
+        setHasOptionsMenu(true)
+        return binding.root
+    }
+
+    private fun setupObservers() {
 
         addRecordsViewModel.saveRecordComplete.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
@@ -65,29 +76,18 @@ class AddRecordFragment : BaseFragment() {
 
         addRecordsViewModel.message.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
-                Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         })
 
         addRecordsViewModel.wordDefinition.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { wordDefinition ->
-                Toast.makeText(requireActivity(), wordDefinition, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), wordDefinition, Toast.LENGTH_SHORT).show()
             }
         })
-
-        binding.recordText.setOnClickListener {
-            searchWord  = getWord()
-            setHighLightedText(binding.recordText, searchWord)
-        }
-
-        registerForContextMenu(binding.recordText)
-
-        binding.lifecycleOwner = this
-        setHasOptionsMenu(true)
-        return binding.root
     }
 
-    private fun getWord() : String {
+    private fun getWord(): String {
         val startSelection = binding.recordText.selectionStart
 
         var length = 0
@@ -113,7 +113,7 @@ class AddRecordFragment : BaseFragment() {
 //            return true
 //        }
 
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.action_save_record -> addRecordsViewModel.saveRecord()
         }
         return true
@@ -124,8 +124,8 @@ class AddRecordFragment : BaseFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun getWordIndexBySelectionStart(match: MatchResult?, selectionStart: Int) : Int? {
-        return if(match?.range?.contains(selectionStart) == false) getWordIndexBySelectionStart(
+    private fun getWordIndexBySelectionStart(match: MatchResult?, selectionStart: Int): Int? {
+        return if (match?.range?.contains(selectionStart) == false) getWordIndexBySelectionStart(
             match.next(),
             selectionStart
         ) else match?.range?.first
@@ -136,7 +136,8 @@ class AddRecordFragment : BaseFragment() {
 
         val text = textView.text.toString()
         val match = textToHighlight.toRegex().find(text)
-        val index: Int = getWordIndexBySelectionStart(match, binding.recordText.selectionStart) ?: return
+        val index: Int =
+            getWordIndexBySelectionStart(match, binding.recordText.selectionStart) ?: return
 
         binding.recordText.setSelection(index, index + textToHighlight.length)
     }
@@ -159,7 +160,7 @@ class AddRecordFragment : BaseFragment() {
                 true
             }
             R.id.definition -> {
-                if(searchWord.isNotEmpty()) {
+                if (searchWord.isNotEmpty()) {
                     addRecordsViewModel.getWordDefinition(searchWord)
                 }
                 true

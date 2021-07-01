@@ -34,14 +34,24 @@ class RecordsViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Removing all records
+     */
     fun clearRecords() = viewModelScope.launch {
-         removeRecords(None()) {
-
+         removeRecords(None()) { result ->
+            when(result) {
+                is Success -> {}
+                is Error -> {}
+                else -> {}
+            }
          }
     }
 
-    fun removeRecord(record: RecordEntity) = viewModelScope.launch {
-        removeRecord(RemoveRecord.Params(recordId = record.id)) { result ->
+    /**
+     * Record item removing
+     */
+    fun removeRecord(recordId: Long) = viewModelScope.launch {
+        removeRecord(RemoveRecord.Params(recordId)) { result ->
             when(result) {
                 is Success -> { Timber.i("RemoveRecord result: $result") }
                 is Error -> { Timber.i("RemoveRecord result: ${result.exception}") }

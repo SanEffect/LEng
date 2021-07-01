@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.github.pozo.KotlinBuilder
-import com.san.domain.models.RecordDto
+import com.san.domain.dataTransferObjects.RecordDto
 
 @KotlinBuilder
 @Entity(tableName = "records")
@@ -33,7 +33,8 @@ data class RecordEntity(
                 record.description,
                 record.id,
                 record.isDeleted,
-                record.creationDate)
+                record.creationDate
+            )
         }
     }
 

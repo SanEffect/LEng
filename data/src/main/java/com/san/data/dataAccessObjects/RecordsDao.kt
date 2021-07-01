@@ -1,4 +1,4 @@
-package com.san.data.DAOs
+package com.san.data.dataAccessObjects
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -16,7 +16,7 @@ interface RecordsDao {
     suspend fun update(record: RecordEntity)
 
     @Query("SELECT * FROM records WHERE id = :key")
-    suspend fun get(key: Long) : RecordEntity
+    suspend fun get(key: Long): RecordEntity
 
     @Query("DELETE FROM records WHERE id = :key")
     suspend fun removeRecord(key: Long)
@@ -28,18 +28,20 @@ interface RecordsDao {
     suspend fun getRecords(): List<RecordEntity>
 
     @Query("SELECT * FROM records ORDER BY id DESC LIMIT 1")
-    suspend fun getLastRecord() : RecordEntity
+    suspend fun getLastRecord(): RecordEntity
 
     @Query("SELECT count(*) FROM records")
-    suspend fun getRecordsCount() : Long
+    suspend fun getRecordsCount(): Long
 
     @Query("SELECT sum(length(trim(text))) + sum(length(trim(title))) FROM records")
-    suspend fun getLettersCount() : Long
+    suspend fun getLettersCount(): Long
 
-    @Query("SELECT CASE WHEN length(text) >= 1 " +
-            "THEN sum(length(text) - length(replace(text, ' ', '')) + 1) " +
-            "ELSE sum(length(text) - length(replace(text, ' ', ''))) END as wordsCount " +
-            "FROM records")
-    suspend fun getWordsCount() : Long
+    @Query(
+        "SELECT CASE WHEN length(text) >= 1 " +
+                "THEN sum(length(text) - length(replace(text, ' ', '')) + 1) " +
+                "ELSE sum(length(text) - length(replace(text, ' ', ''))) END as wordsCount " +
+                "FROM records"
+    )
+    suspend fun getWordsCount(): Long
 }
 

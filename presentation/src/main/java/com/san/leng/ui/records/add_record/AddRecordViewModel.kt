@@ -38,7 +38,7 @@ class AddRecordViewModel @Inject constructor(
         val currentTitle = title.value?.trim()
         val currentDescription = description.value?.trim()
 
-        if (currentTitle == null || currentDescription == null) {
+        if (currentTitle.isNullOrEmpty() || currentDescription.isNullOrEmpty()) {
             statusMessage.value = Event("Title and Description cannot be empty")
             return
         }
@@ -56,15 +56,16 @@ class AddRecordViewModel @Inject constructor(
     }
 
     fun getWordDefinition(word: String) = viewModelScope.launch {
+
         getWordDefinitions(GetWordDefinitions.Params(word)) {
             when(it) {
                 is Success -> {
                     // TODO: temporary solution
-                    val firstDefinition = it.data.definitions.first().definition
+//                    val firstDefinition = it.data.definitions.first().definition
+                    val firstDefinition = ""
                     _wordDefinition.value = Event(firstDefinition)
                 }
                 is Error -> { Timber.i("Result is Error")}
-                else -> { Timber.i("Result is undefined")}
             }
         }
     }

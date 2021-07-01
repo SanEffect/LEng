@@ -15,7 +15,7 @@
         android:id="@+id/recordsFragment"
         android:name="com.san.leng.ui.records.RecordsFragment"
         android:label="RecordsFragment"
-        tools:layout="@layout/fragment_records" >
+        tools:layout="@layout/fragment_records">
         <action
             android:id="@+id/action_recordsFragment_to_addRecordFragment"
             app:destination="@id/addRecordFragment" />
@@ -24,7 +24,7 @@
         android:id="@+id/addRecordFragment"
         android:name="com.san.leng.ui.records.add_record.AddRecordFragment"
         android:label="AddRecordFragment"
-        tools:layout="@layout/fragment_add_record" >
+        tools:layout="@layout/fragment_add_record">
         <action
             android:id="@+id/action_addRecordFragment_to_recordsFragment"
             app:destination="@id/recordsFragment" />
@@ -38,7 +38,7 @@
         android:id="@+id/usefulInfoFragment"
         android:name="com.san.leng.ui.useful_info.UsefulInfoFragment"
         android:label="UsefulInfoFragment"
-        tools:layout="@layout/fragment_useful_info"/>
+        tools:layout="@layout/fragment_useful_info" />
 
     <fragment
         android:id="@+id/dictionaryFragment"
