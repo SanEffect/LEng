@@ -13,7 +13,7 @@ class CreateRecord @Inject constructor(
     data class Params(val record: RecordEntity, val update: Boolean = false)
 
     override suspend fun run(params: Params): Result<Unit> {
-        return if(params.update)
+        return if (params.update)
             recordsRepository.update(params.record)
         else
             recordsRepository.insert(params.record)

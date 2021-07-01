@@ -72,7 +72,8 @@ class DictionaryFragment : BaseFragment() {
         binding.searchWord.text.trim().let {
             hideKeyboard()
             binding.progressBar.visibility = View.VISIBLE
-            dictionaryViewModel.loadWordDefinition(it.toString())
+            dictionaryViewModel.loadWord(it.toString())
+//            dictionaryViewModel.loadWordDefinition(it.toString())
         }
     }
 

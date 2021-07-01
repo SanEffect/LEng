@@ -52,7 +52,7 @@
                 android:layout_margin="8dp"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:wordValue="@{viewModel.wordResult.word}" />
+                app:wordValue="@{viewModel.wordResponse.word}" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                         android:layout_height="match_parent"
                         android:layout_margin="8dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:listDefinitions="@{viewModel.wordResult.definitions}" />
+                        app:listDefinitions="@{viewModel.wordResponse.results}" />
 
                 </LinearLayout>
             </ScrollView>

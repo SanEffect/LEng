@@ -1,25 +1,29 @@
 package com.san.leng.core.di
 
 import android.content.Context
-import com.san.leng.core.di.modules.*
+import com.san.leng.core.di.modules.DatabaseModule
+import com.san.leng.core.di.modules.RoomModule
+import com.san.leng.core.di.modules.ViewModelModule
+import com.san.leng.core.di.modules.WordsApiModule
 import com.san.leng.ui.MainActivity
 import com.san.leng.ui.dashboard.DashboardFragment
 import com.san.leng.ui.dictionary.DictionaryFragment
 import com.san.leng.ui.records.RecordsFragment
 import com.san.leng.ui.records.add_record.AddRecordFragment
 import com.san.leng.ui.useful_info.UsefulInfoFragment
-import com.san.leng.ui.useful_info.UsefulInfoViewModel
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [
-    DatabaseModule::class,
-    RoomModule::class,
-    WordsApiModule::class,
-    ViewModelModule::class
-])
+@Component(
+    modules = [
+        DatabaseModule::class,
+        RoomModule::class,
+        WordsApiModule::class,
+        ViewModelModule::class
+    ]
+)
 interface AppComponent {
 
     @Component.Factory

@@ -1,6 +1,8 @@
 package com.san.leng.ui.dashboard
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.san.domain.Result.Success
 import com.san.domain.interactor.UseCase.None
 import com.san.domain.usecases.dashboard.GetRecordsCount
@@ -38,7 +40,8 @@ class DashboardViewModel @Inject constructor(
                 is Success -> _wordsCount.value = it.data
                 is Error -> {
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
     }

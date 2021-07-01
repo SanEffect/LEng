@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="wordDefinition"
-            type="com.san.domain.entities.WordDefinition" />
+            name="wordResult"
+            type="com.san.domain.models.WordResult" />
     </data>
 
     <RelativeLayout
@@ -32,8 +32,30 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{wordDefinition.definition}"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
+                    android:text="@string/word_definition"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="14sp"
+                    app:wordDefinition="@{wordResult}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/word_synonyms"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textSize="14sp"
+                    app:wordSynonyms="@{wordResult}" />
 
             </LinearLayout>
 

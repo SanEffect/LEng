@@ -1,7 +1,6 @@
 package com.san.leng.ui.records
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,21 +11,17 @@ import timber.log.Timber
 
 class RecordsAdapter(
     private val contextMenuListener: RecordContextMenuListener,
-    private val clickListener: RecordListener
-    ) : ListAdapter<RecordEntity, RecordsAdapter.RecordViewHolder>(DiffCallback) {
+//    private val clickListener: RecordListener
+    private val clickListener: RecordViewClick,
+) : ListAdapter<RecordEntity, RecordsAdapter.RecordViewHolder>(DiffCallback) {
 
     private var recordsList: MutableList<RecordEntity> = mutableListOf()
 
-    override fun getItemCount(): Int {
-        return recordsList.size
-    }
-
     class RecordViewHolder(val binding: RecordItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(clickListener: RecordListener, record: RecordEntity) {
+        fun bind(clickHandler: RecordViewClick, record: RecordEntity) {
             binding.record = record
-//            binding.recordDate.text = convertLongToDate(record.creationDate)
-            binding.clickListener = clickListener
+            binding.clickHandler = clickHandler
             binding.executePendingBindings()
         }
     }
@@ -39,6 +34,10 @@ class RecordsAdapter(
         override fun areContentsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
             return oldItem.id == newItem.id
         }
+    }
+
+    override fun getItemCount(): Int {
+        return recordsList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
@@ -71,24 +70,27 @@ class RecordsAdapter(
 
     private fun removeRecord(record: RecordEntity, position: Int) {
         recordsList.removeAt(position)
-        contextMenuListener.onRemoveClick(record)
+        contextMenuListener.onRemoveClick(record.id)
         notifyDataSetChanged()
     }
 
-    interface ContextMenuCallback {
-        fun onContextMenuClick(view: View, id: Long, title: String)
+    interface RecordViewClick {
+        fun onClick(recordEntity: RecordEntity)
     }
 
+//    interface ContextMenuCallback {
+//        fun onContextMenuClick(view: View, id: Long, title: String)
+//    }
 }
 
-class RecordListener(val clickListener: (record: RecordEntity) -> Unit) {
-    fun onClick(record: RecordEntity) = clickListener(record)
-}
+//class RecordListener(val clickListener: (record: RecordEntity) -> Unit) {
+//    fun onClick(record: RecordEntity) = clickListener(record)
+//}
 
 class RecordContextMenuListener(
     val editClickListener: () -> Unit,
-    val removeClickListener: (record: RecordEntity) -> Unit
+    val removeClickListener: (recordId: Long) -> Unit
 ) {
     fun onEditClick() = editClickListener()
-    fun onRemoveClick(record: RecordEntity) = removeClickListener(record)
+    fun onRemoveClick(recordId: Long) = removeClickListener(recordId)
 }

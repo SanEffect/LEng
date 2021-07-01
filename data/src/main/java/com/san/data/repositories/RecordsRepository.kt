@@ -1,5 +1,7 @@
 package com.san.data.repositories
 
+import com.san.data.sources.local.IRecordsDataSource
+import com.san.domain.Result
 import com.san.domain.entities.RecordEntity
 import com.san.domain.repositories.IRecordsRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -8,12 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-import com.san.domain.Result
-import com.san.data.sources.local.IRecordsDataSource
 
 class RecordsRepository @Inject constructor(
-        private val localDataSource: IRecordsDataSource,
-        private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val localDataSource: IRecordsDataSource,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : IRecordsRepository {
 
     override val records: Flow<List<RecordEntity>> =
@@ -42,7 +42,7 @@ class RecordsRepository @Inject constructor(
         localDataSource.update(record)
     }
 
-    override suspend fun getById(id: Long) : Result<RecordEntity?> {
+    override suspend fun getById(id: Long): Result<RecordEntity?> {
         return withContext(ioDispatcher) {
             localDataSource.getById(id)
         }

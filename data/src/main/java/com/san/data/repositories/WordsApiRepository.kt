@@ -1,26 +1,20 @@
 package com.san.data.repositories
 
-import com.san.data.sources.remote.WordApiService
-import com.san.domain.repositories.IWordsApiRemoteRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import javax.inject.Inject
+import com.san.data.sources.remote.IWordsRemoteDataSource
 import com.san.domain.Result
-import com.san.domain.Result.Success
-import com.san.domain.Result.Error
-import com.san.domain.entities.WordResult
+import com.san.domain.models.WordDefinitions
+import com.san.domain.models.WordResponse
+import com.san.domain.repositories.IWordsApiRemoteRepository
+import javax.inject.Inject
 
 class WordsApiRepository @Inject constructor(
-    private val wordsService: WordApiService,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val wordsRemoteDataSource: IWordsRemoteDataSource
 ) : IWordsApiRemoteRepository {
 
-    override suspend fun getWordDefinitions(word: String): Result<WordResult> = withContext(ioDispatcher) {
-        return@withContext try {
-            Success(wordsService.getWordDefinitionsAsync(word).await())
-        } catch (e: Exception) {
-            Error(e)
-        }
-    }
+    override suspend fun getWord(word: String): Result<WordResponse> =
+        wordsRemoteDataSource.getWord(word)
+
+    override suspend fun getWordDefinitions(word: String): Result<WordDefinitions> =
+        wordsRemoteDataSource.getWordDefinitions(word)
+
 }

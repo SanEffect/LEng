@@ -1,22 +1,20 @@
-package com.san.domain.models
+package com.san.domain.dataTransferObjects
 
 import android.os.Parcelable
 import com.github.pozo.KotlinBuilder
 import com.san.domain.entities.RecordEntity
 import kotlinx.android.parcel.Parcelize
-import java.util.*
 
 @KotlinBuilder
 @Parcelize
-data class RecordDto (
+data class RecordDto(
     var title: String = "",
     var description: String = "",
     var id: Long = 0L,
 //    var uid: String = UUID.randomUUID().toString(),
     var isDeleted: Boolean = false,
     var creationDate: Long = System.currentTimeMillis()
-) : Parcelable
-{
+) : Parcelable {
     companion object {
         fun toDto(record: RecordEntity): RecordDto {
             return RecordDto(
@@ -24,7 +22,8 @@ data class RecordDto (
                 record.description,
                 record.id,
                 record.isDeleted,
-                record.creationDate)
+                record.creationDate
+            )
         }
     }
 

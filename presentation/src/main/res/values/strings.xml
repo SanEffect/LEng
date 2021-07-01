@@ -17,4 +17,7 @@
     <string name="word_definition">Definition</string>
     <string name="word_translate">Translate</string>
     <string name="word_more_actions">More</string>
+    <string name="word_synonyms">Synonyms</string>
+    <string name="add_record_title_hint">Title</string>
+    <string name="add_record_desc_hint">Description</string>
 </resources>
