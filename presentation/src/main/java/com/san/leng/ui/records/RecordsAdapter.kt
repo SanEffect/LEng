@@ -11,7 +11,6 @@ import timber.log.Timber
 
 class RecordsAdapter(
     private val contextMenuListener: RecordContextMenuListener,
-//    private val clickListener: RecordListener
     private val clickListener: RecordViewClick,
 ) : ListAdapter<RecordEntity, RecordsAdapter.RecordViewHolder>(DiffCallback) {
 

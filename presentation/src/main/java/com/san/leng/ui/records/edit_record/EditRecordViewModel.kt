@@ -1,28 +1,27 @@
-package com.san.leng.ui.records.add_record
+package com.san.leng.ui.records.edit_record
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.san.domain.Result.Error
-import com.san.domain.Result.Success
+import com.san.domain.Result
 import com.san.domain.entities.RecordEntity
 import com.san.domain.usecases.dictionary.GetWordDefinitions
-import com.san.domain.usecases.records.CreateRecord
+import com.san.domain.usecases.records.UpdateRecord
 import com.san.leng.core.Event
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-class AddRecordViewModel @Inject constructor(
-    private val createRecord: CreateRecord,
+class EditRecordViewModel @Inject constructor(
+    private val updateRecord: UpdateRecord,
     private val getWordDefinitions: GetWordDefinitions
 ) : ViewModel() {
 
     var currentRecord: RecordEntity = RecordEntity()
 
-    private val _saveRecordComplete = MutableLiveData<Event<Boolean>>()
-    val saveRecordComplete: LiveData<Event<Boolean>> = _saveRecordComplete
+    private val _updateRecordComplete = MutableLiveData<Event<Boolean>>()
+    val updateRecordComplete: LiveData<Event<Boolean>> = _updateRecordComplete
 
     private val _warningMessage = MutableLiveData<Event<String>>()
     val warningMessage: LiveData<Event<String>> = _warningMessage
@@ -30,7 +29,7 @@ class AddRecordViewModel @Inject constructor(
     private val _wordDefinition = MutableLiveData<Event<String>>()
     val wordDefinition: LiveData<Event<String>> = _wordDefinition
 
-    fun saveRecord() {
+    fun updateRecord() {
         val currentTitle = currentRecord.title.trim()
         val currentDescription = currentRecord.description.trim()
 
@@ -39,8 +38,8 @@ class AddRecordViewModel @Inject constructor(
             return
         }
 
-        createRecord(CreateRecord.Params(currentRecord))
-        _saveRecordComplete.value = Event(true)
+        updateRecord(UpdateRecord.Params(currentRecord))
+        _updateRecordComplete.value = Event(true)
     }
 
     fun getWordDefinition(word: String?) = viewModelScope.launch {
@@ -48,16 +47,16 @@ class AddRecordViewModel @Inject constructor(
         word?.let {
             getWordDefinitions(GetWordDefinitions.Params(word)) {
                 when (it) {
-                    is Success -> {
+                    is Result.Success -> {
                         // TODO: temporary solution
+                        Timber.i("Definition: ${it.data.definition} <--------------------------------")
                         _wordDefinition.value = Event(it.data.definition)
                     }
-                    is Error -> {
+                    is Result.Error -> {
                         Timber.i("getWordDefinitions error: ${it.exception.message}")
                     }
                 }
             }
         }
-
     }
 }

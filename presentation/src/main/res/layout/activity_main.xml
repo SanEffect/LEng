@@ -1,127 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-<!--    <data>
-        <variable
-            name="handler"
-            type="com.san.leng.ui.Handler" />
-    </data>-->
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <!-- Note: A RecyclerView can also be used -->
-<!--        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="100dp"
-            android:clipToPadding="false">
-
-            &lt;!&ndash; Scrollable content &ndash;&gt;
-
-        </androidx.core.widget.NestedScrollView>-->
-
-<!--        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/navigation" />-->
-
-        <fragment
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/navigation" />
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:backgroundTint="?attr/colorPrimary"
-            app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp"
-            app:fabAlignmentMode="end">
-
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="100dp"
-                app:backgroundTint="@android:color/transparent"
-                app:elevation="0dp"
-                app:itemIconTint="@android:color/white"
-                app:itemRippleColor="@android:color/white"
-                app:itemTextColor="@android:color/white"
-                app:menu="@menu/bottom_navigation_menu" />
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_record"
-            android:src="@drawable/ic_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_anchor="@id/bottomBar"
-            android:visibility="gone" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
-<!--    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/coordinator"
+    <fragment
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation" />
 
-        <fragment
-            android:id="@+id/nav_host_fragment"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:backgroundTint="?attr/colorPrimary"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp"
+        app:fabAlignmentMode="end"
+        app:fabAnimationMode="slide">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/navigation" />
+            app:backgroundTint="@android:color/transparent"
+            app:elevation="0dp"
+            app:itemHorizontalTranslationEnabled="true"
+            app:itemIconTint="@android:color/white"
+            app:itemRippleColor="@android:color/white"
+            app:itemTextColor="@android:color/white"
+            app:labelVisibilityMode="auto"
+            app:menu="@menu/bottom_navigation_menu" />
 
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:backgroundTint="?attr/colorPrimary"
-            app:contentInsetEnd="0dp"
-            app:contentInsetStart="0dp"
-            app:fabAlignmentMode="end">
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_navigation"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:backgroundTint="@android:color/transparent"
-                app:elevation="0dp"
-                android:layout_marginEnd="100dp"
-                app:itemIconTint="@android:color/white"
-                app:itemRippleColor="@android:color/white"
-                app:itemTextColor="@android:color/white"
-                app:menu="@menu/bottom_navigation_menu" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_record_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:visibility="visible"
+        app:layout_anchor="@id/bottom_bar" />
 
-        </com.google.android.material.bottomappbar.BottomAppBar>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_record"
-            android:src="@drawable/ic_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_anchor="@id/bottomBar" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

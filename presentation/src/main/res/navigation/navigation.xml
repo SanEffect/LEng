@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_recordsFragment_to_addRecordFragment"
             app:destination="@id/addRecordFragment" />
+        <action
+            android:id="@+id/action_recordsFragment_to_editRecordFragment"
+            app:destination="@id/editRecordFragment" />
     </fragment>
     <fragment
         android:id="@+id/addRecordFragment"
@@ -28,10 +31,19 @@
         <action
             android:id="@+id/action_addRecordFragment_to_recordsFragment"
             app:destination="@id/recordsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editRecordFragment"
+        android:name="com.san.leng.ui.records.edit_record.EditRecordFragment"
+        android:label="EditRecordFragment"
+        tools:layout="@layout/fragment_edit_record" >
+        <action
+            android:id="@+id/action_editRecordFragment_to_recordsFragment"
+            app:destination="@id/recordsFragment" />
         <argument
-            android:name="record"
-            app:argType="com.san.domain.models.RecordDto"
-            app:nullable="true" />
+            android:name="recordDto"
+            app:argType="com.san.domain.dataTransferObjects.RecordDto" />
     </fragment>
 
     <fragment
@@ -45,5 +57,6 @@
         android:name="com.san.leng.ui.dictionary.DictionaryFragment"
         android:label="DictionaryFragment"
         tools:layout="@layout/fragment_dictionary" />
+
 
 </navigation>

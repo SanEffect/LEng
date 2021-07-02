@@ -8,14 +8,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class CreateRecord @Inject constructor(
+class UpdateRecord @Inject constructor(
     private val recordsRepository: IRecordsRepository
-) : UseCase<Unit, CreateRecord.Params>() {
+) : UseCase<Unit, UpdateRecord.Params>() {
 
     data class Params(val record: RecordEntity)
 
     override suspend fun run(params: Params): Result<Unit> =
         withContext(Dispatchers.IO) {
-            recordsRepository.insert(params.record)
+            recordsRepository.update(params.record)
         }
 }

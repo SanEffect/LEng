@@ -1,4 +1,4 @@
-package com.san.leng.ui.records.add_record
+package com.san.leng.ui.records.edit_record
 
 import android.content.Context
 import android.os.Bundle
@@ -7,19 +7,21 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.san.leng.R
 import com.san.leng.core.extensions.getClickedWord
 import com.san.leng.core.extensions.hideKeyboard
 import com.san.leng.core.extensions.setHighlight
 import com.san.leng.core.platform.BaseFragment
-import com.san.leng.databinding.FragmentAddRecordBinding
-import kotlinx.android.synthetic.main.fragment_add_record.view.*
+import com.san.leng.databinding.FragmentEditRecordBinding
 
-class AddRecordFragment : BaseFragment() {
+class EditRecordFragment : BaseFragment() {
 
-    private val addRecordsViewModel: AddRecordViewModel by viewModels { viewModelFactory }
+    private val editRecordViewModel: EditRecordViewModel by viewModels { viewModelFactory }
 
-    private lateinit var binding: FragmentAddRecordBinding
+    private lateinit var binding: FragmentEditRecordBinding
+
+    private val args: EditRecordFragmentArgs by navArgs()
 
     private var clickedWord: String? = null
 
@@ -33,38 +35,45 @@ class AddRecordFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_record, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_record, container, false)
+
+        args.recordDto.let {
+            editRecordViewModel.currentRecord = it.toEntity()
+        }
 
         binding.apply {
-            viewModel = addRecordsViewModel
-            lifecycleOwner = this@AddRecordFragment
+            viewModel = editRecordViewModel
+            lifecycleOwner = this@EditRecordFragment
         }
 
         registerForContextMenu(binding.recordText)
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         setupObservers()
         setupClickListeners()
-
-        setHasOptionsMenu(true)
-        return binding.root
     }
 
     private fun setupObservers() {
 
-        addRecordsViewModel.apply {
+        editRecordViewModel.apply {
 
-            saveRecordComplete.observe(viewLifecycleOwner, {
+            updateRecordComplete.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let {
                     hideKeyboard()
                     findNavController().navigate(
-                        AddRecordFragmentDirections.actionAddRecordFragmentToRecordsFragment()
+                        EditRecordFragmentDirections.actionEditRecordFragmentToRecordsFragment()
                     )
                 }
             })
 
             warningMessage.observe(viewLifecycleOwner, {
-                it.getContentIfNotHandled()?.let {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                it.getContentIfNotHandled()?.let { message ->
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
                 }
             })
 
@@ -83,8 +92,9 @@ class AddRecordFragment : BaseFragment() {
             val editText = binding.recordText
             clickedWord = editText.getClickedWord()
 
-            clickedWord?.let { editText.setHighlight(clickedWord) }
-
+            clickedWord?.let {
+                editText.setHighlight(clickedWord)
+            }
         }
     }
 
@@ -107,7 +117,7 @@ class AddRecordFragment : BaseFragment() {
             }
             R.id.definition -> {
                 clickedWord?.let {
-                    addRecordsViewModel.getWordDefinition(clickedWord)
+                    editRecordViewModel.getWordDefinition(clickedWord)
                 }
                 true
             }

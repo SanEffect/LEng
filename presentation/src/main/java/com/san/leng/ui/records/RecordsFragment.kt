@@ -6,11 +6,14 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.san.domain.entities.RecordEntity
 import com.san.leng.R
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentRecordsBinding
 import com.san.leng.ui.records.RecordsAdapter.RecordViewClick
+import timber.log.Timber
 
 class RecordsFragment : BaseFragment() {
 
@@ -39,6 +42,7 @@ class RecordsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         loadRecordsList()
         initializeView()
     }
@@ -48,7 +52,7 @@ class RecordsFragment : BaseFragment() {
         val onClick: RecordViewClick = object : RecordViewClick {
             override fun onClick(recordEntity: RecordEntity) {
                 findNavController().navigate(
-                    RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(recordEntity.toDto())
+                    RecordsFragmentDirections.actionRecordsFragmentToEditRecordFragment(recordEntity.toDto())
                 )
             }
         }
@@ -61,11 +65,12 @@ class RecordsFragment : BaseFragment() {
             onClick
         )
 
-//        binding.addRecord.setOnClickListener {
-//            this.findNavController().navigate(
-//                RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(null)
-//            )
-//        }
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.add_record_fab)
+        fab?.setOnClickListener {
+            this.findNavController().navigate(
+                RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment()
+            )
+        }
     }
 
     private fun loadRecordsList() {
