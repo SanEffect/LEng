@@ -21,8 +21,13 @@ class AddRecordViewModel @Inject constructor(
 
     var currentRecord: RecordEntity = RecordEntity()
 
+    var recordDate = MutableLiveData<String>()
+
     private val _saveRecordComplete = MutableLiveData<Event<Boolean>>()
     val saveRecordComplete: LiveData<Event<Boolean>> = _saveRecordComplete
+
+    private val _datePickerClicked = MutableLiveData<Event<Boolean>>()
+    val datePickerClicked: LiveData<Event<Boolean>> = _datePickerClicked
 
     private val _warningMessage = MutableLiveData<Event<String>>()
     val warningMessage: LiveData<Event<String>> = _warningMessage
@@ -59,5 +64,13 @@ class AddRecordViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun datePickerClicked() {
+        _datePickerClicked.value = Event(true)
+    }
+
+    fun setDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        recordDate.value = "$dayOfMonth.$monthOfYear.$year"
     }
 }

@@ -11,7 +11,7 @@ class RemoveRecord @Inject constructor(
     private val recordsRepository: IRecordsRepository
 ) : UseCase<Unit, RemoveRecord.Params>() {
 
-    data class Params(val recordId: Long)
+    data class Params(val recordId: String)
 
     override suspend fun run(params: Params): Result<Unit> = withContext(Dispatchers.IO) {
         recordsRepository.removeRecord(params.recordId)

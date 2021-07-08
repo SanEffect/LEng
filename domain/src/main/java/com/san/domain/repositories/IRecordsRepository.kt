@@ -16,9 +16,9 @@ interface IRecordsRepository {
 
     suspend fun update(record: RecordEntity): Result<Unit>
 
-    suspend fun getById(id: Long): Result<RecordEntity?>
+    suspend fun getById(id: String): Result<RecordEntity?>
 
-    suspend fun removeRecord(recordId: Long): Result<Unit>
+    suspend fun removeRecord(recordId: String): Result<Unit>
 
     suspend fun removeRecords(): Result<Unit>
 

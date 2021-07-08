@@ -48,56 +48,9 @@ fun bindWordValue(textView: TextView, value: String?) {
     }
 }
 
-@BindingAdapter("app:listDefinitions")
-fun bindWordResult(listView: RecyclerView, wordResults: List<WordResult>?) {
-    wordResults?.let { it ->
-        val definitions = wordResults.map { it.definition }
-        (listView.adapter as DictionaryAdapter).submitList(wordResults)
-    }
-}
-
 @BindingAdapter("app:recordDate")
 fun bindRecordDate(textView: TextView, creationDate: Long?) {
     creationDate.let {
         textView.text = convertLongToDate(creationDate!!)
     }
 }
-
-@BindingAdapter("app:wordDefinition")
-fun bindWordDefinition(textView: TextView, wordResult: WordResult?) {
-    Timber.i("wordResult: $wordResult")
-
-    Timber.i("def: ${wordResult?.definition}")
-
-    textView.text = wordResult?.definition
-
-//    wordResult?.results?.let {
-//        val defs = it.map { it.definition }.toString()
-//        Timber.i("defs: $defs")
-//        textView.text = defs
-//    }
-}
-
-@BindingAdapter("app:wordSynonyms")
-fun bindWordSynonyms(textView: TextView, wordResult: WordResult?) {
-    wordResult?.let {
-        textView.text = it.synonyms?.joinToString()
-    }
-}
-
-//@BindingAdapter("app:setupBottomNav")
-//fun bindIsRecordsFragment(bottomNavigationView: BottomNavigationView, params: String) {
-//    when(bottomNavigationView.selectedItemId) {
-//        R.id.recordsFragment -> {
-//            Timber.i("IS FRAGMENT_RECORDS ----------------------------------")
-//        }
-//        else -> {}
-//    }
-//}
-
-
-//@BindingMethods(BindingMethod(
-//        type = BottomNavigationView::class,
-//        attribute = "app:onNavigationItemSelected",
-//        method = "setOnNavigationItemSelectedListener"))
-//class DataBindingAdapter

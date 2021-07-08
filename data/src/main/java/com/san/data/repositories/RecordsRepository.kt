@@ -1,6 +1,6 @@
 package com.san.data.repositories
 
-import com.san.data.sources.local.IRecordsDataSource
+import com.san.data.sources.local.IRecordsLocalDataSource
 import com.san.domain.Result
 import com.san.domain.entities.RecordEntity
 import com.san.domain.repositories.IRecordsRepository
@@ -12,16 +12,16 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RecordsRepository @Inject constructor(
-    private val localDataSource: IRecordsDataSource,
+    private val recordsLocalDataSource: IRecordsLocalDataSource,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : IRecordsRepository {
 
     override val records: Flow<List<RecordEntity>> =
-        localDataSource.records
+        recordsLocalDataSource.records
             .map { records -> records.filter { !it.isDeleted } }
 
     override suspend fun getRecords(): Result<List<RecordEntity>> {
-        return localDataSource.getRecords()
+        return recordsLocalDataSource.getRecords()
     }
 
     override suspend fun refreshRecords() {
@@ -30,37 +30,37 @@ class RecordsRepository @Inject constructor(
 
     override suspend fun getLastRecord(): Result<RecordEntity> {
         return withContext(ioDispatcher) {
-            localDataSource.getLastRecord()
+            recordsLocalDataSource.getLastRecord()
         }
     }
 
     override suspend fun insert(record: RecordEntity): Result<Unit> = withContext(ioDispatcher) {
-        localDataSource.insert(record)
+        recordsLocalDataSource.insert(record)
     }
 
     override suspend fun update(record: RecordEntity): Result<Unit> = withContext(ioDispatcher) {
-        localDataSource.update(record)
+        recordsLocalDataSource.update(record)
     }
 
-    override suspend fun getById(id: Long): Result<RecordEntity?> {
+    override suspend fun getById(id: String): Result<RecordEntity?> {
         return withContext(ioDispatcher) {
-            localDataSource.getById(id)
+            recordsLocalDataSource.getById(id)
         }
     }
 
     override suspend fun getRecordsCount() = withContext(ioDispatcher) {
-        localDataSource.getRecordsCount()
+        recordsLocalDataSource.getRecordsCount()
     }
 
-    override suspend fun removeRecord(recordId: Long): Result<Unit> = withContext(ioDispatcher) {
-        localDataSource.removeRecord(recordId)
+    override suspend fun removeRecord(recordId: String): Result<Unit> = withContext(ioDispatcher) {
+        recordsLocalDataSource.removeRecord(recordId)
     }
 
     override suspend fun removeRecords(): Result<Unit> = withContext(ioDispatcher) {
-        localDataSource.removeRecords()
+        recordsLocalDataSource.removeRecords()
     }
 
     override suspend fun getWordsCount(): Result<Long> = withContext(ioDispatcher) {
-        localDataSource.getWordsCount()
+        recordsLocalDataSource.getWordsCount()
     }
 }

@@ -50,7 +50,7 @@ class RecordsViewModel @Inject constructor(
     /**
      * Record item removing
      */
-    fun removeRecord(recordId: Long) = viewModelScope.launch {
+    fun removeRecord(recordId: String) = viewModelScope.launch {
         removeRecord(RemoveRecord.Params(recordId)) { result ->
             when(result) {
                 is Success -> { Timber.i("RemoveRecord result: $result") }

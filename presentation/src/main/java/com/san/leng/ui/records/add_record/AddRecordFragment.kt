@@ -1,5 +1,6 @@
 package com.san.leng.ui.records.add_record
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -13,7 +14,9 @@ import com.san.leng.core.extensions.hideKeyboard
 import com.san.leng.core.extensions.setHighlight
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentAddRecordBinding
+import kotlinx.android.synthetic.main.fragment_add_record.*
 import kotlinx.android.synthetic.main.fragment_add_record.view.*
+import java.util.*
 
 class AddRecordFragment : BaseFragment() {
 
@@ -22,6 +25,8 @@ class AddRecordFragment : BaseFragment() {
     private lateinit var binding: FragmentAddRecordBinding
 
     private var clickedWord: String? = null
+
+//    private lateinit var datePicker: MaterialDatePicker<Long>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,11 +47,24 @@ class AddRecordFragment : BaseFragment() {
 
         registerForContextMenu(binding.recordText)
 
-        setupObservers()
-        setupClickListeners()
-
         setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupView()
+        setupObservers()
+        setupClickListeners()
+    }
+
+    private fun setupView() {
+
+//        datePicker = MaterialDatePicker.Builder.datePicker()
+//            .setTitleText("Select date")
+//            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+//            .build()
     }
 
     private fun setupObservers() {
@@ -73,6 +91,27 @@ class AddRecordFragment : BaseFragment() {
                     Toast.makeText(requireContext(), wordDefinition, Toast.LENGTH_SHORT).show()
                 }
             })
+
+            datePickerClicked.observe(viewLifecycleOwner, {
+                it.getContentIfNotHandled()?.let {
+
+                    val cal = Calendar.getInstance()
+                    val y = cal.get(Calendar.YEAR)
+                    val m = cal.get(Calendar.MONTH)
+                    val d = cal.get(Calendar.DAY_OF_MONTH)
+
+                    val datePickerDialog =
+                        DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
+
+                            addRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
+
+                        }, y, m, d)
+
+                    datePickerDialog.show()
+
+//                    datePicker.show(parentFragmentManager, datePicker.toString())
+                }
+            })
         }
     }
 
@@ -84,7 +123,6 @@ class AddRecordFragment : BaseFragment() {
             clickedWord = editText.getClickedWord()
 
             clickedWord?.let { editText.setHighlight(clickedWord) }
-
         }
     }
 
@@ -102,7 +140,7 @@ class AddRecordFragment : BaseFragment() {
 
         return when (item.itemId) {
             R.id.translate -> {
-
+                clickedWord?.let { }
                 true
             }
             R.id.definition -> {

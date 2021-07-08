@@ -88,8 +88,8 @@ class RecordsAdapter(
 
 class RecordContextMenuListener(
     val editClickListener: () -> Unit,
-    val removeClickListener: (recordId: Long) -> Unit
+    val removeClickListener: (recordId: String) -> Unit
 ) {
     fun onEditClick() = editClickListener()
-    fun onRemoveClick(recordId: Long) = removeClickListener(recordId)
+    fun onRemoveClick(recordId: String) = removeClickListener(recordId)
 }

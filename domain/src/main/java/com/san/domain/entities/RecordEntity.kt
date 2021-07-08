@@ -5,8 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.github.pozo.KotlinBuilder
 import com.san.domain.dataTransferObjects.RecordDto
+import java.util.*
 
-@KotlinBuilder
 @Entity(tableName = "records")
 data class RecordEntity(
 
@@ -16,9 +16,8 @@ data class RecordEntity(
     @ColumnInfo(name = "text")
     var description: String = "",
 
-    @PrimaryKey(autoGenerate = true)
-    var id: Long = 0L,
-    //var id: String = UUID.randomUUID().toString(),
+    @PrimaryKey
+    val id: String = UUID.randomUUID().toString(),
 
     @ColumnInfo(name = "is_deleted")
     var isDeleted: Boolean = false,

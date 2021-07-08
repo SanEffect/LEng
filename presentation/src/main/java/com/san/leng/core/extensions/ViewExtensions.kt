@@ -10,6 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.san.leng.core.utils.getWordIndexBySelectionStart
 
+fun View.isVisible() = this.visibility == View.VISIBLE
+
+fun View.visible() { this.visibility = View.VISIBLE }
+
+fun View.invisible() { this.visibility = View.GONE }
 
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
@@ -21,6 +26,18 @@ fun Activity.hideKeyboard() {
 
 fun Context.showToast(message: String, lengthLong: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(applicationContext, message, lengthLong).show()
+}
+
+fun Fragment.showToast(message: Int?, lengthType: Int = Toast.LENGTH_SHORT) {
+    message?.let {
+        Toast.makeText(this.requireContext(), this.getString(message), lengthType).show()
+    }
+}
+
+fun Fragment.showToast(message: String?, lengthType: Int = Toast.LENGTH_SHORT) {
+    message?.let {
+        Toast.makeText(this.requireContext(), message, lengthType).show()
+    }
 }
 
 fun View.setMargins(
@@ -43,7 +60,6 @@ fun Int.dpToPx(context: Context): Int {
     val metrics = context.resources.displayMetrics
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this.toFloat(), metrics).toInt()
 }
-
 
 fun EditText.getClickedWord(): String {
     val startSelection = this.selectionStart

@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.san.leng.R
 import com.san.leng.core.extensions.hideKeyboard
+import com.san.leng.core.extensions.invisible
+import com.san.leng.core.extensions.visible
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentDictionaryBinding
 import timber.log.Timber
@@ -62,8 +64,10 @@ class DictionaryFragment : BaseFragment() {
 
         dictionaryViewModel.wordResultIsLoaded.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let {
-                binding.progressBar.visibility = View.GONE
-                binding.resultContainer.visibility = View.VISIBLE
+                binding.apply {
+                    progressBar.invisible()
+                    resultContainer.visible()
+                }
             }
         })
     }
@@ -71,7 +75,7 @@ class DictionaryFragment : BaseFragment() {
     private fun updateWordFromInput() {
         binding.searchWord.text.trim().let {
             hideKeyboard()
-            binding.progressBar.visibility = View.VISIBLE
+            binding.progressBar.visible()
             dictionaryViewModel.loadWord(it.toString())
 //            dictionaryViewModel.loadWordDefinition(it.toString())
         }
