@@ -1,6 +1,7 @@
 package com.san.data.sources.local
 
 import com.san.data.dataAccessObjects.WordsDao
+import com.san.data.extensions.doQuery
 import com.san.domain.Result
 import com.san.domain.Result.Error
 import com.san.domain.Result.Success
@@ -15,16 +16,21 @@ class WordsLocalDataSource @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : IWordsLocalDataSource {
 
-    override suspend fun insert(wordEntity: WordEntity): Result<Unit> = withContext(ioDispatcher) {
-        try {
-            wordsDao.insert(wordEntity)
-            Success(Unit)
-        } catch (e: Exception) {
-            Error(e)
+    override suspend fun saveWord(wordEntity: WordEntity): Result<Unit> =
+        withContext(ioDispatcher) {
+            try {
+                wordsDao.insert(wordEntity)
+                Success(Unit)
+            } catch (e: Exception) {
+                Error(e)
+            }
         }
-    }
 
-    override suspend fun getWordByName(word: String): Result<WordEntity> =
+    override suspend fun getWordByName(word: String): Result<WordEntity?> =
+        doQuery(ioDispatcher) { wordsDao.getWordByName(word) }
+
+
+/*    override suspend fun getWordByName(word: String): Result<WordEntity> =
         withContext(ioDispatcher) {
             try {
                 when (val result = wordsDao.getWordByName(word)) {
@@ -35,5 +41,5 @@ class WordsLocalDataSource @Inject constructor(
             } catch (e: Exception) {
                 Error(e)
             }
-        }
+        }*/
 }

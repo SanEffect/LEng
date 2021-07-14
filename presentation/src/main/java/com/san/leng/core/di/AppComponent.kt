@@ -9,8 +9,7 @@ import com.san.leng.ui.MainActivity
 import com.san.leng.ui.dashboard.DashboardFragment
 import com.san.leng.ui.dictionary.DictionaryFragment
 import com.san.leng.ui.records.RecordsFragment
-import com.san.leng.ui.records.add_record.AddRecordFragment
-import com.san.leng.ui.records.edit_record.EditRecordFragment
+import com.san.leng.ui.records.addeditrecord.AddEditRecordFragment
 import com.san.leng.ui.useful_info.UsefulInfoFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -37,8 +36,7 @@ interface AppComponent {
 
     // Fragments
     fun inject(recordsFragment: RecordsFragment)
-    fun inject(addRecordFragment: AddRecordFragment)
-    fun inject(editRecordFragment: EditRecordFragment)
+    fun inject(addEditRecordFragment: AddEditRecordFragment)
     fun inject(dashboardFragment: DashboardFragment)
     fun inject(usefulInfoFragment: UsefulInfoFragment)
     fun inject(dictionaryFragment: DictionaryFragment)

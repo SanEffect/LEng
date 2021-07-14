@@ -1,15 +1,12 @@
 package com.san.data.dataAccessObjects
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.san.domain.entities.RecordEntity
 
 @Dao
 interface RecordsDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(record: RecordEntity)
 
     @Update
@@ -24,10 +21,10 @@ interface RecordsDao {
     @Query("DELETE FROM records")
     suspend fun clear()
 
-    @Query("SELECT * FROM records ORDER BY id DESC")
+    @Query("SELECT * FROM records ORDER BY creation_date DESC")
     suspend fun getRecords(): List<RecordEntity>
 
-    @Query("SELECT * FROM records ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM records ORDER BY creation_date DESC LIMIT 1")
     suspend fun getLastRecord(): RecordEntity
 
     @Query("SELECT count(*) FROM records")

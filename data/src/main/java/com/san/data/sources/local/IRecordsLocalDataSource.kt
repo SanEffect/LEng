@@ -1,7 +1,9 @@
 package com.san.data.sources.local
 
+import com.san.domain.Either
 import com.san.domain.Result
 import com.san.domain.entities.RecordEntity
+import com.san.domain.exception.Failure
 import kotlinx.coroutines.flow.Flow
 
 interface IRecordsLocalDataSource {
@@ -12,7 +14,7 @@ interface IRecordsLocalDataSource {
 
     suspend fun getLastRecord(): Result<RecordEntity>
 
-    suspend fun insert(record: RecordEntity): Result<Unit>
+    suspend fun saveRecord(record: RecordEntity): Result<Unit>
 
     suspend fun update(record: RecordEntity): Result<Unit>
 

@@ -4,17 +4,14 @@ import com.san.domain.Result
 import com.san.domain.entities.WordEntity
 import com.san.domain.interactor.UseCase
 import com.san.domain.repositories.IWordsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GetWordFromDatabase @Inject constructor(
+class GetWordFromDatabaseUseCase @Inject constructor(
     private val wordsRepository: IWordsRepository
-) : UseCase<WordEntity, GetWordFromDatabase.Params>() {
+) : UseCase<WordEntity?, GetWordFromDatabaseUseCase.Params> {
 
     data class Params(val word: String)
 
-    override suspend fun run(params: Params): Result<WordEntity> = withContext(Dispatchers.IO) {
+    override suspend fun invoke(params: Params): Result<WordEntity?> =
         wordsRepository.getWordEntity(params.word)
-    }
 }

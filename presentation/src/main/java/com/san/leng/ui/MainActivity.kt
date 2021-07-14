@@ -11,6 +11,7 @@ import com.san.leng.R
 import com.san.leng.core.broadcastReceivers.NetworkBroadcastReceiver
 import com.san.leng.core.extensions.setMargins
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,14 +48,14 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
-                R.id.dashboardFragment,
-                R.id.dictionaryFragment,
-                R.id.usefulInfoFragment -> {
+                R.id.dashboard_fragment,
+                R.id.dictionary_fragment,
+                R.id.useful_info_fragment -> {
                     add_record_fab.hide()
                     bottom_bar.performShow()
                     bottom_navigation.setMargins(rightMarginDp = 0)
                 }
-                R.id.recordsFragment -> {
+                R.id.records_fragment -> {
                     add_record_fab.show()
                     bottom_navigation.setMargins(rightMarginDp = 80)
                     bottom_bar.performShow()

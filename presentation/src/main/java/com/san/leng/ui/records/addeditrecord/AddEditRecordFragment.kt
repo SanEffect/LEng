@@ -1,4 +1,4 @@
-package com.san.leng.ui.records.add_record
+package com.san.leng.ui.records.addeditrecord
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -8,19 +8,22 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.san.leng.R
-import com.san.leng.core.extensions.getClickedWord
-import com.san.leng.core.extensions.hideKeyboard
-import com.san.leng.core.extensions.setHighlight
+import com.san.leng.core.extensions.*
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentAddRecordBinding
 import kotlinx.android.synthetic.main.fragment_add_record.*
 import kotlinx.android.synthetic.main.fragment_add_record.view.*
 import java.util.*
 
-class AddRecordFragment : BaseFragment() {
+class AddEditRecordFragment : BaseFragment() {
 
-    private val addRecordsViewModel: AddRecordViewModel by viewModels { viewModelFactory }
+    private val args: AddEditRecordFragmentArgs by navArgs()
+
+    private val addEditRecordsViewModel: AddEditRecordViewModel by viewModels { viewModelFactory }
 
     private lateinit var binding: FragmentAddRecordBinding
 
@@ -41,8 +44,8 @@ class AddRecordFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_record, container, false)
 
         binding.apply {
-            viewModel = addRecordsViewModel
-            lifecycleOwner = this@AddRecordFragment
+            viewModel = addEditRecordsViewModel
+            lifecycleOwner = this@AddEditRecordFragment
         }
 
         registerForContextMenu(binding.recordText)
@@ -55,36 +58,46 @@ class AddRecordFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupView()
+        setupSnackbar()
         setupObservers()
         setupClickListeners()
+
+        addEditRecordsViewModel.init(args.recordId)
     }
 
     private fun setupView() {
-
 //        datePicker = MaterialDatePicker.Builder.datePicker()
 //            .setTitleText("Select date")
 //            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
 //            .build()
     }
 
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, addEditRecordsViewModel.snackbarText, Snackbar.LENGTH_SHORT)
+    }
+
     private fun setupObservers() {
 
-        addRecordsViewModel.apply {
+        addEditRecordsViewModel.apply {
 
             saveRecordComplete.observe(viewLifecycleOwner, {
-                it.getContentIfNotHandled()?.let {
+                it.getContentIfNotHandled()?.let { result ->
                     hideKeyboard()
                     findNavController().navigate(
-                        AddRecordFragmentDirections.actionAddRecordFragmentToRecordsFragment()
+                        AddEditRecordFragmentDirections.actionAddEditRecordFragmentToRecordsFragment(result)
                     )
                 }
             })
 
-            warningMessage.observe(viewLifecycleOwner, {
-                it.getContentIfNotHandled()?.let {
-                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-                }
-            })
+//            snackbarText.observe(viewLifecycleOwner, {
+//                it.getContentIfNotHandled()?.let {
+////                    view?.showSnackbar(it, Snackbar.LENGTH_SHORT)
+//
+//                    view?.rootView?.findViewById<FloatingActionButton>(R.id.add_record_fab).apply {
+//                        Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).setAnchorView(this).show()
+//                    }
+//                }
+//            })
 
             wordDefinition.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let { wordDefinition ->
@@ -103,7 +116,7 @@ class AddRecordFragment : BaseFragment() {
                     val datePickerDialog =
                         DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
 
-                            addRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
+                            addEditRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
 
                         }, y, m, d)
 
@@ -145,7 +158,7 @@ class AddRecordFragment : BaseFragment() {
             }
             R.id.definition -> {
                 clickedWord?.let {
-                    addRecordsViewModel.getWordDefinition(clickedWord)
+                    addEditRecordsViewModel.getWordDefinition(clickedWord)
                 }
                 true
             }

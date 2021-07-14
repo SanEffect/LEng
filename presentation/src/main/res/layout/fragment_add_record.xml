@@ -7,7 +7,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.san.leng.ui.records.add_record.AddRecordViewModel" />
+            type="com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:text="08.07.21"
-            tools:text="Date" />
+            tools:text="08.07.21" />
 
         <ImageView
             android:id="@+id/date_picker"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="@string/add_record_title_hint"
-            android:text="@={viewModel.currentRecord.title}"
+            android:text="@={viewModel.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/record_save" />
@@ -80,7 +80,7 @@
                 android:gravity="top"
                 android:hint="@string/add_record_desc_hint"
                 android:inputType="text|textMultiLine"
-                android:text="@={viewModel.currentRecord.description}"
+                android:text="@={viewModel.description}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.423"
