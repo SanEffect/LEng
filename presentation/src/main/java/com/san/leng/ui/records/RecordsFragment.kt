@@ -6,13 +6,22 @@ import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.san.domain.entities.RecordEntity
 import com.san.leng.R
+import com.san.leng.core.extensions.setupSnackbar
+import com.san.leng.core.extensions.showSnackbar
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentRecordsBinding
 import com.san.leng.ui.records.RecordsAdapter.RecordViewClick
+import timber.log.Timber
 
 class RecordsFragment : BaseFragment() {
+
+    private val args: RecordsFragmentArgs by navArgs()
 
     private val recordsViewModel: RecordsViewModel by viewModels { viewModelFactory }
 
@@ -39,8 +48,17 @@ class RecordsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadRecordsList()
+
+        setupSnackbar()
         initializeView()
+        loadRecordsList()
+    }
+
+    private fun setupSnackbar() {
+        view?.setupSnackbar(this, recordsViewModel.snackbarText, Snackbar.LENGTH_SHORT)
+        arguments?.let {
+            recordsViewModel.showEditResultMessage(args.userMessage)
+        }
     }
 
     private fun initializeView() {
@@ -48,7 +66,7 @@ class RecordsFragment : BaseFragment() {
         val onClick: RecordViewClick = object : RecordViewClick {
             override fun onClick(recordEntity: RecordEntity) {
                 findNavController().navigate(
-                    RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(recordEntity.toDto())
+                    RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(recordEntity.id)
                 )
             }
         }
@@ -61,11 +79,12 @@ class RecordsFragment : BaseFragment() {
             onClick
         )
 
-//        binding.addRecord.setOnClickListener {
-//            this.findNavController().navigate(
-//                RecordsFragmentDirections.actionRecordsFragmentToAddRecordFragment(null)
-//            )
-//        }
+        val fab = activity?.findViewById<FloatingActionButton>(R.id.add_record_fab)
+        fab?.setOnClickListener {
+            this.findNavController().navigate(
+                RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(null)
+            )
+        }
     }
 
     private fun loadRecordsList() {

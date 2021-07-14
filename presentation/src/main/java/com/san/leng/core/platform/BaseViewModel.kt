@@ -3,7 +3,7 @@ package com.san.leng.core.platform
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.san.leng.core.exception.Failure
+import com.san.domain.exception.Failure
 
 abstract class BaseViewModel : ViewModel() {
 

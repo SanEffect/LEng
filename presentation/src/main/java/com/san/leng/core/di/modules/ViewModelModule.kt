@@ -7,7 +7,7 @@ import com.san.leng.ui.ViewModelFactory
 import com.san.leng.ui.dashboard.DashboardViewModel
 import com.san.leng.ui.dictionary.DictionaryViewModel
 import com.san.leng.ui.records.RecordsViewModel
-import com.san.leng.ui.records.add_record.AddRecordViewModel
+import com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel
 import com.san.leng.ui.useful_info.UsefulInfoViewModel
 import dagger.Binds
 import dagger.Module
@@ -23,8 +23,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(AddRecordViewModel::class)
-    abstract fun bindAddRecodViewModel(addRecordViewModel: AddRecordViewModel): ViewModel
+    @ViewModelKey(AddEditRecordViewModel::class)
+    abstract fun bindAddEditRecordViewModel(addEditRecordViewModel: AddEditRecordViewModel): ViewModel
 
     @Binds
     @IntoMap

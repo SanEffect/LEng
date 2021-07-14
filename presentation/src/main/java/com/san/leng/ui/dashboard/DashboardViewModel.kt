@@ -4,16 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.san.domain.Result.Success
-import com.san.domain.interactor.UseCase.None
-import com.san.domain.usecases.dashboard.GetRecordsCount
-import com.san.domain.usecases.records.GetWordsCount
+import com.san.domain.usecases.dashboard.GetRecordsCountUseCase
+import com.san.domain.usecases.records.GetWordsCountUseCase
 import com.san.leng.core.platform.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(
-    private val getRecordsCount: GetRecordsCount,
-    private val getWordsCount: GetWordsCount
+    private val getRecordsCountUseCase: GetRecordsCountUseCase,
+    private val getWordsCountUseCase: GetWordsCountUseCase
 ) : BaseViewModel() {
 
     private val _recordsCount: MutableLiveData<Long> = MutableLiveData()
@@ -23,43 +22,20 @@ class DashboardViewModel @Inject constructor(
     val wordsCount: LiveData<Long> = _wordsCount
 
     fun loadRecordsCount() = viewModelScope.launch {
-        getRecordsCount(None()) {
-            when (it) {
-                is Success -> _recordsCount.value = it.data
-                is Error -> {
-                }
-                else -> {
-                }
+
+        when (val result = getRecordsCountUseCase(Unit)) {
+            is Success -> _recordsCount.value = result.data
+            is Error -> {
             }
         }
     }
 
     fun loadWordsCount() = viewModelScope.launch {
-        getWordsCount(None()) {
-            when (it) {
-                is Success -> _wordsCount.value = it.data
-                is Error -> {
-                }
-                else -> {
-                }
+
+        when (val result = getWordsCountUseCase(Unit)) {
+            is Success -> _wordsCount.value = result.data
+            is Error -> {
             }
         }
     }
-
-/*    val recordsCount = liveData {
-        when(val result = getRecordsCount()) {
-            is Success -> emit(result.data)
-            is Error -> {}
-        }
-    }
-
-    val wordsCount = liveData {
-        when(val result = getWordsCount()) {
-            is Success -> {
-                Timber.i("wordsCount: ${result.data}")
-                emit(result.data)
-            }
-            is Error -> {}
-        }
-    }*/
 }

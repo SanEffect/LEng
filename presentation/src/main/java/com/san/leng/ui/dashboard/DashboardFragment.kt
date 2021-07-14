@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.san.leng.R
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentDashboardBinding
+import timber.log.Timber
 
 class DashboardFragment : BaseFragment() {
 

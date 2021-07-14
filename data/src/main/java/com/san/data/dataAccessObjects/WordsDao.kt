@@ -1,24 +1,23 @@
 package com.san.data.dataAccessObjects
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
-import com.san.domain.entities.RecordEntity
+import androidx.room.*
 import com.san.domain.entities.WordEntity
 
 @Dao
 interface WordsDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(word: WordEntity)
 
     @Insert
-    suspend fun insertAll(words: List<WordEntity>)
+    suspend fun insertList(words: List<WordEntity>)
 
     @Update
-    suspend fun update(record: RecordEntity)
+    suspend fun update(word: WordEntity)
 
     @Query("SELECT * FROM words")
-    suspend fun getAllWords(): List<WordEntity>
+    suspend fun getWords(): List<WordEntity>
+
+    @Query("SELECT * FROM words WHERE name = :word")
+    suspend fun getWordByName(word: String): WordEntity?
 }

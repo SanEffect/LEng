@@ -11,7 +11,6 @@ import timber.log.Timber
 
 class RecordsAdapter(
     private val contextMenuListener: RecordContextMenuListener,
-//    private val clickListener: RecordListener
     private val clickListener: RecordViewClick,
 ) : ListAdapter<RecordEntity, RecordsAdapter.RecordViewHolder>(DiffCallback) {
 
@@ -89,8 +88,8 @@ class RecordsAdapter(
 
 class RecordContextMenuListener(
     val editClickListener: () -> Unit,
-    val removeClickListener: (recordId: Long) -> Unit
+    val removeClickListener: (recordId: String) -> Unit
 ) {
     fun onEditClick() = editClickListener()
-    fun onRemoveClick(recordId: Long) = removeClickListener(recordId)
+    fun onRemoveClick(recordId: String) = removeClickListener(recordId)
 }

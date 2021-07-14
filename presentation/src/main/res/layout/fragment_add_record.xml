@@ -5,40 +5,70 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
-            type="com.san.leng.ui.records.add_record.AddRecordViewModel" />
+            type="com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:paddingStart="16dp"
-        android:paddingLeft="16dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp"
+        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
         tools:context=".records.add_record.AddRecordFragment">
+
+        <TextView
+            android:id="@+id/record_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="08.07.21"
+            tools:text="08.07.21" />
+
+        <ImageView
+            android:id="@+id/date_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_arrow_drop_down"
+            android:textSize="8sp"
+            android:onClick="@{() -> viewModel.datePickerClicked()}"
+            app:layout_constraintStart_toEndOf="@+id/record_date"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/record_save"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:padding="0dp"
+            android:text="@string/record_save_button"
+            android:textSize="8sp"
+            android:onClick="@{() -> viewModel.saveRecord()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/record_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="@string/add_record_title_hint"
             android:text="@={viewModel.title}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/record_save" />
 
         <ScrollView
-            android:id="@+id/scrollView2"
+            android:id="@+id/scrollView"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/record_title">
@@ -59,6 +89,21 @@
                 app:layout_constraintVertical_bias="0.0" />
 
         </ScrollView>
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/record_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:onClick="@{() -> viewModel.saveRecord()}"
+            app:layout_anchorGravity="bottom|right|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_add" />-->
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

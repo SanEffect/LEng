@@ -20,4 +20,15 @@
     <string name="word_synonyms">Synonyms</string>
     <string name="add_record_title_hint">Title</string>
     <string name="add_record_desc_hint">Description</string>
+    <string name="no_internet_connection">Internet connection is not available</string>
+    <string name="record_save_button">Save</string>
+    <string name="empty_record_message">Records cannot be empty</string>
+    <string name="record_is_created">Record is created</string>
+    <string name="record_is_updated">Record is updated</string>
+    <string name="successfully_saved_record_message">Record saved</string>
+    <string name="successfully_added_record_message">Record added</string>
+    <string name="successfully_deleted_record_message">Record was deleted</string>
+    <string name="failure_remove_records_message">Failed to remove records</string>
+    <string name="failure_remove_record_message">Failed to remove the record</string>
+    <string name="failure_load_records">"Failed to load records "</string>
 </resources>

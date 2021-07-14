@@ -1,11 +1,12 @@
 package com.san.leng.core.di.modules
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.san.data.repositories.WordsApiRepository
+import com.san.data.repositories.WordsRepository
+import com.san.data.sources.local.IWordsLocalDataSource
 import com.san.data.sources.remote.IWordsRemoteDataSource
 import com.san.data.sources.remote.WordApiService
 import com.san.data.sources.remote.WordsRemoteDataSource
-import com.san.domain.repositories.IWordsApiRemoteRepository
+import com.san.domain.repositories.IWordsRepository
 import com.san.leng.core.Constants
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -34,8 +35,11 @@ class WordsApiModule {
 
     @Provides
     @Singleton
-    fun provideWordsApiRemoteRepository(wordsRemoteDataSource: IWordsRemoteDataSource): IWordsApiRemoteRepository =
-        WordsApiRepository(wordsRemoteDataSource)
+    fun provideWordsApiRepository(
+        wordsLocalDataSource: IWordsLocalDataSource,
+        wordsRemoteDataSource: IWordsRemoteDataSource
+    ): IWordsRepository =
+        WordsRepository(wordsLocalDataSource, wordsRemoteDataSource)
 
     @Provides
     @Singleton
