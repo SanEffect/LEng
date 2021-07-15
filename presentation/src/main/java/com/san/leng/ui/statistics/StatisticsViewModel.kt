@@ -1,4 +1,4 @@
-package com.san.leng.ui.dashboard
+package com.san.leng.ui.statistics
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.san.leng.core.platform.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DashboardViewModel @Inject constructor(
+class StatisticsViewModel @Inject constructor(
     private val getRecordsCountUseCase: GetRecordsCountUseCase,
     private val getWordsCountUseCase: GetWordsCountUseCase
 ) : BaseViewModel() {

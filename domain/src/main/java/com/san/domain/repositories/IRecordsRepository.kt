@@ -8,7 +8,7 @@ interface IRecordsRepository {
 
     val records: Flow<List<RecordEntity>>
 
-    suspend fun getRecords(): Result<List<RecordEntity>>
+    suspend fun getRecords(forceUpdate: Boolean): Result<List<RecordEntity>>
 
     suspend fun getLastRecord(): Result<RecordEntity?>
 

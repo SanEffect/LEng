@@ -8,8 +8,10 @@ import javax.inject.Inject
 
 class GetRecordsUseCase @Inject constructor(
     private val recordsRepository: IRecordsRepository
-) : UseCase<List<RecordEntity>, Unit> {
+) : UseCase<List<RecordEntity>, GetRecordsUseCase.Params> {
 
-    override suspend fun invoke(params: Unit): Result<List<RecordEntity>> =
-        recordsRepository.getRecords()
+    data class Params(val forceUpdate: Boolean = false)
+
+    override suspend fun invoke(params: Params): Result<List<RecordEntity>> =
+        recordsRepository.getRecords(params.forceUpdate)
 }

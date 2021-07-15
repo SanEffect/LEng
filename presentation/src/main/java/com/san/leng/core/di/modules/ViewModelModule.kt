@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.san.leng.core.di.ViewModelKey
 import com.san.leng.ui.ViewModelFactory
-import com.san.leng.ui.dashboard.DashboardViewModel
+import com.san.leng.ui.statistics.StatisticsViewModel
 import com.san.leng.ui.dictionary.DictionaryViewModel
 import com.san.leng.ui.records.RecordsViewModel
 import com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel
@@ -28,8 +28,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(DashboardViewModel::class)
-    abstract fun bindDashboardViewModel(dashboardViewModel: DashboardViewModel): ViewModel
+    @ViewModelKey(StatisticsViewModel::class)
+    abstract fun bindDashboardViewModel(statisticsViewModel: StatisticsViewModel): ViewModel
 
     @Binds
     @IntoMap

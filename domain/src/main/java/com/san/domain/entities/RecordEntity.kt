@@ -16,23 +16,23 @@ data class RecordEntity(
     @ColumnInfo(name = "text")
     var description: String = "",
 
-    @PrimaryKey
-    val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo(name = "creation_date")
+    var creationDate: Long = System.currentTimeMillis(),
 
     @ColumnInfo(name = "is_deleted")
     var isDeleted: Boolean = false,
 
-    @ColumnInfo(name = "creation_date")
-    var creationDate: Long = System.currentTimeMillis()
+    @PrimaryKey
+    val id: String = UUID.randomUUID().toString(),
 ) {
     companion object {
         fun toEntity(record: RecordDto): RecordEntity {
             return RecordEntity(
                 record.title,
                 record.description,
-                record.id,
+                record.creationDate,
                 record.isDeleted,
-                record.creationDate
+                record.id,
             )
         }
     }

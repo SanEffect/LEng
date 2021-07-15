@@ -27,6 +27,6 @@ data class RecordDto(
     }
 
     fun toEntity(): RecordEntity {
-        return RecordEntity(title, description, id, isDeleted, creationDate)
+        return RecordEntity(title, description, creationDate, isDeleted, id)
     }
 }

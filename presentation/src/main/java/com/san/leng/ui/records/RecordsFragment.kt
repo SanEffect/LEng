@@ -7,17 +7,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.san.domain.entities.RecordEntity
 import com.san.leng.R
 import com.san.leng.core.extensions.setupSnackbar
-import com.san.leng.core.extensions.showSnackbar
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentRecordsBinding
 import com.san.leng.ui.records.RecordsAdapter.RecordViewClick
-import timber.log.Timber
 
 class RecordsFragment : BaseFragment() {
 
@@ -32,13 +29,14 @@ class RecordsFragment : BaseFragment() {
         appComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_records, container, false)
 
-        //recordsViewModel = ViewModelProviders.of(this, viewModelFactory).get(RecordsViewModel::class.java)
         binding.viewModel = recordsViewModel
 
         binding.lifecycleOwner = this
@@ -49,15 +47,17 @@ class RecordsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loadRecordsList()
+
+        subscribeUi()
         setupSnackbar()
         initializeView()
-        loadRecordsList()
     }
 
     private fun setupSnackbar() {
         view?.setupSnackbar(this, recordsViewModel.snackbarText, Snackbar.LENGTH_SHORT)
         arguments?.let {
-            recordsViewModel.showEditResultMessage(args.userMessage)
+            recordsViewModel.showResultMessage(args.userMessage)
         }
     }
 
@@ -66,25 +66,37 @@ class RecordsFragment : BaseFragment() {
         val onClick: RecordViewClick = object : RecordViewClick {
             override fun onClick(recordEntity: RecordEntity) {
                 findNavController().navigate(
-                    RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(recordEntity.id)
+                    RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(
+                        recordEntity.id
+                    )
                 )
+            }
+
+            override fun onLongClick(recordEntity: RecordEntity) {
+                if (recordsViewModel.selectableMode.get()) return
+
+                recordsViewModel.selectableMode.set(true)
             }
         }
 
-        binding.recordList.adapter = RecordsAdapter(
-            RecordContextMenuListener(
-                editClickListener = { },
-                removeClickListener = { recordId -> recordsViewModel.removeRecord(recordId)}
-            ),
-            onClick
-        )
+        binding.recordAllRemove.setOnClickListener {
+//            recordsViewModel.clearRecords()
+        }
+
+        binding.recordList.adapter = RecordsAdapter(onClick)
 
         val fab = activity?.findViewById<FloatingActionButton>(R.id.add_record_fab)
         fab?.setOnClickListener {
-            this.findNavController().navigate(
+            findNavController().navigate(
                 RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(null)
             )
         }
+    }
+
+    private fun subscribeUi() {
+        recordsViewModel.records.observe(viewLifecycleOwner, {
+            binding.hasRecords = it.isNotEmpty()
+        })
     }
 
     private fun loadRecordsList() {
@@ -93,7 +105,7 @@ class RecordsFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.remove_records -> recordsViewModel.clearRecords()
 //            R.id.action_translate -> Toast.makeText(activity, "Text was translated", Toast.LENGTH_LONG).show()
         }
@@ -104,8 +116,6 @@ class RecordsFragment : BaseFragment() {
         inflater.inflate(R.menu.records_editor_menu, menu)
 //        inflater.inflate(R.menu.record_item_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
-
-
     }
 
 /*    override fun onCreateContextMenu(menu: ContextMenu?, v: View?,

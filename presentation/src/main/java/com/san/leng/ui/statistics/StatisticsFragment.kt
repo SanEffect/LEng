@@ -1,4 +1,4 @@
-package com.san.leng.ui.dashboard
+package com.san.leng.ui.statistics
 
 import android.content.Context
 import android.os.Bundle
@@ -9,14 +9,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import com.san.leng.R
 import com.san.leng.core.platform.BaseFragment
-import com.san.leng.databinding.FragmentDashboardBinding
-import timber.log.Timber
+import com.san.leng.databinding.FragmentStatisticsBinding
 
-class DashboardFragment : BaseFragment() {
+class StatisticsFragment : BaseFragment() {
 
-    private val dashboardViewModel: DashboardViewModel by viewModels { viewModelFactory }
+    private val statisticsViewModel: StatisticsViewModel by viewModels { viewModelFactory }
 
-    private lateinit var binding: FragmentDashboardBinding
+    private lateinit var binding: FragmentStatisticsBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -29,9 +28,9 @@ class DashboardFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_statistics, container, false)
 
-        binding.viewModel = dashboardViewModel
+        binding.viewModel = statisticsViewModel
 
         binding.lifecycleOwner = this
         return binding.root
@@ -43,7 +42,7 @@ class DashboardFragment : BaseFragment() {
     }
 
     private fun loadStatistics() {
-        dashboardViewModel.loadRecordsCount()
-        dashboardViewModel.loadWordsCount()
+        statisticsViewModel.loadRecordsCount()
+        statisticsViewModel.loadWordsCount()
     }
 }

@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/dashboard_fragment"
-        android:enabled="true"
-        android:icon="@drawable/ic_dashboard_foreground"
-        android:title="@string/dashboard_label"/>
-    <item
         android:id="@+id/records_fragment"
         android:enabled="true"
         android:icon="@drawable/ic_records_foreground"
@@ -20,4 +15,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_info_foreground"
         android:title="@string/useful_info_label"/>
+    <item
+        android:id="@+id/statistics_fragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_statistics_foreground"
+        android:title="@string/statistics_label"/>
 </menu>

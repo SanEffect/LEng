@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
-                R.id.dashboard_fragment,
+                R.id.statistics_fragment,
                 R.id.dictionary_fragment,
                 R.id.useful_info_fragment -> {
                     add_record_fab.hide()
@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
                     bottom_navigation.setMargins(rightMarginDp = 0)
                 }
                 R.id.records_fragment -> {
-                    add_record_fab.show()
                     bottom_navigation.setMargins(rightMarginDp = 80)
+                    add_record_fab.show()
                     bottom_bar.performShow()
                 }
                 else -> {

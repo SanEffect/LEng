@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">LEng</string>
-    <string name="dashboard_label">Dashboard</string>
+    <string name="statistics_label">Statistics</string>
     <string name="records_label">Records</string>
     <string name="useful_info_label">Useful Info</string>
 
@@ -31,4 +31,5 @@
     <string name="failure_remove_records_message">Failed to remove records</string>
     <string name="failure_remove_record_message">Failed to remove the record</string>
     <string name="failure_load_records">"Failed to load records "</string>
+    <string name="records_empty">No records</string>
 </resources>

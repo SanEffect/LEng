@@ -9,7 +9,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.san.leng.R
 import com.san.leng.core.extensions.*
@@ -116,13 +115,12 @@ class AddEditRecordFragment : BaseFragment() {
                     val datePickerDialog =
                         DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
 
-                            addEditRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
 
+
+                            addEditRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
                         }, y, m, d)
 
                     datePickerDialog.show()
-
-//                    datePicker.show(parentFragmentManager, datePicker.toString())
                 }
             })
         }

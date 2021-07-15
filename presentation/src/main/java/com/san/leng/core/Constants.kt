@@ -12,7 +12,7 @@ object Constants {
     const val WORDS_API_HOST = "wordsapiv1.p.rapidapi.com"
 
     // Keys for navigation
-    const val ADD_RESULT_OK = Activity.RESULT_FIRST_USER + 1
-    const val EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 2
-    const val DELETE_RESULT_OK = Activity.RESULT_FIRST_USER + 3
+    const val RECORD_ADD_RESULT_OK = Activity.RESULT_FIRST_USER + 1
+    const val RECORD_EDIT_RESULT_OK = Activity.RESULT_FIRST_USER + 2
+    const val RECORD_DELETE_RESULT_OK = Activity.RESULT_FIRST_USER + 3
 }

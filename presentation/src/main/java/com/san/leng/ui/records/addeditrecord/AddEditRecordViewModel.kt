@@ -1,9 +1,6 @@
 package com.san.leng.ui.records.addeditrecord
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.san.domain.Result.Error
 import com.san.domain.Result.Success
 import com.san.domain.entities.RecordEntity
@@ -13,7 +10,10 @@ import com.san.domain.usecases.records.SaveRecordUseCase
 import com.san.leng.R
 import com.san.leng.core.Constants
 import com.san.leng.core.Event
+import com.san.leng.core.utils.convertDateToLong
+import com.san.leng.core.utils.convertLongToDate
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 class AddEditRecordViewModel @Inject constructor(
@@ -24,6 +24,8 @@ class AddEditRecordViewModel @Inject constructor(
 
     val title = MutableLiveData<String>()
     val description = MutableLiveData<String>()
+    val recordDate = MutableLiveData<String>()
+    var dateInMillis: Long = System.currentTimeMillis()
 
 //    private val _dataLoading = MutableLiveData<Boolean>()
 //    val dataLoading: LiveData<Boolean> = _dataLoading
@@ -69,6 +71,7 @@ class AddEditRecordViewModel @Inject constructor(
         recordEntity?.let {
             title.value = it.title
             description.value = it.description
+            recordDate.value = convertLongToDate(it.creationDate)
         }
     }
 
@@ -82,22 +85,28 @@ class AddEditRecordViewModel @Inject constructor(
         }
 
         if (isNewRecord && recordId == null) {
-            createRecord(RecordEntity(currentTitle, currentDescription))
+            createRecord(RecordEntity(currentTitle, currentDescription, dateInMillis, false))
         } else {
-            updateRecord(RecordEntity(currentTitle, currentDescription, recordId!!))
+            updateRecord(
+                RecordEntity(
+                    currentTitle,
+                    currentDescription,
+                    dateInMillis,
+                    false,
+                    recordId!!
+                )
+            )
         }
     }
 
     private fun createRecord(recordEntity: RecordEntity) = viewModelScope.launch {
         saveRecordUseCase(SaveRecordUseCase.Params(recordEntity))
-        _snackbarText.value = Event(R.string.record_is_created)
-        _saveRecordComplete.value = Event(Constants.ADD_RESULT_OK)
+        _saveRecordComplete.value = Event(Constants.RECORD_ADD_RESULT_OK)
     }
 
     private fun updateRecord(recordEntity: RecordEntity) = viewModelScope.launch {
         saveRecordUseCase(SaveRecordUseCase.Params(recordEntity))
-        _snackbarText.value = Event(R.string.record_is_updated)
-        _saveRecordComplete.value = Event(Constants.EDIT_RESULT_OK)
+        _saveRecordComplete.value = Event(Constants.RECORD_EDIT_RESULT_OK)
     }
 
     fun getWordDefinition(word: String?) = viewModelScope.launch {
@@ -122,6 +131,12 @@ class AddEditRecordViewModel @Inject constructor(
     }
 
     fun setDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
-        //recordDate.value = "$dayOfMonth.$monthOfYear.$year"
+
+        val calendar: Calendar =
+            GregorianCalendar(year, monthOfYear, dayOfMonth)
+
+        dateInMillis = calendar.timeInMillis
+
+        recordDate.value = convertLongToDate(dateInMillis)
     }
 }

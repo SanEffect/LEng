@@ -16,13 +16,16 @@ import com.google.android.material.snackbar.Snackbar
 import com.san.leng.R
 import com.san.leng.core.Event
 import com.san.leng.core.utils.getWordIndexBySelectionStart
-import timber.log.Timber
 
 fun View.isVisible() = this.visibility == View.VISIBLE
 
-fun View.visible() { this.visibility = View.VISIBLE }
+fun View.visible() {
+    this.visibility = View.VISIBLE
+}
 
-fun View.invisible() { this.visibility = View.GONE }
+fun View.invisible() {
+    this.visibility = View.GONE
+}
 
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
@@ -36,22 +39,22 @@ fun Context.showToast(message: String, lengthLong: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(applicationContext, message, lengthLong).show()
 }
 
-fun Fragment.showToast(message: Int?, lengthType: Int = Toast.LENGTH_SHORT) {
+fun View.showToast(message: Int?, lengthType: Int = Toast.LENGTH_SHORT) {
     message?.let {
-        Toast.makeText(this.requireContext(), this.getString(message), lengthType).show()
+        Toast.makeText(this.context, this.context.getString(message), lengthType).show()
     }
 }
 
-fun Fragment.showToast(message: String?, lengthType: Int = Toast.LENGTH_SHORT) {
+fun View.showToast(message: String?, lengthType: Int = Toast.LENGTH_SHORT) {
     message?.let {
-        Toast.makeText(this.requireContext(), message, lengthType).show()
+        Toast.makeText(this.context, message, lengthType).show()
     }
 }
 
 fun View.setupSnackbar(
     lifecycleOwner: LifecycleOwner,
     snackbarEvent: LiveData<Event<Int>>,
-    timeLength: Int
+    timeLength: Int = Snackbar.LENGTH_SHORT
 ) {
     snackbarEvent.observe(lifecycleOwner, Observer { event ->
         event.getContentIfNotHandled()?.let {
@@ -60,7 +63,7 @@ fun View.setupSnackbar(
     })
 }
 
-fun View.showSnackbar(snackbarText: String, timeLength: Int) {
+fun View.showSnackbar(snackbarText: String, timeLength: Int = Snackbar.LENGTH_SHORT) {
     this.rootView.findViewById<FloatingActionButton>(R.id.add_record_fab).apply {
         Snackbar.make(this, snackbarText, timeLength).setAnchorView(this).show()
     }

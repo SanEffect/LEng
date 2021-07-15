@@ -7,20 +7,30 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.san.domain.entities.RecordEntity
 import com.san.leng.databinding.RecordItemBinding
-import timber.log.Timber
 
 class RecordsAdapter(
-    private val contextMenuListener: RecordContextMenuListener,
+//    private val contextMenuListener: RecordContextMenuListener,
     private val clickListener: RecordViewClick,
 ) : ListAdapter<RecordEntity, RecordsAdapter.RecordViewHolder>(DiffCallback) {
 
     private var recordsList: MutableList<RecordEntity> = mutableListOf()
 
-    class RecordViewHolder(val binding: RecordItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class RecordViewHolder(
+        private val binding: RecordItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(clickHandler: RecordViewClick, record: RecordEntity) {
+        fun bind(clickListener: RecordViewClick, record: RecordEntity) {
             binding.record = record
-            binding.clickHandler = clickHandler
+
+            binding.recordCard.setOnClickListener {
+                clickListener.onClick(record)
+            }
+
+            binding.recordCard.setOnLongClickListener {
+                clickListener.onLongClick(record)
+                true
+            }
+
             binding.executePendingBindings()
         }
     }
@@ -48,17 +58,16 @@ class RecordsAdapter(
         val record = recordsList[position]
         holder.bind(clickListener, record)
 
-        holder.binding.recordCard.setOnCreateContextMenuListener { contextMenu, _, _ ->
+/*        holder.binding.recordCard.setOnCreateContextMenuListener { contextMenu, _, _ ->
             contextMenu.add("Edit").setOnMenuItemClickListener {
                 contextMenuListener.onEditClick()
-                Timber.i("Go to EditFragment")
                 true
             }
             contextMenu.add("Remove").setOnMenuItemClickListener {
                 removeRecord(record, position)
                 true
             }
-        }
+        }*/
     }
 
     fun submitRecordList(records: List<RecordEntity>?) {
@@ -67,29 +76,22 @@ class RecordsAdapter(
         notifyDataSetChanged()
     }
 
-    private fun removeRecord(record: RecordEntity, position: Int) {
+/*    private fun removeRecord(record: RecordEntity, position: Int) {
         recordsList.removeAt(position)
         contextMenuListener.onRemoveClick(record.id)
         notifyDataSetChanged()
-    }
+    }*/
 
     interface RecordViewClick {
         fun onClick(recordEntity: RecordEntity)
+        fun onLongClick(recordEntity: RecordEntity)
     }
-
-//    interface ContextMenuCallback {
-//        fun onContextMenuClick(view: View, id: Long, title: String)
-//    }
 }
 
-//class RecordListener(val clickListener: (record: RecordEntity) -> Unit) {
-//    fun onClick(record: RecordEntity) = clickListener(record)
-//}
-
-class RecordContextMenuListener(
+/*class RecordContextMenuListener(
     val editClickListener: () -> Unit,
     val removeClickListener: (recordId: String) -> Unit
 ) {
     fun onEditClick() = editClickListener()
     fun onRemoveClick(recordId: String) = removeClickListener(recordId)
-}
+}*/

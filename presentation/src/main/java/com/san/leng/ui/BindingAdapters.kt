@@ -4,13 +4,10 @@ import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.san.domain.entities.*
-import com.san.domain.models.WordResult
+import com.san.domain.entities.RecordEntity
 import com.san.leng.R
 import com.san.leng.core.utils.convertLongToDate
-import com.san.leng.ui.dictionary.DictionaryAdapter
 import com.san.leng.ui.records.RecordsAdapter
-import timber.log.Timber
 
 
 /**
@@ -20,6 +17,16 @@ import timber.log.Timber
 fun goneIfNotNull(view: View, it: Any?) {
     view.visibility = if (it != null) View.GONE else View.VISIBLE
 }
+
+@BindingAdapter("isGone")
+fun bindIsGone(view: View, isGone: Boolean) {
+    view.visibility = if (isGone) {
+        View.GONE
+    } else {
+        View.VISIBLE
+    }
+}
+
 
 @BindingAdapter("app:records")
 fun bindItems(listView: RecyclerView, records: List<RecordEntity>?) {

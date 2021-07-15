@@ -6,14 +6,6 @@
     <data>
 
         <variable
-            name="clickHandler"
-            type="com.san.leng.ui.records.RecordsAdapter.RecordViewClick" />
-
-        <variable
-            name="recordContextMenuListener"
-            type="com.san.leng.ui.records.RecordContextMenuListener" />
-
-        <variable
             name="record"
             type="com.san.domain.entities.RecordEntity" />
     </data>
@@ -29,7 +21,6 @@
             android:layout_margin="8dp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{() -> clickHandler.onClick(record)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,17 +70,6 @@
                     app:layout_constraintStart_toEndOf="@+id/header"
                     app:layout_constraintTop_toTopOf="parent"
                     app:recordDate="@{record.creationDate}" />
-
-                <!--            <TextView
-                                android:id="@+id/date"
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:textSize="18sp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHorizontal_bias="0.5"
-                                app:layout_constraintStart_toEndOf="@+id/header"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:recordDate="@{record.creationDate}" />-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
