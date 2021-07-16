@@ -22,6 +22,8 @@ interface IRecordsRepository {
 
     suspend fun removeRecords(): Result<Unit>
 
+    suspend fun deleteRecords(recordIds: List<String>): Result<Unit>
+
     suspend fun refreshRecords()
 
     suspend fun getRecordsCount(): Result<Long>

@@ -1,16 +1,15 @@
 package com.san.data.repositories
 
+import android.util.Log
 import com.san.data.sources.local.IRecordsLocalDataSource
 import com.san.domain.Result
 import com.san.domain.Result.Error
 import com.san.domain.Result.Success
 import com.san.domain.entities.RecordEntity
 import com.san.domain.repositories.IRecordsRepository
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import javax.inject.Inject
@@ -32,17 +31,19 @@ class RecordsRepository @Inject constructor(
 
             if (!forceUpdate) {
                 cachedRecords?.let { cachedRecords ->
-                    return@withContext Success(cachedRecords.values.sortedBy { it.id })
+                    Log.i("RecordsRepository", "getRecords from cache ------------------------")
+                    return@withContext Success(cachedRecords.values.sortedByDescending { it.creationDate })
                 }
             }
 
             val newRecords = recordsLocalDataSource.getRecords()
+            Log.i("RecordsRepository", "newRecords: $newRecords")
 
             // Refresh the cache with the new records
             (newRecords as? Success)?.let { refreshCache(it.data) }
 
             cachedRecords?.values?.let { records ->
-                return@withContext Success(records.sortedBy { it.id })
+                return@withContext Success(records.sortedByDescending { it.creationDate })
             }
 
             return@withContext Error(Exception("Illegal state"))
@@ -76,6 +77,15 @@ class RecordsRepository @Inject constructor(
         recordsLocalDataSource.removeRecord(recordId)
 
     override suspend fun removeRecords(): Result<Unit> = recordsLocalDataSource.removeRecords()
+
+    override suspend fun deleteRecords(recordIds: List<String>): Result<Unit> {
+
+        val result = recordsLocalDataSource.deleteRecords(recordIds)
+        if (result is Success)
+            recordIds.forEach { recId -> cachedRecords?.remove(recId) }
+
+        return result
+    }
 
     override suspend fun getWordsCount(): Result<Long> = recordsLocalDataSource.getWordsCount()
 

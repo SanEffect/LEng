@@ -32,4 +32,5 @@
     <string name="failure_remove_record_message">Failed to remove the record</string>
     <string name="failure_load_records">"Failed to load records "</string>
     <string name="records_empty">No records</string>
+    <string name="confirm_deleting_all_records">Selected records will be deleted and cannot be restored any more. Are you sure to continue?</string>
 </resources>

@@ -5,8 +5,6 @@
 
     <data>
         <variable
-            name="hasRecords" type="boolean" />
-        <variable
             name="viewModel"
             type="com.san.leng.ui.records.RecordsViewModel" />
     </data>
@@ -15,11 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/record_bar_container"
+        <RelativeLayout
+            android:id="@+id/record_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -73,6 +70,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                 app:isGone="@{!viewModel.selectableMode}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +83,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:onClick="@{() -> viewModel.changeSelectableMode(false)}"
+                    android:onClick="@{() -> viewModel.setSelectableMode(false)}"
                     android:src="@drawable/ic_back_button" />
 
                 <ImageView
@@ -94,7 +92,7 @@
                     android:layout_weight="1" />
 
                 <ImageView
-                    android:id="@+id/record_all_remove"
+                    android:id="@+id/remove_selected_records_button"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginTop="8dp"
@@ -103,7 +101,7 @@
                     android:src="@drawable/ic_delete" />
 
                 <ImageView
-                    android:id="@+id/record_item_remove"
+                    android:id="@+id/remove_all_records_button"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_marginTop="8dp"
@@ -113,7 +111,7 @@
 
             </LinearLayout>
 
-        </FrameLayout>
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/record_list"
@@ -121,19 +119,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingBottom="130dp"
-            app:isGone="@{!hasRecords}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/record_bar_container"
-            app:records="@{viewModel.records}" />
+            app:layout_constraintTop_toBottomOf="@+id/record_bar"
+            app:records="@{viewModel.records}"
+            app:showIfSuccess="@{viewModel.status}" />
 
         <LinearLayout
             android:id="@+id/no_records"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:visibility="gone"
             android:orientation="vertical"
-            app:isGone="@{hasRecords}">
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfEmpty="@{viewModel.status}">
 
             <TextView
                 android:id="@+id/empty_records"
@@ -143,6 +144,27 @@
                 android:textAppearance="?attr/textAppearanceHeadline5" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showIfLoading="@{viewModel.status}">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

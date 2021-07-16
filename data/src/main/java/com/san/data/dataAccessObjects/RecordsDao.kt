@@ -18,6 +18,9 @@ interface RecordsDao {
     @Query("DELETE FROM records WHERE id = :key")
     suspend fun deleteRecord(key: String)
 
+    @Query("DELETE FROM records WHERE id IN (:ids)")
+    suspend fun deleteRecords(ids: List<String>)
+
     @Query("UPDATE records SET is_deleted = 1 WHERE id = :key")
     suspend fun removeRecord(key: String)
 
