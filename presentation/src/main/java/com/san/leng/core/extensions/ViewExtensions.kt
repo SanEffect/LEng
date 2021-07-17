@@ -64,9 +64,9 @@ fun View.setupSnackbar(
 }
 
 fun View.showSnackbar(snackbarText: String, timeLength: Int = Snackbar.LENGTH_SHORT) {
-    this.rootView.findViewById<FloatingActionButton>(R.id.add_record_fab).apply {
-        Snackbar.make(this, snackbarText, timeLength).setAnchorView(this).show()
-    }
+//    this.rootView.findViewById<FloatingActionButton>(R.id.add_record_fab).apply {
+//        Snackbar.make(this, snackbarText, timeLength).setAnchorView(this).show()
+//    }
 }
 
 fun View.setMargins(

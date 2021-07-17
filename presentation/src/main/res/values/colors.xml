@@ -7,6 +7,8 @@
     <color name="colorTextPrimary">#FFFFFF</color>
     <color name="colorTextSecondary">#7f1a18</color>
 
+    <color name="colorCollapsingToolbarBackground">#263238</color>
+
     <color name="translucentBackground">#ED000000</color>
 
     <color name="colorPrimary">#6200EE</color>

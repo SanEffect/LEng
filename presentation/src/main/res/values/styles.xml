@@ -75,4 +75,6 @@
         <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     </style>
 
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

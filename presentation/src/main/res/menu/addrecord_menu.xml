@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_save_record"
-        android:icon="@drawable/ic_save_foreground"
+        android:id="@+id/action_save_recordd"
+        android:icon="@drawable/ic_delete"
         android:title="Save"
         app:showAsAction="always"/>
 

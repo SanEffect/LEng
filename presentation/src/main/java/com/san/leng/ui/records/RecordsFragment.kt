@@ -2,12 +2,15 @@ package com.san.leng.ui.records
 
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.san.domain.entities.RecordEntity
 import com.san.leng.R
@@ -46,7 +49,6 @@ class RecordsFragment : BaseFragment() {
         binding.viewModel = recordsViewModel
 
         binding.lifecycleOwner = this
-        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -55,10 +57,25 @@ class RecordsFragment : BaseFragment() {
 
         loadRecordsList()
 
+        setupMainToolbar()
         setupAdapter()
         subscribeUi()
         setupSnackbar()
         setupClickListeners()
+    }
+
+    private fun loadRecordsList() {
+//        showProgress()
+        recordsViewModel.loadRecords()
+    }
+
+    private fun showAllRecordsDeleteDialog() {
+        requireContext().alert {
+            setTitle("Warning")
+            setMessage(getString(R.string.confirm_deleting_all_records))
+            positiveButton("DELETE") { recordsViewModel.clearRecords() }
+            negativeButton("Cancel") { it.dismiss() }
+        }
     }
 
     private fun setupSnackbar() {
@@ -85,6 +102,7 @@ class RecordsFragment : BaseFragment() {
                 if (recordsViewModel.isSelectableMode) return
 
                 recordsViewModel.selectableMode.value = true
+                setupSelectableToolbar()
             }
         }
 
@@ -101,54 +119,114 @@ class RecordsFragment : BaseFragment() {
 
     private fun setupClickListeners() {
 
-        binding.removeAllRecordsButton.setOnClickListener {
-            requireContext().alert {
-                setTitle("Warning")
-                setMessage(getString(R.string.confirm_deleting_all_records))
-                positiveButton("DELETE") { recordsViewModel.clearRecords() }
-                negativeButton("Cancel") { it.dismiss() }
+        binding.apply {
+
+            addRecordFab.setOnClickListener {
+                findNavController().navigate(
+                    RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(null)
+                )
             }
-        }
 
-        binding.removeSelectedRecordsButton.setOnClickListener {
-            recordsAdapter.removeRecords()
-        }
+/*            drawerMenu.setOnClickListener {
+                activity?.findViewById<DrawerLayout>(R.id.drawer_layout)?.apply {
+                    openDrawer(GravityCompat.START)
+                }
+            }
 
-        val fab = activity?.findViewById<FloatingActionButton>(R.id.add_record_fab)
-        fab?.setOnClickListener {
-            findNavController().navigate(
-                RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(null)
-            )
+            removeAllRecordsButton.setOnClickListener {
+                showAllRecordsDeleteDialog()
+            }
+
+            removeSelectedRecordsButton.setOnClickListener {
+                recordsAdapter.removeRecords()
+            }*/
         }
     }
 
     private fun subscribeUi() {
         recordsViewModel.apply {
-
             selectableMode.observe(viewLifecycleOwner, {
                 recordsAdapter.setSelectionMode(it)
             })
         }
     }
 
-    private fun loadRecordsList() {
-//        showProgress()
-        recordsViewModel.loadRecords()
-    }
+    private fun setupMainToolbar() {
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.remove_records -> recordsViewModel.clearRecords()
-//            R.id.action_translate -> Toast.makeText(activity, "Text was translated", Toast.LENGTH_LONG).show()
+        binding.apply {
+            toolbar.menu.clear()
+            toolbar.inflateMenu(R.menu.records_frag_main_menu)
+            toolbar.setNavigationIcon(R.drawable.ic_drawer)
+
+            toolbar.setNavigationOnClickListener {
+                activity?.findViewById<DrawerLayout>(R.id.drawer_layout)?.apply {
+                    openDrawer(GravityCompat.START)
+                }
+            }
+
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_records_search -> {
+                        // Save profile changes
+
+                        true
+                    }
+                    R.id.action_records_filter -> {
+                        // Save profile changes
+
+                        true
+                    }
+                    else -> false
+                }
+            }
         }
-        return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.records_editor_menu, menu)
-//        inflater.inflate(R.menu.record_item_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun setupSelectableToolbar() {
+
+        binding.apply {
+
+            toolbar.menu.clear()
+            toolbar.inflateMenu(R.menu.records_frag_remove_menu)
+
+            toolbar.setNavigationIcon(R.drawable.ic_back_button)
+
+            toolbar.setNavigationOnClickListener {
+                recordsViewModel.setSelectableMode(false)
+                setupMainToolbar()
+            }
+
+            toolbar.setOnMenuItemClickListener {
+                when (it.itemId) {
+                    R.id.action_records_delete -> {
+                        // Navigate to settings screen
+                        recordsAdapter.removeRecords()
+                        true
+                    }
+                    R.id.action_all_records_delete -> {
+                        // Save profile changes
+                        showAllRecordsDeleteDialog()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
     }
+
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when (item.itemId) {
+//            R.id.remove_records -> recordsViewModel.clearRecords()
+////            R.id.action_translate -> Toast.makeText(activity, "Text was translated", Toast.LENGTH_LONG).show()
+//        }
+//        return true
+//    }
+//
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.records_editor_menu, menu)
+////        inflater.inflate(R.menu.record_item_menu, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
 
 /*    override fun onCreateContextMenu(menu: ContextMenu?, v: View?,
                                      menuInfo: ContextMenu.ContextMenuInfo?) {
