@@ -30,6 +30,10 @@ class AddEditRecordViewModel @Inject constructor(
 //    private val _dataLoading = MutableLiveData<Boolean>()
 //    val dataLoading: LiveData<Boolean> = _dataLoading
 
+    init {
+        recordDate.value = convertLongToDate(dateInMillis)
+    }
+
     private val _saveRecordComplete = MutableLiveData<Event<Int>>()
     val saveRecordComplete: LiveData<Event<Int>> = _saveRecordComplete
 

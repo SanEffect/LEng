@@ -3,21 +3,21 @@
     <item
         android:id="@+id/records_fragment"
         android:enabled="true"
-        android:icon="@drawable/ic_records_foreground"
+        android:icon="@drawable/ic_records"
         android:title="@string/records_label"/>
     <item
         android:id="@+id/dictionary_fragment"
         android:enabled="true"
-        android:icon="@drawable/ic_dictionary_foreground"
+        android:icon="@drawable/ic_dictionary"
         android:title="@string/dictionary_label"/>
     <item
         android:id="@+id/useful_info_fragment"
         android:enabled="true"
-        android:icon="@drawable/ic_info_foreground"
+        android:icon="@drawable/ic_info"
         android:title="@string/useful_info_label"/>
     <item
         android:id="@+id/statistics_fragment"
         android:enabled="true"
-        android:icon="@drawable/ic_statistics_foreground"
+        android:icon="@drawable/ic_statistics"
         android:title="@string/statistics_label"/>
 </menu>

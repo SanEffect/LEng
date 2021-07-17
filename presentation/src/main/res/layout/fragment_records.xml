@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_city_info_height"
             android:fitsSystemWindows="true"
+            app:elevation="0dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark" >
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -66,9 +67,13 @@
                     android:id="@+id/record_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="4dp"
                     android:paddingBottom="60dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:records="@{viewModel.records}"
                     app:showIfSuccess="@{viewModel.status}" />

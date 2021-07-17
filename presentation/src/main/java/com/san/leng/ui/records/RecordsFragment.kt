@@ -14,10 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.san.domain.entities.RecordEntity
 import com.san.leng.R
-import com.san.leng.core.extensions.alert
-import com.san.leng.core.extensions.negativeButton
-import com.san.leng.core.extensions.positiveButton
-import com.san.leng.core.extensions.setupSnackbar
+import com.san.leng.core.extensions.*
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentRecordsBinding
 import com.san.leng.ui.records.RecordsAdapter.RecordViewClick
@@ -168,12 +165,12 @@ class RecordsFragment : BaseFragment() {
                 when (it.itemId) {
                     R.id.action_records_search -> {
                         // Save profile changes
-
+                        view?.showToast("Show search input")
                         true
                     }
                     R.id.action_records_filter -> {
                         // Save profile changes
-
+                        recordsViewModel.switchRecordsOrder()
                         true
                     }
                     else -> false

@@ -27,6 +27,8 @@ class RecordsViewModel @Inject constructor(
     private val deleteRecords: DeleteRecordsUseCase,
 ) : BaseViewModel() {
 
+    private var recordsOrderByAsc = false
+
     private val _status = MutableLiveData<CommonStatus>()
     val status: LiveData<CommonStatus> = _status
 
@@ -60,6 +62,15 @@ class RecordsViewModel @Inject constructor(
                 _status.value = CommonStatus.ERROR
                 showSnackbarMessage(R.string.failure_load_records)
             }
+        }
+    }
+
+    fun switchRecordsOrder() {
+        recordsOrderByAsc = !recordsOrderByAsc
+
+        when (recordsOrderByAsc) {
+            true -> _records.value = _records.value?.sortedBy { it.creationDate }
+            false -> _records.value = _records.value?.sortedByDescending { it.creationDate }
         }
     }
 
