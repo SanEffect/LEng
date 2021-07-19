@@ -27,6 +27,10 @@ fun View.invisible() {
     this.visibility = View.GONE
 }
 
+fun View.setVisibility(state: Boolean) {
+    this.visibility = if(state) View.VISIBLE else View.GONE
+}
+
 fun Fragment.hideKeyboard() {
     view?.let { activity?.hideKeyboard(it) }
 }

@@ -52,18 +52,13 @@ class RecordsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadRecordsList()
+        recordsViewModel.loadRecords()
 
         setupMainToolbar()
         setupAdapter()
-        subscribeUi()
         setupSnackbar()
+        setupObservers()
         setupClickListeners()
-    }
-
-    private fun loadRecordsList() {
-//        showProgress()
-        recordsViewModel.loadRecords()
     }
 
     private fun showAllRecordsDeleteDialog() {
@@ -123,24 +118,11 @@ class RecordsFragment : BaseFragment() {
                     RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(null)
                 )
             }
-
-/*            drawerMenu.setOnClickListener {
-                activity?.findViewById<DrawerLayout>(R.id.drawer_layout)?.apply {
-                    openDrawer(GravityCompat.START)
-                }
-            }
-
-            removeAllRecordsButton.setOnClickListener {
-                showAllRecordsDeleteDialog()
-            }
-
-            removeSelectedRecordsButton.setOnClickListener {
-                recordsAdapter.removeRecords()
-            }*/
         }
     }
 
-    private fun subscribeUi() {
+    private fun setupObservers() {
+
         recordsViewModel.apply {
             selectableMode.observe(viewLifecycleOwner, {
                 recordsAdapter.setSelectionMode(it)
@@ -164,12 +146,14 @@ class RecordsFragment : BaseFragment() {
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.action_records_search -> {
-                        // Save profile changes
                         view?.showToast("Show search input")
+
                         true
                     }
                     R.id.action_records_filter -> {
-                        // Save profile changes
+                        val filterButton = toolbar.findViewById<View>(R.id.action_records_filter)
+                        filterButton.rotateBy(180f, 500)
+
                         recordsViewModel.switchRecordsOrder()
                         true
                     }
@@ -196,12 +180,10 @@ class RecordsFragment : BaseFragment() {
             toolbar.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.action_records_delete -> {
-                        // Navigate to settings screen
                         recordsAdapter.removeRecords()
                         true
                     }
                     R.id.action_all_records_delete -> {
-                        // Save profile changes
                         showAllRecordsDeleteDialog()
                         true
                     }
@@ -210,39 +192,4 @@ class RecordsFragment : BaseFragment() {
             }
         }
     }
-
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when (item.itemId) {
-//            R.id.remove_records -> recordsViewModel.clearRecords()
-////            R.id.action_translate -> Toast.makeText(activity, "Text was translated", Toast.LENGTH_LONG).show()
-//        }
-//        return true
-//    }
-//
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.records_editor_menu, menu)
-////        inflater.inflate(R.menu.record_item_menu, menu)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
-
-/*    override fun onCreateContextMenu(menu: ContextMenu?, v: View?,
-                                     menuInfo: ContextMenu.ContextMenuInfo?) {
-        activity?.menuInflater?.inflate(R.menu.menu_yours, menu)
-    }
-
-    override fun onContextItemSelected(item: MenuItem?): Boolean {
-        super.onContextItemSelected(item)
-        when (item?.itemId) {
-            R.id.action_your -> yourAction(selectedItemId, selectedItemTitle)
-                ...
-        }
-        return true
-    }*/
-
-//    override fun onContextMenuClick(view: View, id: Long, title: String) {
-//        // Here we accept item id, title from adapter and show context menu.
-////        selectedItemId = id
-////        selectedItemTitle = title
-//        view.showContextMenu()
-//    }
 }

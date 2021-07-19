@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -40,6 +41,7 @@
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    tools:text="Title"
                     app:layout_constraintEnd_toStartOf="@+id/date"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +56,7 @@
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="14sp"
+                    tools:text="Description"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.207"
@@ -65,6 +68,7 @@
                     android:layout_width="50dp"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
+                    tools:text="Date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/header"

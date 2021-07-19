@@ -25,4 +25,13 @@
     <color name="shrine_pink_100">#FF018786</color>
     <color name="shrine_pink_light">#FF000000</color>
     <color name="shrine_pink_900">#FFFFFFFF</color>
+
+    <color name="add_fragment_bg_color">#B6CFE3</color>
+
+    <string-array name="add_record_bg_colors">
+        <item>#B6CFE3</item>
+        <item>#FFFFF7AF</item>
+        <item>#FF97D6D0</item>
+        <item>#FFDCBFE1</item>
+    </string-array>
 </resources>

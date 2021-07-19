@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -48,7 +49,20 @@
                     app:layout_collapseMode="pin"
                     android:fitsSystemWindows="true"
                     android:theme="@style/Toolbar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                    <!--<EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:lines="1"
+                        android:selectAllOnFocus="true"
+                        android:inputType="textCapWords"
+                        android:imeOptions="actionSearch"
+                        android:hint="Search"
+                        android:textAppearance="?attr/textAppearanceSubtitle1"/>-->
+
+                </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
@@ -76,7 +90,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:records="@{viewModel.records}"
-                    app:showIfSuccess="@{viewModel.status}" />
+                    app:showIfSuccess="@{viewModel.status}"
+                    tools:listitem="@layout/record_item" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

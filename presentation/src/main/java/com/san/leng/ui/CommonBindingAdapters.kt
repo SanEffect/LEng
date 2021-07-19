@@ -1,5 +1,6 @@
 package com.san.leng.ui
 
+import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -11,6 +12,7 @@ import com.san.leng.core.extensions.invisible
 import com.san.leng.core.extensions.visible
 import com.san.leng.core.utils.convertLongToDate
 import com.san.leng.ui.records.RecordsAdapter
+import timber.log.Timber
 
 
 /**
@@ -60,6 +62,11 @@ fun bindShowIfLoading(view: View, status: CommonStatus) {
         CommonStatus.LOADING -> view.visible()
         else -> view.invisible()
     }
+}
+
+@BindingAdapter("bgColor")
+fun bindBgColor(view: View, hex: String) {
+    view.setBackgroundColor(Color.parseColor(hex))
 }
 
 

@@ -2,13 +2,18 @@ package com.san.leng.ui.records.addeditrecord
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.san.leng.R
 import com.san.leng.core.extensions.*
@@ -57,6 +62,7 @@ class AddEditRecordFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupView()
+        setupAdapter()
         setupSnackbar()
         setupObservers()
         setupClickListeners()
@@ -71,6 +77,32 @@ class AddEditRecordFragment : BaseFragment() {
 //            .build()
     }
 
+    private fun setupAdapter() {
+        binding.apply {
+
+            val onClick = object : BackgroundPickerAdapter.BgViewClick {
+                override fun onClick(selectedColor: String) {
+                    addFragmentContainer.setBackgroundColor(Color.parseColor(selectedColor))
+                }
+            }
+
+            val colors: Array<String> = requireContext().resources.getStringArray(R.array.add_record_bg_colors)
+
+            val adapter = BackgroundPickerAdapter(onClick)
+            adapter.submitBackgroundList(colors.toMutableList())
+            recordBgList.adapter = adapter
+
+            recordBgList.autoFitColumns(100)
+        }
+    }
+
+    fun RecyclerView.autoFitColumns(columnWidth: Int) {
+        val displayMetrics = this.context.resources.displayMetrics
+        val noOfColumns =
+            ((displayMetrics.widthPixels / displayMetrics.density) / columnWidth).toInt()
+        this.layoutManager = GridLayoutManager(this.context, noOfColumns)
+    }
+
     private fun setupSnackbar() {
         view?.setupSnackbar(this, addEditRecordsViewModel.snackbarText, Snackbar.LENGTH_SHORT)
     }
@@ -83,58 +115,63 @@ class AddEditRecordFragment : BaseFragment() {
                 it.getContentIfNotHandled()?.let { result ->
                     hideKeyboard()
                     findNavController().navigate(
-                        AddEditRecordFragmentDirections.actionAddEditRecordFragmentToRecordsFragment(result)
+                        AddEditRecordFragmentDirections.actionAddEditRecordFragmentToRecordsFragment(
+                            result
+                        )
                     )
                 }
             })
-
-//            snackbarText.observe(viewLifecycleOwner, {
-//                it.getContentIfNotHandled()?.let {
-////                    view?.showSnackbar(it, Snackbar.LENGTH_SHORT)
-//
-//                    view?.rootView?.findViewById<FloatingActionButton>(R.id.add_record_fab).apply {
-//                        Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).setAnchorView(this).show()
-//                    }
-//                }
-//            })
 
             wordDefinition.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let { wordDefinition ->
                     Toast.makeText(requireContext(), wordDefinition, Toast.LENGTH_SHORT).show()
                 }
             })
-
-            datePickerClicked.observe(viewLifecycleOwner, {
-                it.getContentIfNotHandled()?.let {
-
-                    val cal = Calendar.getInstance()
-                    val y = cal.get(Calendar.YEAR)
-                    val m = cal.get(Calendar.MONTH)
-                    val d = cal.get(Calendar.DAY_OF_MONTH)
-
-                    val datePickerDialog =
-                        DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
-
-
-
-                            addEditRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
-                        }, y, m, d)
-
-                    datePickerDialog.show()
-                }
-            })
         }
     }
 
+    private var isExpanded = true
+
     private fun setupClickListeners() {
 
-        binding.recordText.setOnClickListener {
+        binding.apply {
 
-            val editText = binding.recordText
-            clickedWord = editText.getClickedWord()
+            recordText.setOnClickListener {
 
-            clickedWord?.let { editText.setHighlight(clickedWord) }
+                val editText = binding.recordText
+                clickedWord = editText.getClickedWord()
+
+                clickedWord?.let { editText.setHighlight(clickedWord) }
+            }
+
+            recordBgPicker.setOnClickListener {
+
+                val autoTransition = AutoTransition()
+                autoTransition.duration = 300
+
+                TransitionManager.beginDelayedTransition(backgroundPicker, autoTransition)
+
+                bgContainer.setVisibility(isExpanded)
+                isExpanded = !isExpanded
+            }
+
+            datePicker.setOnClickListener { showDatePicker() }
         }
+    }
+
+    private fun showDatePicker() {
+        val cal = Calendar.getInstance()
+        val y = cal.get(Calendar.YEAR)
+        val m = cal.get(Calendar.MONTH)
+        val d = cal.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog =
+            DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
+
+                addEditRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
+            }, y, m, d)
+
+        datePickerDialog.show()
     }
 
     override fun onCreateContextMenu(

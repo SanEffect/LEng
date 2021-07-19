@@ -37,9 +37,6 @@ class AddEditRecordViewModel @Inject constructor(
     private val _saveRecordComplete = MutableLiveData<Event<Int>>()
     val saveRecordComplete: LiveData<Event<Int>> = _saveRecordComplete
 
-    private val _datePickerClicked = MutableLiveData<Event<Boolean>>()
-    val datePickerClicked: LiveData<Event<Boolean>> = _datePickerClicked
-
     private val _wordDefinition = MutableLiveData<Event<String>>()
     val wordDefinition: LiveData<Event<String>> = _wordDefinition
 
@@ -130,10 +127,6 @@ class AddEditRecordViewModel @Inject constructor(
         }
     }
 
-    fun datePickerClicked() {
-        _datePickerClicked.value = Event(true)
-    }
-
     fun setDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
 
         val calendar: Calendar =
@@ -143,4 +136,12 @@ class AddEditRecordViewModel @Inject constructor(
 
         recordDate.value = convertLongToDate(dateInMillis)
     }
+
+    fun loadBackgrounds(): LiveData<String> {
+        return liveData {
+            ""
+        }
+    }
+
+
 }
