@@ -29,7 +29,11 @@
         tools:layout="@layout/fragment_records">
         <action
             android:id="@+id/action_recordsFragment_to_addEditRecordFragment"
-            app:destination="@id/add_edit_record_fragment" />
+            app:destination="@id/add_edit_record_fragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
         <argument
             android:name="userMessage"
             app:argType="integer"
@@ -42,9 +46,17 @@
         tools:layout="@layout/fragment_add_record">
         <action
             android:id="@+id/action_addEditRecordFragment_to_recordsFragment"
-            app:destination="@id/records_fragment" />
+            app:destination="@id/records_fragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <argument
             android:name="recordId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="backgroundColor"
             app:argType="string"
             app:nullable="true" />
     </fragment>

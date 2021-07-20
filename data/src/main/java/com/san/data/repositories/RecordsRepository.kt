@@ -50,10 +50,41 @@ class RecordsRepository @Inject constructor(
         }
     }
 
-    private inline fun cacheAndPerform(record: RecordEntity, perform: (RecordEntity) -> Unit) {
-        val cachedRecord = cacheRecord(record)
-        perform(cachedRecord)
+    override suspend fun getById(id: String, forceUpdate: Boolean): Result<RecordEntity?> {
+
+        return withContext(ioDispatcher) {
+            // Respond immediately with cache if available
+            if (!forceUpdate) {
+                getRecordWithId(id)?.let {
+                    return@withContext Success(it)
+                }
+            }
+
+            val newRecord = recordsLocalDataSource.getById(id)
+
+            // Refresh the cache with the new tasks
+            (newRecord as? Success)?.let { cacheRecord(it.data!!) }
+
+            return@withContext newRecord
+        }
+
+//        cachedRecords?.let {
+//            if(it.containsKey(id)) return Success(it[id])
+//        }
+//
+//        when(val result = recordsLocalDataSource.getById(id)) {
+//            is Success -> {
+//                cacheAndPerform(result.data!!) {
+//                    return@cacheAndPerform result
+//                }
+//            }
+//            is Error -> {}
+//        }
+
+//        return recordsLocalDataSource.getById(id)
     }
+
+    private fun getRecordWithId(recordId: String) = cachedRecords?.get(recordId)
 
     override suspend fun refreshRecords() {
         TODO("Not yet implemented")
@@ -62,14 +93,14 @@ class RecordsRepository @Inject constructor(
     override suspend fun getLastRecord(): Result<RecordEntity?> =
         recordsLocalDataSource.getLastRecord()
 
-    override suspend fun saveRecord(record: RecordEntity): Result<Unit> =
-        recordsLocalDataSource.saveRecord(record)
+    override suspend fun saveRecord(record: RecordEntity) {
+        cacheAndPerform(record) {
+            recordsLocalDataSource.saveRecord(record)
+        }
+    }
 
     override suspend fun update(record: RecordEntity): Result<Unit> =
         recordsLocalDataSource.update(record)
-
-    override suspend fun getById(id: String): Result<RecordEntity?> =
-        recordsLocalDataSource.getById(id)
 
     override suspend fun getRecordsCount() = recordsLocalDataSource.getRecordsCount()
 
@@ -96,6 +127,11 @@ class RecordsRepository @Inject constructor(
         }
     }
 
+    private inline fun cacheAndPerform(record: RecordEntity, perform: (RecordEntity) -> Unit) {
+        val cachedRecord = cacheRecord(record)
+        perform(cachedRecord)
+    }
+
     private fun cacheRecord(record: RecordEntity): RecordEntity {
         // Create if it doesn't exist.
         if (cachedRecords == null) {
@@ -107,6 +143,8 @@ class RecordsRepository @Inject constructor(
             record.description,
             record.creationDate,
             record.isDeleted,
+            record.isDraft,
+            record.backgroundColor,
             record.id
         )
         cachedRecords?.put(cachedRecord.id, cachedRecord)

@@ -50,13 +50,12 @@ class RecordsViewModel @Inject constructor(
             is Success -> {
                 val records = result.data
 
-                if (records.isEmpty()) {
-                    _status.value = CommonStatus.EMPTY
-                    return@launch
-                }
+                _status.value = if (records.isEmpty())
+                    CommonStatus.EMPTY
+                else
+                    CommonStatus.SUCCESS
 
                 _records.value = records
-                _status.value = CommonStatus.SUCCESS
             }
             is Error -> {
                 _status.value = CommonStatus.ERROR

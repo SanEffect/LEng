@@ -30,6 +30,8 @@ class RecordsFragment : BaseFragment() {
 
     private lateinit var recordsAdapter: RecordsAdapter
 
+    private var filterIsRotated = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         appComponent.inject(this)
@@ -85,7 +87,8 @@ class RecordsFragment : BaseFragment() {
 
                 findNavController().navigate(
                     RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(
-                        recordEntity.id
+                        recordEntity.id,
+                        recordEntity.backgroundColor
                     )
                 )
             }
@@ -115,7 +118,10 @@ class RecordsFragment : BaseFragment() {
 
             addRecordFab.setOnClickListener {
                 findNavController().navigate(
-                    RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(null)
+                    RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(
+                        null,
+                        null
+                    )
                 )
             }
         }
@@ -152,7 +158,10 @@ class RecordsFragment : BaseFragment() {
                     }
                     R.id.action_records_filter -> {
                         val filterButton = toolbar.findViewById<View>(R.id.action_records_filter)
-                        filterButton.rotateBy(180f, 500)
+//                        filterButton.rotateBy(180f, 500)
+
+                        filterIsRotated = !filterIsRotated
+                        filterButton.rotation = if (filterIsRotated) 180f else 0f
 
                         recordsViewModel.switchRecordsOrder()
                         true

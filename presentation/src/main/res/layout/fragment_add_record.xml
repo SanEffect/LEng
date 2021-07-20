@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel" />
@@ -21,19 +20,19 @@
             android:layout_height="match_parent"
             android:padding="8dp"
             android:background="@color/add_fragment_bg_color"
+            app:containerBackground="@{viewModel.backgroundColor}"
             tools:context=".records.add_record.AddRecordFragment">
 
             <TextView
                 android:id="@+id/record_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.recordDate}"
+                app:recordDate="@{viewModel.creationDate}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="08.07.21" />
+                tools:text="07.07.21" />
 
             <ImageView
-                android:id="@+id/date_picker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_drop_down"

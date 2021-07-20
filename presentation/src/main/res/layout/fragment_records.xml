@@ -20,35 +20,35 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/home_city_info_height"
             android:fitsSystemWindows="true"
-            app:elevation="0dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark" >
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            app:elevation="0dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:fitsSystemWindows="true"
+                android:layout_height="wrap_content"
                 android:background="@drawable/collapsing_toolbar_gradient"
+                android:fitsSystemWindows="true"
                 app:contentScrim="@color/white"
-                app:toolbarId="@+id/toolbar" >
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:toolbarId="@+id/toolbar">
 
                 <ImageView
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:layout_collapseMode="parallax"
                     android:background="@drawable/logo_no_fill"
                     android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:layout_collapseMode="parallax" />
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
                     android:fitsSystemWindows="true"
                     android:theme="@style/Toolbar"
+                    app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
                     <!--<EditText
@@ -75,7 +75,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/record_list"
@@ -97,16 +97,23 @@
 
         </androidx.core.widget.NestedScrollView>
 
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:showIfLoading="@{viewModel.status}" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_record_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
             android:layout_marginBottom="16dp"
             android:clickable="true"
             android:focusable="true"
             app:layout_anchorGravity="bottom"
-            android:layout_gravity="bottom|center"
-            app:srcCompat="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add"
+            android:contentDescription="TODO" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

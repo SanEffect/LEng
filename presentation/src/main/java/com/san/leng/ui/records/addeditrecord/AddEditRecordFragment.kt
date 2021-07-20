@@ -1,6 +1,5 @@
 package com.san.leng.ui.records.addeditrecord
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -12,8 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
 import com.san.leng.R
 import com.san.leng.core.extensions.*
@@ -33,7 +31,9 @@ class AddEditRecordFragment : BaseFragment() {
 
     private var clickedWord: String? = null
 
-//    private lateinit var datePicker: MaterialDatePicker<Long>
+    private lateinit var datePicker: MaterialDatePicker<Long>
+
+    private var bgPickerIsExpanded = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -67,14 +67,18 @@ class AddEditRecordFragment : BaseFragment() {
         setupObservers()
         setupClickListeners()
 
-        addEditRecordsViewModel.init(args.recordId)
+        addEditRecordsViewModel.init(args.recordId, args.backgroundColor)
     }
 
     private fun setupView() {
-//        datePicker = MaterialDatePicker.Builder.datePicker()
-//            .setTitleText("Select date")
-//            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-//            .build()
+        datePicker = MaterialDatePicker.Builder.datePicker()
+            .setTitleText("Select date")
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
+
+        datePicker.addOnPositiveButtonClickListener {
+            addEditRecordsViewModel.setDate(it)
+        }
     }
 
     private fun setupAdapter() {
@@ -82,25 +86,19 @@ class AddEditRecordFragment : BaseFragment() {
 
             val onClick = object : BackgroundPickerAdapter.BgViewClick {
                 override fun onClick(selectedColor: String) {
-                    addFragmentContainer.setBackgroundColor(Color.parseColor(selectedColor))
+                    addEditRecordsViewModel.setBackgroundColor(selectedColor)
                 }
             }
 
-            val colors: Array<String> = requireContext().resources.getStringArray(R.array.add_record_bg_colors)
+            val colors: Array<String> =
+                requireContext().resources.getStringArray(R.array.add_record_bg_colors)
 
             val adapter = BackgroundPickerAdapter(onClick)
-            adapter.submitBackgroundList(colors.toMutableList())
             recordBgList.adapter = adapter
+            adapter.submitBackgroundList(colors.toMutableList())
 
-            recordBgList.autoFitColumns(100)
+            recordBgList.autoFitColumns(80)
         }
-    }
-
-    fun RecyclerView.autoFitColumns(columnWidth: Int) {
-        val displayMetrics = this.context.resources.displayMetrics
-        val noOfColumns =
-            ((displayMetrics.widthPixels / displayMetrics.density) / columnWidth).toInt()
-        this.layoutManager = GridLayoutManager(this.context, noOfColumns)
     }
 
     private fun setupSnackbar() {
@@ -130,8 +128,6 @@ class AddEditRecordFragment : BaseFragment() {
         }
     }
 
-    private var isExpanded = true
-
     private fun setupClickListeners() {
 
         binding.apply {
@@ -146,32 +142,19 @@ class AddEditRecordFragment : BaseFragment() {
 
             recordBgPicker.setOnClickListener {
 
+                hideKeyboard()
+
                 val autoTransition = AutoTransition()
                 autoTransition.duration = 300
 
                 TransitionManager.beginDelayedTransition(backgroundPicker, autoTransition)
 
-                bgContainer.setVisibility(isExpanded)
-                isExpanded = !isExpanded
+                bgPickerIsExpanded = !bgPickerIsExpanded
+                bgContainer.setVisibility(bgPickerIsExpanded)
             }
 
-            datePicker.setOnClickListener { showDatePicker() }
+            recordDate.setOnClickListener { datePicker.show(childFragmentManager, "AddFragment") }
         }
-    }
-
-    private fun showDatePicker() {
-        val cal = Calendar.getInstance()
-        val y = cal.get(Calendar.YEAR)
-        val m = cal.get(Calendar.MONTH)
-        val d = cal.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog =
-            DatePickerDialog(requireContext(), { view, year, monthOfYear, dayOfMonth ->
-
-                addEditRecordsViewModel.setDate(year, monthOfYear, dayOfMonth)
-            }, y, m, d)
-
-        datePickerDialog.show()
     }
 
     override fun onCreateContextMenu(

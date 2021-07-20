@@ -10,9 +10,8 @@ import com.san.domain.usecases.records.SaveRecordUseCase
 import com.san.leng.R
 import com.san.leng.core.Constants
 import com.san.leng.core.Event
-import com.san.leng.core.utils.convertDateToLong
-import com.san.leng.core.utils.convertLongToDate
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -24,15 +23,11 @@ class AddEditRecordViewModel @Inject constructor(
 
     val title = MutableLiveData<String>()
     val description = MutableLiveData<String>()
-    val recordDate = MutableLiveData<String>()
-    var dateInMillis: Long = System.currentTimeMillis()
+    val backgroundColor = MutableLiveData<String>()
+    val creationDate = MutableLiveData(System.currentTimeMillis())
 
-//    private val _dataLoading = MutableLiveData<Boolean>()
-//    val dataLoading: LiveData<Boolean> = _dataLoading
-
-    init {
-        recordDate.value = convertLongToDate(dateInMillis)
-    }
+    private val _dataLoading = MutableLiveData<Boolean>()
+    val dataLoading: LiveData<Boolean> = _dataLoading
 
     private val _saveRecordComplete = MutableLiveData<Event<Int>>()
     val saveRecordComplete: LiveData<Event<Int>> = _saveRecordComplete
@@ -47,7 +42,8 @@ class AddEditRecordViewModel @Inject constructor(
 
     private var isNewRecord: Boolean = false
 
-    fun init(recordId: String?) {
+    fun init(recordId: String?, backgroundColor: String?) {
+        if (_dataLoading.value == true) return
 
         this.recordId = recordId
         if (recordId == null) {
@@ -55,9 +51,14 @@ class AddEditRecordViewModel @Inject constructor(
             return
         }
 
+        backgroundColor?.let {
+            setBackgroundColor(it)
+        }
+
         isNewRecord = false
+        _dataLoading.value = true
         viewModelScope.launch {
-            getRecordUseCase(GetRecordUseCase.Params(recordId)).let {
+            getRecordUseCase(GetRecordUseCase.Params(recordId, false)).let {
                 when (it) {
                     is Success -> onRecordLoaded(it.data)
                     is Error -> {
@@ -69,11 +70,14 @@ class AddEditRecordViewModel @Inject constructor(
     }
 
     private fun onRecordLoaded(recordEntity: RecordEntity?) {
+
         recordEntity?.let {
             title.value = it.title
             description.value = it.description
-            recordDate.value = convertLongToDate(it.creationDate)
+            creationDate.value = it.creationDate
         }
+
+        _dataLoading.value = false
     }
 
     fun saveRecord() {
@@ -86,15 +90,26 @@ class AddEditRecordViewModel @Inject constructor(
         }
 
         if (isNewRecord && recordId == null) {
-            createRecord(RecordEntity(currentTitle, currentDescription, dateInMillis, false))
+            createRecord(
+                RecordEntity(
+                    currentTitle,
+                    currentDescription,
+                    creationDate.value!!,
+                    isDeleted = false,
+                    isDraft = false,
+                    backgroundColor = backgroundColor.value
+                )
+            )
         } else {
             updateRecord(
                 RecordEntity(
                     currentTitle,
                     currentDescription,
-                    dateInMillis,
-                    false,
-                    recordId!!
+                    creationDate.value!!,
+                    isDeleted = false,
+                    isDraft = false,
+                    backgroundColor = backgroundColor.value,
+                    id = recordId!!
                 )
             )
         }
@@ -127,14 +142,17 @@ class AddEditRecordViewModel @Inject constructor(
         }
     }
 
-    fun setDate(year: Int, monthOfYear: Int, dayOfMonth: Int) {
+    fun setBackgroundColor(value: String) {
+        backgroundColor.value = value
+    }
 
-        val calendar: Calendar =
-            GregorianCalendar(year, monthOfYear, dayOfMonth)
+    fun setDate(value: Long) {
+        creationDate.value = value
+//        creationDate.value = outputDateFormat.format(value)
+    }
 
-        dateInMillis = calendar.timeInMillis
-
-        recordDate.value = convertLongToDate(dateInMillis)
+    private val outputDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).apply {
+        timeZone = TimeZone.getTimeZone("UTC")
     }
 
     fun loadBackgrounds(): LiveData<String> {

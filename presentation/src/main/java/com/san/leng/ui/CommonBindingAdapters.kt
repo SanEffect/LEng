@@ -2,17 +2,10 @@ package com.san.leng.ui
 
 import android.graphics.Color
 import android.view.View
-import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.san.domain.entities.RecordEntity
-import com.san.leng.R
 import com.san.leng.core.enums.CommonStatus
 import com.san.leng.core.extensions.invisible
 import com.san.leng.core.extensions.visible
-import com.san.leng.core.utils.convertLongToDate
-import com.san.leng.ui.records.RecordsAdapter
-import timber.log.Timber
 
 
 /**
@@ -34,7 +27,7 @@ fun bindIsGone(view: View, isGone: Boolean) {
 
 @BindingAdapter("showIfEmpty")
 fun bindShowIfEmpty(view: View, status: CommonStatus) {
-    when(status) {
+    when (status) {
         CommonStatus.EMPTY -> view.visible()
         else -> view.invisible()
     }
@@ -42,7 +35,7 @@ fun bindShowIfEmpty(view: View, status: CommonStatus) {
 
 @BindingAdapter("showIfError")
 fun bindShowIfError(view: View, status: CommonStatus) {
-    when(status) {
+    when (status) {
         CommonStatus.ERROR -> view.visible()
         else -> view.invisible()
     }
@@ -50,7 +43,7 @@ fun bindShowIfError(view: View, status: CommonStatus) {
 
 @BindingAdapter("showIfSuccess")
 fun bindShowIfSuccess(view: View, status: CommonStatus) {
-    when(status) {
+    when (status) {
         CommonStatus.SUCCESS -> view.visible()
         else -> view.invisible()
     }
@@ -58,7 +51,7 @@ fun bindShowIfSuccess(view: View, status: CommonStatus) {
 
 @BindingAdapter("showIfLoading")
 fun bindShowIfLoading(view: View, status: CommonStatus) {
-    when(status) {
+    when (status) {
         CommonStatus.LOADING -> view.visible()
         else -> view.invisible()
     }
