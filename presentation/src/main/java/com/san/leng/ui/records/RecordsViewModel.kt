@@ -3,7 +3,7 @@ package com.san.leng.ui.records
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.san.domain.Result.Error
+import com.san.domain.Result.Failure
 import com.san.domain.Result.Success
 import com.san.domain.entities.RecordEntity
 import com.san.domain.usecases.records.DeleteRecordsUseCase
@@ -57,7 +57,7 @@ class RecordsViewModel @Inject constructor(
 
                 _records.value = records
             }
-            is Error -> {
+            is Failure -> {
                 _status.value = CommonStatus.ERROR
                 showSnackbarMessage(R.string.failure_load_records)
             }

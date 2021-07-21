@@ -3,12 +3,9 @@ package com.san.data.sources.local
 import com.san.data.dataAccessObjects.WordsDao
 import com.san.data.extensions.doQuery
 import com.san.domain.Result
-import com.san.domain.Result.Error
-import com.san.domain.Result.Success
 import com.san.domain.entities.WordEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WordsLocalDataSource @Inject constructor(
@@ -17,17 +14,14 @@ class WordsLocalDataSource @Inject constructor(
 ) : IWordsLocalDataSource {
 
     override suspend fun saveWord(wordEntity: WordEntity): Result<Unit> =
-        withContext(ioDispatcher) {
-            try {
-                Success(wordsDao.insert(wordEntity))
-            } catch (e: Exception) {
-                Error(e)
-            }
+        doQuery(ioDispatcher) {
+            wordsDao.insert(wordEntity)
         }
 
     override suspend fun getWordByName(word: String): Result<WordEntity?> =
-        doQuery(ioDispatcher) { wordsDao.getWordByName(word) }
-
+        doQuery(ioDispatcher) {
+            wordsDao.getWordByName(word)
+        }
 
 /*    override suspend fun getWordByName(word: String): Result<WordEntity> =
         withContext(ioDispatcher) {

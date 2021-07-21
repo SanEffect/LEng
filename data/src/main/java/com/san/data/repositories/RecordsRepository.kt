@@ -3,7 +3,7 @@ package com.san.data.repositories
 import com.san.data.extensions.performIfSuccess
 import com.san.data.sources.local.IRecordsLocalDataSource
 import com.san.domain.Result
-import com.san.domain.Result.Error
+import com.san.domain.Result.Failure
 import com.san.domain.Result.Success
 import com.san.domain.entities.RecordEntity
 import com.san.domain.repositories.IRecordsRepository
@@ -43,7 +43,7 @@ class RecordsRepository @Inject constructor(
             cachedRecords?.values?.let { records ->
                 return@withContext Success(records.sortedByDescending { it.creationDate })
             }
-            return@withContext Error(Exception("Illegal state"))
+            return@withContext Failure(Exception("Illegal state"))
         }
     }
 
@@ -74,8 +74,8 @@ class RecordsRepository @Inject constructor(
     override suspend fun getLastRecord(): Result<RecordEntity?> =
         recordsLocalDataSource.getLastRecord()
 
-    override suspend fun saveRecord(record: RecordEntity) {
-        cacheAndPerform(record) {
+    override suspend fun saveRecord(record: RecordEntity): Result<Unit> {
+        return cacheAndPerform(record) {
             recordsLocalDataSource.saveRecord(record)
         }
     }
@@ -106,16 +106,29 @@ class RecordsRepository @Inject constructor(
     override suspend fun getWordsCount(): Result<Long> = recordsLocalDataSource.getWordsCount()
 
     private fun refreshCache(records: List<RecordEntity>) {
-        cachedRecords?.clear()
-        records.sortedBy { it.id }.forEach {
-            cacheAndPerform(it) {}
+        cachedRecords?.apply {
+            clear()
+            records
+                .sortedBy { it.creationDate }
+                .forEach { put(it.id, it) }
         }
     }
 
-    private inline fun cacheAndPerform(record: RecordEntity, perform: (RecordEntity) -> Unit) {
+    private suspend fun <Type> cacheAndPerform(
+        record: RecordEntity,
+        performs: suspend (RecordEntity) -> Result<Type>
+    ): Result<Type> {
         val cachedRecord = cacheRecord(record)
-        perform(cachedRecord)
+
+        return withContext(ioDispatcher) {
+            performs(cachedRecord)
+        }
     }
+
+//    private inline fun cacheAndPerform(record: RecordEntity, perform: (RecordEntity) -> Unit) {
+//        val cachedRecord = cacheRecord(record)
+//        perform(cachedRecord)
+//    }
 
     private fun cacheRecord(record: RecordEntity): RecordEntity {
         // Create if it doesn't exist.

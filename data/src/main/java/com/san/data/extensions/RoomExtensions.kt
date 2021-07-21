@@ -11,7 +11,7 @@ suspend fun <T> doQuery(
     try {
         Result.Success(fn.invoke())
     } catch (e: Exception) {
-        Result.Error(e)
+        Result.Failure(e)
     }
 }
 

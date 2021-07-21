@@ -12,7 +12,7 @@ interface IRecordsRepository {
 
     suspend fun getLastRecord(): Result<RecordEntity?>
 
-    suspend fun saveRecord(record: RecordEntity)
+    suspend fun saveRecord(record: RecordEntity): Result<Unit>
 
     suspend fun getRecordById(id: String, forceUpdate: Boolean): Result<RecordEntity?>
 

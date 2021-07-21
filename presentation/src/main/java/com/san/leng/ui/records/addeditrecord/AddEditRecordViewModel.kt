@@ -1,7 +1,6 @@
 package com.san.leng.ui.records.addeditrecord
 
 import androidx.lifecycle.*
-import com.san.domain.Result.Error
 import com.san.domain.Result.Success
 import com.san.domain.entities.RecordEntity
 import com.san.domain.usecases.dictionary.GetWordDefinitionsUseCase

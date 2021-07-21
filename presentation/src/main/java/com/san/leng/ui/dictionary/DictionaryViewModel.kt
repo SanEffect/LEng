@@ -3,7 +3,7 @@ package com.san.leng.ui.dictionary
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.san.domain.Result.Error
+import com.san.domain.Result.Failure
 import com.san.domain.Result.Success
 import com.san.domain.models.WordResponse
 import com.san.domain.usecases.dictionary.GetWordDefinitionsUseCase
@@ -54,7 +54,7 @@ class DictionaryViewModel @Inject constructor(
                 Timber.i("wordResult: $res")
 //                    wordDisplay(it.data)
             }
-            is Error -> showError(result.exception)
+            is Failure -> showError(result.exception)
             else -> showLoading()
         }
 
