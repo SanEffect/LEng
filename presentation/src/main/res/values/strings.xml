@@ -51,4 +51,5 @@
     <string name="favoritesFragment">Favorites</string>
     <string name="settings_label">Settings</string>
     <string name="add_fragment_background">Background</string>
+    <string name="select_date_label">Select date</string>
 </resources>

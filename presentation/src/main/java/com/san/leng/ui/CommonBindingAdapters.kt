@@ -25,6 +25,15 @@ fun bindIsGone(view: View, isGone: Boolean) {
     }
 }
 
+@BindingAdapter("isVisible")
+fun bindIsVisible(view: View, isVisible: Boolean) {
+    view.visibility = if (isVisible) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
+
 @BindingAdapter("showIfEmpty")
 fun bindShowIfEmpty(view: View, status: CommonStatus) {
     when (status) {

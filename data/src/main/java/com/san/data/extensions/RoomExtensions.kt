@@ -15,16 +15,9 @@ suspend fun <T> doQuery(
     }
 }
 
-
-/*
-suspend fun <T> doQuery(
-    dispatcher: CoroutineDispatcher,
-    fn: suspend () -> T
-): Either<Failure, T> = withContext(dispatcher) {
-    try {
-        Either.Success(fn.invoke())
-    } catch (e: Exception) {
-        Either.Error(Failure.CommonError(e))
+fun <Type> performIfSuccess(result: Result<Type>, perform: () -> Unit): Result<Type> {
+    if(result is Result.Success) {
+        perform()
     }
+    return result
 }
-*/

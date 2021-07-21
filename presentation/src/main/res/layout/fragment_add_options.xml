@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/options_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="@dimen/add_fragment_options_margin_start"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/bgPicker"
+            style="@style/AddRecordOptionIcons"
+            android:onClick="@{() -> viewModel.openBackgrounPicker()}"
+            android:src="@drawable/ic_background_picker"
+            app:layout_constraintEnd_toStartOf="@+id/fontPicker"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/fontPicker"
+            style="@style/AddRecordOptionIcons"
+            android:src="@drawable/ic_font_picker"
+            app:layout_constraintEnd_toStartOf="@+id/imagePicker"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/bgPicker"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imagePicker"
+            style="@style/AddRecordOptionIcons"
+            android:src="@drawable/ic_settings"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/fontPicker"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

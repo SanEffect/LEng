@@ -1,17 +1,20 @@
 package com.san.leng.ui.records.addeditrecord
 
 import android.content.Context
-import android.graphics.Color
+import android.content.res.ColorStateList
 import android.os.Bundle
-import android.transition.AutoTransition
-import android.transition.TransitionManager
 import android.view.*
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
 import com.san.leng.R
 import com.san.leng.core.extensions.*
@@ -61,18 +64,20 @@ class AddEditRecordFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupView()
+        setupOptionsStyle()
+
         setupAdapter()
         setupSnackbar()
         setupObservers()
+        setupDatePicker()
         setupClickListeners()
 
         addEditRecordsViewModel.init(args.recordId, args.backgroundColor)
     }
 
-    private fun setupView() {
+    private fun setupDatePicker() {
         datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select date")
+            .setTitleText(getString(R.string.select_date_label))
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
 
@@ -94,10 +99,10 @@ class AddEditRecordFragment : BaseFragment() {
                 requireContext().resources.getStringArray(R.array.add_record_bg_colors)
 
             val adapter = BackgroundPickerAdapter(onClick)
-            recordBgList.adapter = adapter
+            backgroundLayout.recordBgList.adapter = adapter
             adapter.submitBackgroundList(colors.toMutableList())
 
-            recordBgList.autoFitColumns(80)
+            backgroundLayout.recordBgList.autoFitColumns(80)
         }
     }
 
@@ -140,19 +145,7 @@ class AddEditRecordFragment : BaseFragment() {
                 clickedWord?.let { editText.setHighlight(clickedWord) }
             }
 
-            recordBgPicker.setOnClickListener {
-
-                hideKeyboard()
-
-                val autoTransition = AutoTransition()
-                autoTransition.duration = 300
-
-                TransitionManager.beginDelayedTransition(backgroundPicker, autoTransition)
-
-                bgPickerIsExpanded = !bgPickerIsExpanded
-                bgContainer.setVisibility(bgPickerIsExpanded)
-            }
-
+            // TODO: add checking if datePicker is already opened
             recordDate.setOnClickListener { datePicker.show(childFragmentManager, "AddFragment") }
         }
     }
@@ -186,5 +179,20 @@ class AddEditRecordFragment : BaseFragment() {
             }
             else -> super.onContextItemSelected(item)
         }
+    }
+
+    private fun setupOptionsStyle() {
+        val radius = resources.getDimension(R.dimen.add_fragment_options_top_left_corner)
+
+        val layout = binding.backgroundOptions.optionsLayout
+        val shapeAppearanceModel = ShapeAppearanceModel()
+            .toBuilder()
+            .setTopLeftCorner(CornerFamily.CUT, radius)
+            .build()
+
+        val shapeDrawable = MaterialShapeDrawable(shapeAppearanceModel)
+        shapeDrawable.fillColor =
+            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
+        ViewCompat.setBackground(layout, shapeDrawable)
     }
 }

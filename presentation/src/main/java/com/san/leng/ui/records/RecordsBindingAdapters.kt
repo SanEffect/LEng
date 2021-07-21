@@ -41,3 +41,8 @@ fun bindContainerBackground(view: View, backgroundColor: String?) {
     }
 }
 
+@BindingAdapter("app:backgroundPicker")
+fun bindBackgroundPicker(view: View, state: Boolean) {
+
+
+}

@@ -9,5 +9,9 @@
     <dimen name="home_city_info_height">260dp</dimen>
     <dimen name="ct_expandedTitleMarginEnd">64dp</dimen>
     <dimen name="ct_expandedTitleMarginStart">48dp</dimen>
-    <dimen name="add_edit_records_save_button">10sp</dimen>
+    <dimen name="add_edit_records_save_button">13sp</dimen>
+
+    <dimen name="add_fragment_options_top_left_corner">32dp</dimen>
+    <dimen name="add_fragment_options_margin_start">16dp</dimen>
+    <dimen name="add_fragment_options_icon_padding">8dp</dimen>
 </resources>

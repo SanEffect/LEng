@@ -14,9 +14,7 @@ interface IRecordsRepository {
 
     suspend fun saveRecord(record: RecordEntity)
 
-    suspend fun update(record: RecordEntity): Result<Unit>
-
-    suspend fun getById(id: String, forceUpdate: Boolean): Result<RecordEntity?>
+    suspend fun getRecordById(id: String, forceUpdate: Boolean): Result<RecordEntity?>
 
     suspend fun removeRecord(recordId: String): Result<Unit>
 

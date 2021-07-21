@@ -19,8 +19,7 @@ class WordsLocalDataSource @Inject constructor(
     override suspend fun saveWord(wordEntity: WordEntity): Result<Unit> =
         withContext(ioDispatcher) {
             try {
-                wordsDao.insert(wordEntity)
-                Success(Unit)
+                Success(wordsDao.insert(wordEntity))
             } catch (e: Exception) {
                 Error(e)
             }

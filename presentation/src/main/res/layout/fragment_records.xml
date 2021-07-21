@@ -113,6 +113,7 @@
             android:focusable="true"
             app:layout_anchorGravity="bottom"
             app:srcCompat="@drawable/ic_add"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
             android:contentDescription="TODO" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

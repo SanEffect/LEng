@@ -1,6 +1,6 @@
 package com.san.data.repositories
 
-import android.util.Log
+import com.san.data.extensions.performIfSuccess
 import com.san.data.sources.local.IRecordsLocalDataSource
 import com.san.domain.Result
 import com.san.domain.Result.Error
@@ -31,13 +31,11 @@ class RecordsRepository @Inject constructor(
 
             if (!forceUpdate) {
                 cachedRecords?.let { cachedRecords ->
-                    Log.i("RecordsRepository", "getRecords from cache ------------------------")
                     return@withContext Success(cachedRecords.values.sortedByDescending { it.creationDate })
                 }
             }
 
             val newRecords = recordsLocalDataSource.getRecords()
-            Log.i("RecordsRepository", "newRecords: $newRecords")
 
             // Refresh the cache with the new records
             (newRecords as? Success)?.let { refreshCache(it.data) }
@@ -45,13 +43,11 @@ class RecordsRepository @Inject constructor(
             cachedRecords?.values?.let { records ->
                 return@withContext Success(records.sortedByDescending { it.creationDate })
             }
-
             return@withContext Error(Exception("Illegal state"))
         }
     }
 
-    override suspend fun getById(id: String, forceUpdate: Boolean): Result<RecordEntity?> {
-
+    override suspend fun getRecordById(id: String, forceUpdate: Boolean): Result<RecordEntity?> {
         return withContext(ioDispatcher) {
             // Respond immediately with cache if available
             if (!forceUpdate) {
@@ -62,26 +58,11 @@ class RecordsRepository @Inject constructor(
 
             val newRecord = recordsLocalDataSource.getById(id)
 
-            // Refresh the cache with the new tasks
+            // Refresh the cache with the new records
             (newRecord as? Success)?.let { cacheRecord(it.data!!) }
 
             return@withContext newRecord
         }
-
-//        cachedRecords?.let {
-//            if(it.containsKey(id)) return Success(it[id])
-//        }
-//
-//        when(val result = recordsLocalDataSource.getById(id)) {
-//            is Success -> {
-//                cacheAndPerform(result.data!!) {
-//                    return@cacheAndPerform result
-//                }
-//            }
-//            is Error -> {}
-//        }
-
-//        return recordsLocalDataSource.getById(id)
     }
 
     private fun getRecordWithId(recordId: String) = cachedRecords?.get(recordId)
@@ -99,15 +80,19 @@ class RecordsRepository @Inject constructor(
         }
     }
 
-    override suspend fun update(record: RecordEntity): Result<Unit> =
-        recordsLocalDataSource.update(record)
-
     override suspend fun getRecordsCount() = recordsLocalDataSource.getRecordsCount()
 
-    override suspend fun removeRecord(recordId: String): Result<Unit> =
-        recordsLocalDataSource.removeRecord(recordId)
+    override suspend fun removeRecord(recordId: String): Result<Unit> {
+        return performIfSuccess(recordsLocalDataSource.removeRecord(recordId)) {
+            cachedRecords?.remove(recordId)
+        }
+    }
 
-    override suspend fun removeRecords(): Result<Unit> = recordsLocalDataSource.removeRecords()
+    override suspend fun removeRecords(): Result<Unit> {
+        return performIfSuccess(recordsLocalDataSource.removeRecords()) {
+            cachedRecords?.entries?.clear()
+        }
+    }
 
     override suspend fun deleteRecords(recordIds: List<String>): Result<Unit> {
 

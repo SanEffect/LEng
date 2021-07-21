@@ -26,6 +26,8 @@ class AddEditRecordViewModel @Inject constructor(
     val backgroundColor = MutableLiveData<String>()
     val creationDate = MutableLiveData(System.currentTimeMillis())
 
+    var bgPickerExpanded = MutableLiveData(false)
+
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
@@ -161,5 +163,11 @@ class AddEditRecordViewModel @Inject constructor(
         }
     }
 
+    fun openBackgrounPicker() {
+        bgPickerExpanded.value = true
+    }
 
+    fun closeBackgroundPicker() {
+        bgPickerExpanded.value = false
+    }
 }

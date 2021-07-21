@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel" />
@@ -12,14 +13,15 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:onClick="@{() -> viewModel.closeBackgroundPicker()}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="8dp"
             android:background="@color/add_fragment_bg_color"
+            android:padding="8dp"
             app:containerBackground="@{viewModel.backgroundColor}"
             tools:context=".records.add_record.AddRecordFragment">
 
@@ -27,9 +29,10 @@
                 android:id="@+id/record_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:recordDate="@{viewModel.creationDate}"
+                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:recordDate="@{viewModel.creationDate}"
                 tools:text="07.07.21" />
 
             <ImageView
@@ -37,30 +40,20 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_drop_down"
                 android:textSize="8sp"
+                android:layout_marginTop="6dp"
                 app:layout_constraintStart_toEndOf="@+id/record_date"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/record_save"
-                android:layout_width="60dp"
+                android:layout_width="70dp"
                 android:layout_height="40dp"
                 android:backgroundTint="@color/colorAccent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.App.SmallComponent"
                 android:onClick="@{() -> viewModel.saveRecord()}"
-                android:padding="0dp"
                 android:text="@string/record_save_button"
                 android:textSize="@dimen/add_edit_records_save_button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/record_bg_picker"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="8dp"
-                android:padding="0dp"
-                android:text="BG"
-                android:textSize="10sp"
-                app:layout_constraintEnd_toStartOf="@+id/record_save"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ScrollView
@@ -103,51 +96,15 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/background_picker"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+        <include
+            android:id="@+id/background_options"
+            layout="@layout/fragment_add_options"
+            app:viewModel="@{viewModel}" />
 
-            <LinearLayout
-                android:id="@+id/bg_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_constraintHeight_max="250dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="8dp"
-                    android:text="@string/add_fragment_background"
-                    android:textAlignment="center" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/record_bg_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
-                    tools:listitem="@layout/background_item" />
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/background_layout"
+            layout="@layout/fragment_add_options_bg_layout"
+            app:viewModel="@{viewModel}" />
 
     </FrameLayout>
 </layout>

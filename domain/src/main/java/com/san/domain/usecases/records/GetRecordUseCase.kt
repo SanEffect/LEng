@@ -13,5 +13,5 @@ class GetRecordUseCase @Inject constructor(
     data class Params(val recordId: String, val forceUpdate: Boolean)
 
     override suspend fun invoke(params: Params): Result<RecordEntity?> =
-        recordRepository.getById(params.recordId, params.forceUpdate)
+        recordRepository.getRecordById(params.recordId, params.forceUpdate)
 }
