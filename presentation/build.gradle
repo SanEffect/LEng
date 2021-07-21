@@ -15,7 +15,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,12 +52,10 @@ dependencies {
     implementation project(':data')
     implementation project(':domain')
 
-
-
     implementation "androidx.core:core-ktx:$version_core"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$version_kotlin_reflect"
 
     // Kotlin
     implementation "androidx.fragment:fragment-ktx:$fragmentKtx_version"
@@ -102,6 +100,8 @@ dependencies {
     // Navigation
     implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
     implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+
+    implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
 
     // Timber
     implementation "com.jakewharton.timber:timber:$timber_version"

@@ -8,19 +8,19 @@ interface IRecordsRepository {
 
     val records: Flow<List<RecordEntity>>
 
-    suspend fun getRecords(): Result<List<RecordEntity>>
+    suspend fun getRecords(forceUpdate: Boolean): Result<List<RecordEntity>>
 
     suspend fun getLastRecord(): Result<RecordEntity?>
 
     suspend fun saveRecord(record: RecordEntity): Result<Unit>
 
-    suspend fun update(record: RecordEntity): Result<Unit>
-
-    suspend fun getById(id: String): Result<RecordEntity?>
+    suspend fun getRecordById(id: String, forceUpdate: Boolean): Result<RecordEntity?>
 
     suspend fun removeRecord(recordId: String): Result<Unit>
 
     suspend fun removeRecords(): Result<Unit>
+
+    suspend fun deleteRecords(recordIds: List<String>): Result<Unit>
 
     suspend fun refreshRecords()
 

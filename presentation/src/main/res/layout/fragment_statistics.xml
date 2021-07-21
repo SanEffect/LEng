@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.san.leng.ui.dashboard.DashboardViewModel" />
+            type="com.san.leng.ui.statistics.StatisticsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

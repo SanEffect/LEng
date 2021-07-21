@@ -1,5 +1,6 @@
 package com.san.domain.usecases.records
 
+import com.san.domain.Result
 import com.san.domain.interactor.UseCase
 import com.san.domain.repositories.IRecordsRepository
 import javax.inject.Inject
@@ -10,5 +11,5 @@ class RemoveRecordUseCase @Inject constructor(
 
     data class Params(val recordId: String)
 
-    override suspend fun invoke(params: Params) = recordsRepository.removeRecord(params.recordId)
+    override suspend fun invoke(params: Params): Result<Unit> = recordsRepository.removeRecord(params.recordId)
 }

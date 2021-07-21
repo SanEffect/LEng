@@ -4,6 +4,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.san.domain.models.WordResult
+import com.san.leng.R
 import timber.log.Timber
 
 @BindingAdapter("app:wordDefinition")
@@ -19,6 +20,15 @@ fun bindWordDefinition(textView: TextView, wordResult: WordResult?) {
 //        Timber.i("defs: $defs")
 //        textView.text = defs
 //    }
+}
+
+
+@BindingAdapter("app:wordValue")
+fun bindWordValue(textView: TextView, value: String?) {
+    value?.let {
+        val resources = textView.context.resources
+        textView.text = resources.getString(R.string.word_value, value)
+    }
 }
 
 @BindingAdapter("app:wordSynonyms")

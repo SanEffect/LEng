@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboard_fragment">
+    app:startDestination="@id/records_fragment">
 
     <fragment
-        android:id="@+id/dashboard_fragment"
-        android:name="com.san.leng.ui.dashboard.DashboardFragment"
-        android:label="MainFragment"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/statistics_fragment"
+        android:name="com.san.leng.ui.statistics.StatisticsFragment"
+        android:label="StatisticsFragment"
+        tools:layout="@layout/fragment_statistics" />
 
     <fragment
         android:id="@+id/useful_info_fragment"
@@ -29,7 +29,11 @@
         tools:layout="@layout/fragment_records">
         <action
             android:id="@+id/action_recordsFragment_to_addEditRecordFragment"
-            app:destination="@id/add_edit_record_fragment" />
+            app:destination="@id/add_edit_record_fragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
         <argument
             android:name="userMessage"
             app:argType="integer"
@@ -42,9 +46,17 @@
         tools:layout="@layout/fragment_add_record">
         <action
             android:id="@+id/action_addEditRecordFragment_to_recordsFragment"
-            app:destination="@id/records_fragment" />
+            app:destination="@id/records_fragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/slide_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <argument
             android:name="recordId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="backgroundColor"
             app:argType="string"
             app:nullable="true" />
     </fragment>

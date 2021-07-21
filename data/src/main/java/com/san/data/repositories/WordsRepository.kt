@@ -3,7 +3,7 @@ package com.san.data.repositories
 import com.san.data.sources.local.IWordsLocalDataSource
 import com.san.data.sources.remote.IWordsRemoteDataSource
 import com.san.domain.Result
-import com.san.domain.Result.Error
+import com.san.domain.Result.Failure
 import com.san.domain.Result.Success
 import com.san.domain.entities.WordEntity
 import com.san.domain.models.WordDefinitions
@@ -25,7 +25,7 @@ class WordsRepository @Inject constructor(
         // TODO: fix it
         return when (val result = wordsLocalDataSource.getWordByName(word)) {
             is Success -> Success(result.data?.toDomain())
-            is Error -> wordsRemoteDataSource.getWord(word)
+            is Failure -> wordsRemoteDataSource.getWord(word)
         }
     }
 

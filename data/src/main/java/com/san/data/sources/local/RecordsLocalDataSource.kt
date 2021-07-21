@@ -63,6 +63,11 @@ class RecordsLocalDataSource @Inject constructor(
             recordsDao.clear()
         }
 
+    override suspend fun deleteRecords(recordIds: List<String>): Result<Unit> =
+        doQuery(ioDispatcher) {
+            recordsDao.deleteRecords(recordIds)
+        }
+
     override suspend fun getWordsCount(): Result<Long> =
         doQuery(ioDispatcher) {
             recordsDao.getWordsCount()

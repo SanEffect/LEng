@@ -16,6 +16,12 @@ interface RecordsDao {
     suspend fun get(key: String): RecordEntity
 
     @Query("DELETE FROM records WHERE id = :key")
+    suspend fun deleteRecord(key: String)
+
+    @Query("DELETE FROM records WHERE id IN (:ids)")
+    suspend fun deleteRecords(ids: List<String>)
+
+    @Query("UPDATE records SET is_deleted = 1 WHERE id = :key")
     suspend fun removeRecord(key: String)
 
     @Query("DELETE FROM records")
@@ -33,7 +39,6 @@ interface RecordsDao {
     @Query("SELECT sum(length(trim(text))) + sum(length(trim(title))) FROM records")
     suspend fun getLettersCount(): Long
 
-    // TODO: fix to count both fields title and text
     @Query(
         "SELECT CASE WHEN length(text) >= 1 " +
                 "THEN sum(length(title) - length(replace(title, ' ', '')) + 1) + sum(length(text) - length(replace(text, ' ', '')) + 1)" +

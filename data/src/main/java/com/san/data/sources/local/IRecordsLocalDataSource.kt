@@ -24,6 +24,8 @@ interface IRecordsLocalDataSource {
 
     suspend fun removeRecord(recordId: String): Result<Unit>
 
+    suspend fun deleteRecords(recordIds: List<String>): Result<Unit>
+
     suspend fun removeRecords(): Result<Unit>
 
     suspend fun getWordsCount(): Result<Long>

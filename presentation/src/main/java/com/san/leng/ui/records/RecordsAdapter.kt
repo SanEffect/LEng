@@ -1,6 +1,8 @@
 package com.san.leng.ui.records
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -10,28 +12,23 @@ import com.san.leng.databinding.RecordItemBinding
 import timber.log.Timber
 
 class RecordsAdapter(
-    private val contextMenuListener: RecordContextMenuListener,
     private val clickListener: RecordViewClick,
+    private val removeListener: RecordsRemoveListener
 ) : ListAdapter<RecordEntity, RecordsAdapter.RecordViewHolder>(DiffCallback) {
 
     private var recordsList: MutableList<RecordEntity> = mutableListOf()
 
-    class RecordViewHolder(val binding: RecordItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    private val selectedRecords = HashMap<String, View>()
 
-        fun bind(clickHandler: RecordViewClick, record: RecordEntity) {
+    private var selectionMode = false
+
+    class RecordViewHolder(
+        val binding: RecordItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(record: RecordEntity) {
             binding.record = record
-            binding.clickHandler = clickHandler
             binding.executePendingBindings()
-        }
-    }
-
-    companion object DiffCallback : DiffUtil.ItemCallback<RecordEntity>() {
-        override fun areItemsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
-            return oldItem === newItem
-        }
-
-        override fun areContentsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
-            return oldItem.id == newItem.id
         }
     }
 
@@ -44,52 +41,97 @@ class RecordsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
-//        val record = getItem(position)
         val record = recordsList[position]
-        holder.bind(clickListener, record)
+        holder.bind(record)
 
-        holder.binding.recordCard.setOnCreateContextMenuListener { contextMenu, _, _ ->
-            contextMenu.add("Edit").setOnMenuItemClickListener {
-                contextMenuListener.onEditClick()
-                Timber.i("Go to EditFragment")
-                true
+        val cardView = holder.binding.recordCard
+
+        cardView.setOnClickListener {
+
+            if (selectionMode) {
+                pickItem(it, record.id)
+                return@setOnClickListener
             }
-            contextMenu.add("Remove").setOnMenuItemClickListener {
-                removeRecord(record, position)
-                true
-            }
+
+            clickListener.onClick(record)
+        }
+
+        cardView.setOnLongClickListener {
+
+            if (!selectionMode) pickItem(it, record.id)
+
+            clickListener.onLongClick(record)
+            true
         }
     }
 
     fun submitRecordList(records: List<RecordEntity>?) {
         recordsList.clear()
+        Timber.i("records: $records")
         recordsList.addAll(records as Collection<RecordEntity>)
         notifyDataSetChanged()
     }
 
-    private fun removeRecord(record: RecordEntity, position: Int) {
-        recordsList.removeAt(position)
-        contextMenuListener.onRemoveClick(record.id)
+    private fun getSelectedRecordIds(): List<String> {
+        return selectedRecords.keys.map { it }
+    }
+
+    private fun clearSelections() {
+        selectedRecords.forEach {
+            setBackgroundColor(it.value, true)
+        }
+        selectedRecords.clear()
+    }
+
+    fun pickItem(view: View, recordId: String) {
+
+        val hasItem = selectedRecords.containsKey(recordId)
+        if (hasItem)
+            selectedRecords.remove(recordId)
+        else
+            selectedRecords[recordId] = view
+
+        setBackgroundColor(view, hasItem)
+    }
+
+    private fun setBackgroundColor(view: View, hasItem: Boolean) {
+        val color = if (!hasItem) "#9ab6e2" else "#FFFFFF"
+        view.setBackgroundColor(Color.parseColor(color))
+    }
+
+    fun setSelectionMode(state: Boolean) {
+        selectionMode = state
+
+        if (!selectionMode) clearSelections()
+    }
+
+    fun removeRecords() {
+
+        val ids = getSelectedRecordIds()
+        val records = recordsList.filter { ids.contains(it.id) }
+        recordsList.removeAll(records)
+        clearSelections()
         notifyDataSetChanged()
+
+        removeListener.onRecordsRemove(ids)
     }
 
     interface RecordViewClick {
         fun onClick(recordEntity: RecordEntity)
+        fun onLongClick(recordEntity: RecordEntity)
     }
 
-//    interface ContextMenuCallback {
-//        fun onContextMenuClick(view: View, id: Long, title: String)
-//    }
-}
+    interface RecordsRemoveListener {
+        fun onRecordsRemove(recordIds: List<String>)
+    }
 
-//class RecordListener(val clickListener: (record: RecordEntity) -> Unit) {
-//    fun onClick(record: RecordEntity) = clickListener(record)
-//}
+    companion object DiffCallback : DiffUtil.ItemCallback<RecordEntity>() {
+        override fun areItemsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
+            return oldItem === newItem
+        }
 
-class RecordContextMenuListener(
-    val editClickListener: () -> Unit,
-    val removeClickListener: (recordId: String) -> Unit
-) {
-    fun onEditClick() = editClickListener()
-    fun onRemoveClick(recordId: String) = removeClickListener(recordId)
+        override fun areContentsTheSame(oldItem: RecordEntity, newItem: RecordEntity): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
 }

@@ -75,4 +75,19 @@
         <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     </style>
 
+    <style name="Toolbar" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">4dp</item>
+    </style>
+
+    <!-- Add Record Options Style -->
+
+    <style name="AddRecordOptionIcons">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/add_fragment_options_icon_padding</item>
+    </style>
+
 </resources>

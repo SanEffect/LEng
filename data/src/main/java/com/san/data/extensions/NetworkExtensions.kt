@@ -13,7 +13,7 @@ suspend fun <T> doRequest(
         try {
             Result.Success(func.invoke().await())
         } catch (e: Exception) {
-            Result.Error(e)
+            Result.Failure(e)
         }
     }
 }

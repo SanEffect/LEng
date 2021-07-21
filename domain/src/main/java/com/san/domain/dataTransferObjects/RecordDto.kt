@@ -13,7 +13,9 @@ data class RecordDto(
     var id: String = UUID.randomUUID().toString(),
     var isDeleted: Boolean = false,
     var creationDate: Long = System.currentTimeMillis()
-) : Parcelable {
+) : Parcelable
+/*
+{
     companion object {
         fun toDto(record: RecordEntity): RecordDto {
             return RecordDto(
@@ -27,6 +29,7 @@ data class RecordDto(
     }
 
     fun toEntity(): RecordEntity {
-        return RecordEntity(title, description, id, isDeleted, creationDate)
+        return RecordEntity(title, description, creationDate, isDeleted, id)
     }
 }
+*/

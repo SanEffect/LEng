@@ -9,9 +9,8 @@ import androidx.navigation.ui.NavigationUI
 import com.san.leng.AndroidApplication
 import com.san.leng.R
 import com.san.leng.core.broadcastReceivers.NetworkBroadcastReceiver
-import com.san.leng.core.extensions.setMargins
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupBottomNavigation()
+        setupDrawer()
     }
 
     override fun onStart() {
@@ -40,7 +39,13 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(networkBroadcastReceiver)
     }
 
-    private fun setupBottomNavigation() {
+    private fun setupDrawer() {
+        val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+//        NavigationUI.setupActionBarWithNavController(this, navController, drawer_layout)
+        NavigationUI.setupWithNavController(nav_view, navController)
+    }
+
+/*    private fun setupBottomNavigation() {
 
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupWithNavController(bottom_navigation, navController)
@@ -48,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             when (destination.id) {
-                R.id.dashboard_fragment,
+                R.id.statistics_fragment,
                 R.id.dictionary_fragment,
                 R.id.useful_info_fragment -> {
                     add_record_fab.hide()
@@ -56,8 +61,8 @@ class MainActivity : AppCompatActivity() {
                     bottom_navigation.setMargins(rightMarginDp = 0)
                 }
                 R.id.records_fragment -> {
-                    add_record_fab.show()
                     bottom_navigation.setMargins(rightMarginDp = 80)
+                    add_record_fab.show()
                     bottom_bar.performShow()
                 }
                 else -> {
@@ -66,6 +71,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 }
 
