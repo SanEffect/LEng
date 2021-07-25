@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.san.leng.core.di.ViewModelKey
 import com.san.leng.ui.ViewModelFactory
-import com.san.leng.ui.statistics.StatisticsViewModel
 import com.san.leng.ui.dictionary.DictionaryViewModel
 import com.san.leng.ui.records.RecordsViewModel
-import com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel
+import com.san.leng.ui.records.addEditRecord.AddEditRecordViewModel
+import com.san.leng.ui.records.recordSlidePager.RecordSlidePagerViewModel
+import com.san.leng.ui.statistics.StatisticsViewModel
 import com.san.leng.ui.useful_info.UsefulInfoViewModel
 import dagger.Binds
 import dagger.Module
@@ -20,6 +21,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RecordsViewModel::class)
     abstract fun bindRecodsViewModel(recordsViewModel: RecordsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RecordSlidePagerViewModel::class)
+    abstract fun bindRecodSlidePagerViewModel(recordSlidePagerViewModel: RecordSlidePagerViewModel): ViewModel
 
     @Binds
     @IntoMap

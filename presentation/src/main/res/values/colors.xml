@@ -26,12 +26,24 @@
     <color name="shrine_pink_light">#FF000000</color>
     <color name="shrine_pink_900">#FFFFFFFF</color>
 
+    <color name="transparent">@android:color/transparent</color>
+
     <color name="add_fragment_bg_color">#B6CFE3</color>
 
     <string-array name="add_record_bg_colors">
-        <item>#B6CFE3</item>
-        <item>#FFFFF7AF</item>
+        <item>#99CCFF</item>
+        <item>#CCCCCC</item>
+        <item>#FFFFCC</item>
+        <item>#FFFF99</item>
+        <item>#CCCCFF</item>
+        <item>#9999FF</item>
+        <item>#6699FF</item>
+        <item>#3399FF</item>
         <item>#FF97D6D0</item>
+        <item>#66CC99</item>
+        <item>#00CC99</item>
+        <item>#FFCCCC</item>
+        <item>#FFCCFF</item>
         <item>#FFDCBFE1</item>
     </string-array>
 </resources>

@@ -31,6 +31,9 @@ data class RecordEntity(
     @ColumnInfo(name = "background_color")
     var backgroundColor: String? = null,
 
+//    @ColumnInfo(name = "path_to_audio_record")
+//    var pathToAudioRecord: List<String>? = null,
+
     @PrimaryKey
     val id: String = UUID.randomUUID().toString(),
 ) : Parcelable

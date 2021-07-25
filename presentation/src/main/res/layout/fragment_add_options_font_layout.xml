@@ -18,7 +18,7 @@
         android:layout_gravity="bottom"
         android:background="@color/white"
         android:visibility="gone"
-        app:isVisible="@{viewModel.bgOptionsExpanded}"
+        app:isVisible="@{viewModel.fontOptionsExpanded}"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="@string/add_fragment_background"
+            android:text="@string/add_fragment_fonts"
             android:textAlignment="center"
             app:layout_constraintEnd_toStartOf="@+id/bg_close"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,22 +40,23 @@
             android:id="@+id/bg_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_close"
+            android:onClick="@{() -> viewModel.fontOptionsDisplay(false)}"
             android:padding="8dp"
-            android:onClick="@{() -> viewModel.bgOptionsDisplay(false)}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bg_list"
+            android:id="@+id/font_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_margin="8dp"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/background_label"
-            tools:listitem="@layout/fragment_add_background_item" />
+            app:spanCount="3"
+            tools:listitem="@layout/fragment_add_font_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

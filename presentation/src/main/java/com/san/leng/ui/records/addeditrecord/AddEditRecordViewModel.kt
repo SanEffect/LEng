@@ -1,7 +1,8 @@
-package com.san.leng.ui.records.addeditrecord
+package com.san.leng.ui.records.addEditRecord
 
 import androidx.lifecycle.*
 import com.san.domain.Result.Success
+import com.san.domain.Result.Failure
 import com.san.domain.entities.RecordEntity
 import com.san.domain.usecases.dictionary.GetWordDefinitionsUseCase
 import com.san.domain.usecases.records.GetRecordUseCase
@@ -9,6 +10,7 @@ import com.san.domain.usecases.records.SaveRecordUseCase
 import com.san.leng.R
 import com.san.leng.core.Constants
 import com.san.leng.core.Event
+import com.san.leng.core.di.scopes.RecordsScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,7 +27,8 @@ class AddEditRecordViewModel @Inject constructor(
     val backgroundColor = MutableLiveData<String>()
     val creationDate = MutableLiveData(System.currentTimeMillis())
 
-    var bgPickerExpanded = MutableLiveData(false)
+    var bgOptionsExpanded = MutableLiveData(false)
+    var fontOptionsExpanded = MutableLiveData(false)
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
@@ -39,11 +42,14 @@ class AddEditRecordViewModel @Inject constructor(
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
+    private val _navigateBack = MutableLiveData<Event<Boolean>>()
+    val navigateBack: LiveData<Event<Boolean>> = _navigateBack
+
     private var recordId: String? = null
 
     private var isNewRecord: Boolean = false
 
-    fun init(recordId: String?, backgroundColor: String?) {
+    fun init(recordId: String?) {
         if (_dataLoading.value == true) return
 
         this.recordId = recordId
@@ -52,9 +58,9 @@ class AddEditRecordViewModel @Inject constructor(
             return
         }
 
-        backgroundColor?.let {
-            setBackgroundColor(it)
-        }
+//        backgroundColor?.let {
+//            setBackgroundColor(it)
+//        }
 
         isNewRecord = false
         _dataLoading.value = true
@@ -62,7 +68,7 @@ class AddEditRecordViewModel @Inject constructor(
             getRecordUseCase(GetRecordUseCase.Params(recordId, false)).let {
                 when (it) {
                     is Success -> onRecordLoaded(it.data)
-                    is Error -> {
+                    is Failure -> {
                         // show error
                     }
                 }
@@ -70,12 +76,13 @@ class AddEditRecordViewModel @Inject constructor(
         }
     }
 
-    private fun onRecordLoaded(recordEntity: RecordEntity?) {
+    private fun onRecordLoaded(recordEntity: RecordEntity) {
 
-        recordEntity?.let {
+        recordEntity.let {
             title.value = it.title
             description.value = it.description
             creationDate.value = it.creationDate
+            setBackgroundColor(it.backgroundColor)
         }
 
         _dataLoading.value = false
@@ -143,8 +150,10 @@ class AddEditRecordViewModel @Inject constructor(
         }
     }
 
-    fun setBackgroundColor(value: String) {
-        backgroundColor.value = value
+    fun setBackgroundColor(value: String?) {
+        value?.let {
+            backgroundColor.value = it
+        }
     }
 
     fun setDate(value: Long) {
@@ -162,11 +171,22 @@ class AddEditRecordViewModel @Inject constructor(
         }
     }
 
-    fun openBackgrounPicker() {
-        bgPickerExpanded.value = true
+    fun closeOptionPanels() {
+        bgOptionsExpanded.value = false
+        fontOptionsExpanded.value = false
     }
 
-    fun closeBackgroundPicker() {
-        bgPickerExpanded.value = false
+    fun bgOptionsDisplay(state: Boolean) {
+        if(state) closeOptionPanels()
+        bgOptionsExpanded.value = state
+    }
+
+    fun fontOptionsDisplay(state: Boolean) {
+        if(state) closeOptionPanels()
+        fontOptionsExpanded.value = state
+    }
+
+    fun navigateBack() {
+        _navigateBack.value = Event(true)
     }
 }

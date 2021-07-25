@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.san.domain.entities.RecordEntity
 import com.san.leng.R
+import com.san.leng.core.di.scopes.RecordsScope
 import com.san.leng.core.extensions.*
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentRecordsBinding
@@ -86,9 +87,10 @@ class RecordsFragment : BaseFragment() {
                 if (recordsViewModel.isSelectableMode) return
 
                 findNavController().navigate(
-                    RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(
+                    RecordsFragmentDirections.actionRecordsFragmentToRecordSlidePagerFragment(
                         recordEntity.id,
-                        recordEntity.backgroundColor
+                        recordEntity.backgroundColor,
+                        recordsAdapter.getRecordIds()
                     )
                 )
             }
@@ -105,6 +107,7 @@ class RecordsFragment : BaseFragment() {
             override fun onRecordsRemove(recordIds: List<String>) {
                 recordsViewModel.deleteRecords(recordIds)
                 recordsViewModel.setSelectableMode(false)
+                setupMainToolbar()
             }
         }
 
@@ -119,7 +122,6 @@ class RecordsFragment : BaseFragment() {
             addRecordFab.setOnClickListener {
                 findNavController().navigate(
                     RecordsFragmentDirections.actionRecordsFragmentToAddEditRecordFragment(
-                        null,
                         null
                     )
                 )

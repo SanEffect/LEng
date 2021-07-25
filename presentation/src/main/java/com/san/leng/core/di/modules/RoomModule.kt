@@ -6,6 +6,7 @@ import com.san.data.sources.local.IWordsLocalDataSource
 import com.san.data.sources.local.RecordsLocalDataSource
 import com.san.data.sources.local.WordsLocalDataSource
 import com.san.domain.repositories.IRecordsRepository
+import com.san.leng.core.di.scopes.RecordsScope
 import dagger.Binds
 import dagger.Module
 
@@ -19,5 +20,6 @@ abstract class RoomModule {
     abstract fun provideWordsLocalDataSource(wordsLocalDataSource: WordsLocalDataSource): IWordsLocalDataSource
 
     @Binds
+    @RecordsScope
     abstract fun provideRecordsRepository(repository: RecordsRepository): IRecordsRepository
 }

@@ -18,7 +18,7 @@ interface IRecordsLocalDataSource {
 
     suspend fun update(record: RecordEntity): Result<Unit>
 
-    suspend fun getById(id: String): Result<RecordEntity?>
+    suspend fun getById(id: String): Result<RecordEntity>
 
     suspend fun getRecordsCount(): Result<Long>
 

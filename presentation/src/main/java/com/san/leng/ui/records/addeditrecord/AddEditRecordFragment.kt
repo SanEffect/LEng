@@ -1,25 +1,23 @@
-package com.san.leng.ui.records.addeditrecord
+package com.san.leng.ui.records.addEditRecord
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.shape.CornerFamily
-import com.google.android.material.shape.MaterialShapeDrawable
-import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
 import com.san.leng.R
 import com.san.leng.core.extensions.*
 import com.san.leng.core.platform.BaseFragment
 import com.san.leng.databinding.FragmentAddRecordBinding
+import com.san.leng.ui.records.addEditRecord.adapters.BackgroundAdapter
+import com.san.leng.ui.records.addEditRecord.adapters.FontAdapter
+import kotlinx.android.synthetic.main.fragment_add_options.view.*
 import kotlinx.android.synthetic.main.fragment_add_record.*
 import kotlinx.android.synthetic.main.fragment_add_record.view.*
 import java.util.*
@@ -66,13 +64,13 @@ class AddEditRecordFragment : BaseFragment() {
 
         setupOptionsStyle()
 
-        setupAdapter()
+        setupAdapters()
         setupSnackbar()
         setupObservers()
         setupDatePicker()
         setupClickListeners()
 
-        addEditRecordsViewModel.init(args.recordId, args.backgroundColor)
+        addEditRecordsViewModel.init(args.recordId)
     }
 
     private fun setupDatePicker() {
@@ -86,10 +84,11 @@ class AddEditRecordFragment : BaseFragment() {
         }
     }
 
-    private fun setupAdapter() {
+    private fun setupAdapters() {
         binding.apply {
 
-            val onClick = object : BackgroundPickerAdapter.BgViewClick {
+            // Background Adapter
+            val backgroundOnClick = object : BackgroundAdapter.BgViewClick {
                 override fun onClick(selectedColor: String) {
                     addEditRecordsViewModel.setBackgroundColor(selectedColor)
                 }
@@ -98,11 +97,29 @@ class AddEditRecordFragment : BaseFragment() {
             val colors: Array<String> =
                 requireContext().resources.getStringArray(R.array.add_record_bg_colors)
 
-            val adapter = BackgroundPickerAdapter(onClick)
-            backgroundLayout.recordBgList.adapter = adapter
-            adapter.submitBackgroundList(colors.toMutableList())
+            val backgroundAdapter = BackgroundAdapter(backgroundOnClick)
+            recordOptions.backgroundPanel.bgList.adapter = backgroundAdapter
+            backgroundAdapter.submitBackgroundList(colors.toMutableList())
 
-            backgroundLayout.recordBgList.autoFitColumns(80)
+            // Font Adapter
+            val fontOnClick = object : FontAdapter.FontViewClick {
+                override fun onClick(selectedFont: String) {
+//                    addEditRecordsViewModel.setFont(selectedFont)
+                }
+            }
+
+            val fontAdapter = FontAdapter(fontOnClick)
+            recordOptions.fontPanel.fontList.adapter = fontAdapter
+            fontAdapter.submitFontList(
+                listOf(
+                    "Default",
+                    "Sans-Serif",
+                    "Arial",
+                    "Colibri",
+                    "Roboto",
+                    "Roman"
+                )
+            )
         }
     }
 
@@ -128,6 +145,13 @@ class AddEditRecordFragment : BaseFragment() {
             wordDefinition.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let { wordDefinition ->
                     Toast.makeText(requireContext(), wordDefinition, Toast.LENGTH_SHORT).show()
+                }
+            })
+
+            navigateBack.observe(viewLifecycleOwner, {
+                it.getContentIfNotHandled()?.let {
+                    hideKeyboard()
+                    findNavController().navigateUp()
                 }
             })
         }
@@ -182,7 +206,7 @@ class AddEditRecordFragment : BaseFragment() {
     }
 
     private fun setupOptionsStyle() {
-        val radius = resources.getDimension(R.dimen.add_fragment_options_top_left_corner)
+/*        val radius = resources.getDimension(R.dimen.add_fragment_options_top_left_corner)
 
         val layout = binding.backgroundOptions.optionsLayout
         val shapeAppearanceModel = ShapeAppearanceModel()
@@ -193,6 +217,6 @@ class AddEditRecordFragment : BaseFragment() {
         val shapeDrawable = MaterialShapeDrawable(shapeAppearanceModel)
         shapeDrawable.fillColor =
             ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
-        ViewCompat.setBackground(layout, shapeDrawable)
+        ViewCompat.setBackground(layout, shapeDrawable)*/
     }
 }

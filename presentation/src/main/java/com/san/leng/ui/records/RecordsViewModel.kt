@@ -15,6 +15,7 @@ import com.san.leng.core.Constants.RECORD_ADD_RESULT_OK
 import com.san.leng.core.Constants.RECORD_DELETE_RESULT_OK
 import com.san.leng.core.Constants.RECORD_EDIT_RESULT_OK
 import com.san.leng.core.Event
+import com.san.leng.core.di.scopes.RecordsScope
 import com.san.leng.core.enums.CommonStatus
 import com.san.leng.core.platform.BaseViewModel
 import kotlinx.coroutines.launch

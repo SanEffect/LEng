@@ -1,20 +1,20 @@
-package com.san.leng.ui.records.addeditrecord
+package com.san.leng.ui.records.addEditRecord.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.san.leng.databinding.BackgroundItemBinding
+import com.san.leng.databinding.FragmentAddBackgroundItemBinding
 
-class BackgroundPickerAdapter(
+class BackgroundAdapter(
     private val clickListener: BgViewClick,
-) : RecyclerView.Adapter<BackgroundPickerAdapter.BackgroundViewHolder>() {
+) : RecyclerView.Adapter<BackgroundAdapter.BackgroundViewHolder>() {
 
     private var backgroundList: MutableList<String> = mutableListOf()
 
     class BackgroundViewHolder(
-        val binding: BackgroundItemBinding
+        val binding: FragmentAddBackgroundItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(bgItem: String) {
@@ -28,7 +28,13 @@ class BackgroundPickerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BackgroundViewHolder {
-        return BackgroundViewHolder(BackgroundItemBinding.inflate(LayoutInflater.from(parent.context)))
+        return BackgroundViewHolder(
+            FragmentAddBackgroundItemBinding.inflate(
+                LayoutInflater.from(
+                    parent.context
+                )
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: BackgroundViewHolder, position: Int) {

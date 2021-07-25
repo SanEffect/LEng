@@ -7,46 +7,65 @@
 
         <variable
             name="viewModel"
-            type="com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel" />
+            type="com.san.leng.ui.records.addEditRecord.AddEditRecordViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/options_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginStart="@dimen/add_fragment_options_margin_start"
-        android:background="@color/white">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/bgPicker"
-            style="@style/AddRecordOptionIcons"
-            android:onClick="@{() -> viewModel.openBackgrounPicker()}"
-            android:src="@drawable/ic_background_picker"
-            app:layout_constraintEnd_toStartOf="@+id/fontPicker"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/options_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/add_fragment_options_margin_start"
+            android:background="@color/white">
 
-        <ImageView
-            android:id="@+id/fontPicker"
-            style="@style/AddRecordOptionIcons"
-            android:src="@drawable/ic_font_picker"
-            app:layout_constraintEnd_toStartOf="@+id/imagePicker"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/bgPicker"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/bg_options"
+                style="@style/AddRecordOptionIcons"
+                android:onClick="@{() -> viewModel.bgOptionsDisplay(true)}"
+                android:src="@drawable/ic_background_picker"
+                app:layout_constraintEnd_toStartOf="@+id/font_options"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/imagePicker"
-            style="@style/AddRecordOptionIcons"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/fontPicker"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/font_options"
+                style="@style/AddRecordOptionIcons"
+                android:onClick="@{() -> viewModel.fontOptionsDisplay(true)}"
+                android:src="@drawable/ic_font_picker"
+                app:layout_constraintEnd_toStartOf="@+id/image_options"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/bg_options"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageView
+                android:id="@+id/image_options"
+                style="@style/AddRecordOptionIcons"
+                android:src="@drawable/ic_settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/font_options"
+                app:layout_constraintTop_toTopOf="parent" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/background_panel"
+            layout="@layout/fragment_add_options_bg_layout"
+            app:viewModel="@{viewModel}" />
+
+        <include
+            android:id="@+id/font_panel"
+            layout="@layout/fragment_add_options_font_layout"
+            app:viewModel="@{viewModel}" />
+
+    </LinearLayout>
 </layout>
+
+

@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.san.domain.entities.RecordEntity
 import com.san.leng.databinding.RecordItemBinding
-import timber.log.Timber
 
 class RecordsAdapter(
     private val clickListener: RecordViewClick,
@@ -65,9 +64,12 @@ class RecordsAdapter(
         }
     }
 
+    fun getRecordIds(): Array<String> {
+        return recordsList.map { it.id }.toTypedArray()
+    }
+
     fun submitRecordList(records: List<RecordEntity>?) {
         recordsList.clear()
-        Timber.i("records: $records")
         recordsList.addAll(records as Collection<RecordEntity>)
         notifyDataSetChanged()
     }

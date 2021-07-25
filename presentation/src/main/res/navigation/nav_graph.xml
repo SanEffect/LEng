@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/records_fragment">
+    app:startDestination="@id/nav_records_graph">
 
     <fragment
         android:id="@+id/statistics_fragment"
@@ -22,43 +22,7 @@
         android:name="com.san.leng.ui.dictionary.DictionaryFragment"
         android:label="DictionaryFragment"
         tools:layout="@layout/fragment_dictionary" />
-    <fragment
-        android:id="@+id/records_fragment"
-        android:name="com.san.leng.ui.records.RecordsFragment"
-        android:label="RecordsFragment"
-        tools:layout="@layout/fragment_records">
-        <action
-            android:id="@+id/action_recordsFragment_to_addEditRecordFragment"
-            app:destination="@id/add_edit_record_fragment"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out" />
-        <argument
-            android:name="userMessage"
-            app:argType="integer"
-            android:defaultValue="0" />
-    </fragment>
-    <fragment
-        android:id="@+id/add_edit_record_fragment"
-        android:name="com.san.leng.ui.records.addeditrecord.AddEditRecordFragment"
-        android:label="AddEditRecordFragment"
-        tools:layout="@layout/fragment_add_record">
-        <action
-            android:id="@+id/action_addEditRecordFragment_to_recordsFragment"
-            app:destination="@id/records_fragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/slide_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-        <argument
-            android:name="recordId"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="backgroundColor"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
+
+    <include app:graph="@navigation/nav_records_graph" />
 
 </navigation>

@@ -8,84 +8,106 @@
 
         <variable
             name="viewModel"
-            type="com.san.leng.ui.records.addeditrecord.AddEditRecordViewModel" />
+            type="com.san.leng.ui.records.addEditRecord.AddEditRecordViewModel" />
     </data>
 
-    <FrameLayout
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="@{() -> viewModel.closeBackgroundPicker()}">
+        android:onClick="@{() -> viewModel.closeOptionPanels()}"
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="@color/add_fragment_bg_color"
             android:padding="8dp"
             app:containerBackground="@{viewModel.backgroundColor}"
             tools:context=".records.add_record.AddRecordFragment">
 
+            <RelativeLayout
+                android:id="@+id/add_record_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/navigate_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:onClick="@{() -> viewModel.navigateBack()}"
+                    android:src="@drawable/ic_back_button" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/record_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:backgroundTint="@color/white"
+                    android:onClick="@{() -> viewModel.saveRecord()}"
+                    android:text="@string/record_save_button"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/add_edit_records_save_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </RelativeLayout>
+
             <TextView
                 android:id="@+id/record_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_record_toolbar"
                 app:recordDate="@{viewModel.creationDate}"
                 tools:text="07.07.21" />
 
             <ImageView
+                android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_drop_down"
-                android:textSize="8sp"
-                android:layout_marginTop="6dp"
-                app:layout_constraintStart_toEndOf="@+id/record_date"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/record_save"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:backgroundTint="@color/colorAccent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.App.SmallComponent"
-                android:onClick="@{() -> viewModel.saveRecord()}"
-                android:text="@string/record_save_button"
-                android:textSize="@dimen/add_edit_records_save_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/record_date"
+                app:layout_constraintStart_toEndOf="@+id/record_date" />
 
             <ScrollView
                 android:id="@+id/scrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/record_save">
+                app:layout_constraintTop_toBottomOf="@+id/record_date">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/record_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:background="@null"
+                        android:background="@android:color/transparent"
                         android:hint="@string/add_record_title_hint"
-                        android:text="@={viewModel.title}" />
+                        android:text="@={viewModel.title}"
+                        app:boxBackgroundColor="@android:color/transparent" />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/record_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
                         android:layout_marginTop="16dp"
-                        android:background="@null"
                         android:hint="@string/add_record_desc_hint"
                         android:inputType="text|textMultiLine"
                         android:text="@={viewModel.description}" />
@@ -97,14 +119,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
-            android:id="@+id/background_options"
+            android:id="@+id/record_options"
             layout="@layout/fragment_add_options"
             app:viewModel="@{viewModel}" />
 
-        <include
-            android:id="@+id/background_layout"
-            layout="@layout/fragment_add_options_bg_layout"
-            app:viewModel="@{viewModel}" />
-
-    </FrameLayout>
+    </LinearLayout>
 </layout>

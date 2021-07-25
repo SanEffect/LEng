@@ -10,6 +10,7 @@ import com.san.domain.repositories.IRecordsRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import javax.inject.Inject
@@ -31,10 +32,12 @@ class RecordsRepository @Inject constructor(
 
             if (!forceUpdate) {
                 cachedRecords?.let { cachedRecords ->
+                    Timber.tag("RecordsRepository").i("getRecords from cache")
                     return@withContext Success(cachedRecords.values.sortedByDescending { it.creationDate })
                 }
             }
 
+            Timber.tag("RecordsRepository").i("getRecords from DB")
             val newRecords = recordsLocalDataSource.getRecords()
 
             // Refresh the cache with the new records
@@ -47,19 +50,21 @@ class RecordsRepository @Inject constructor(
         }
     }
 
-    override suspend fun getRecordById(id: String, forceUpdate: Boolean): Result<RecordEntity?> {
+    override suspend fun getRecordById(id: String, forceUpdate: Boolean): Result<RecordEntity> {
         return withContext(ioDispatcher) {
             // Respond immediately with cache if available
             if (!forceUpdate) {
                 getRecordWithId(id)?.let {
+                    Timber.tag("RecordsRepository").i("getRecordById from cache")
                     return@withContext Success(it)
                 }
             }
 
+            Timber.tag("RecordsRepository").i("getRecordById from DB")
             val newRecord = recordsLocalDataSource.getById(id)
 
             // Refresh the cache with the new records
-            (newRecord as? Success)?.let { cacheRecord(it.data!!) }
+            (newRecord as? Success)?.let { cacheRecord(it.data) }
 
             return@withContext newRecord
         }
@@ -106,6 +111,10 @@ class RecordsRepository @Inject constructor(
     override suspend fun getWordsCount(): Result<Long> = recordsLocalDataSource.getWordsCount()
 
     private fun refreshCache(records: List<RecordEntity>) {
+        if (cachedRecords == null) {
+            cachedRecords = ConcurrentHashMap()
+        }
+
         cachedRecords?.apply {
             clear()
             records
@@ -116,12 +125,12 @@ class RecordsRepository @Inject constructor(
 
     private suspend fun <Type> cacheAndPerform(
         record: RecordEntity,
-        performs: suspend (RecordEntity) -> Result<Type>
+        perform: suspend (RecordEntity) -> Result<Type>
     ): Result<Type> {
         val cachedRecord = cacheRecord(record)
 
         return withContext(ioDispatcher) {
-            performs(cachedRecord)
+            perform(cachedRecord)
         }
     }
 

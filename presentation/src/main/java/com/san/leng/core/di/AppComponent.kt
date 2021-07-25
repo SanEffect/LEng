@@ -5,17 +5,20 @@ import com.san.leng.core.di.modules.DatabaseModule
 import com.san.leng.core.di.modules.RoomModule
 import com.san.leng.core.di.modules.ViewModelModule
 import com.san.leng.core.di.modules.WordsApiModule
+import com.san.leng.core.di.scopes.RecordsScope
 import com.san.leng.ui.MainActivity
 import com.san.leng.ui.statistics.StatisticsFragment
 import com.san.leng.ui.dictionary.DictionaryFragment
 import com.san.leng.ui.records.RecordsFragment
-import com.san.leng.ui.records.addeditrecord.AddEditRecordFragment
+import com.san.leng.ui.records.addEditRecord.AddEditRecordFragment
+import com.san.leng.ui.records.recordSlidePager.RecordSlidePagerFragment
 import com.san.leng.ui.useful_info.UsefulInfoFragment
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
+@RecordsScope
 @Component(
     modules = [
         DatabaseModule::class,
@@ -36,6 +39,7 @@ interface AppComponent {
 
     // Fragments
     fun inject(recordsFragment: RecordsFragment)
+    fun inject(recordSlidePagerFragment: RecordSlidePagerFragment)
     fun inject(addEditRecordFragment: AddEditRecordFragment)
     fun inject(statisticsFragment: StatisticsFragment)
     fun inject(usefulInfoFragment: UsefulInfoFragment)
